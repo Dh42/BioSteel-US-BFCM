@@ -1,0 +1,197 @@
+{%- assign style_source = section -%}
+{%- assign content_source = false -%}
+{%- assign banner_heading = page_title -%} <!-- amazing variable ftw. caveat: on search page returns search term -->
+{%- if search.performed -%}
+  {%- assign banner_heading = raw_query -%}
+{%- endif -%}
+{%- assign main_object = false -%}
+{%- assign banner_image = false -%}
+{%- assign banner_description = false -%}
+{%- assign banner_preheading = false -%}
+{%- assign banner_subheading = false -%}
+{%- assign buttons_content = false -%}
+{%- assign search_content = false -%}
+{%- assign request_path = request.path | downcase -%}
+
+{%- if article -%}
+  {%- assign main_object = article -%}
+  {%- if article.image and article.image != blank -%}
+    {%- assign banner_image = article.image -%}
+    {%- assign banner_image--mobile = banner_image -%}
+  {%- endif -%}
+{%- elsif collection -%}
+  {%- assign main_object = collection -%}
+  {%- if collection.image and collection.image != blank -%}
+    {%- assign banner_image = collection.image -%}
+    {%- assign banner_image--mobile = banner_image -%}
+  {%- endif -%}
+  {%- if collection.description != blank -%}
+    {% assign banner_description = collection.description %}
+  {%- endif -%}
+{%- elsif product -%}
+  {%- assign main_object = product -%}
+  {%- if product.featured_image and product.featured_image != blank -%}
+    {%- assign banner_image = product.featured_image -%}
+    {%- assign banner_image--mobile = banner_image -%}
+  {%- endif -%}
+{%- elsif blog -%}
+  {%- assign main_object = blog -%}
+  {%- comment -%}
+    No default image
+  {%- endcomment -%}
+{%- elsif page -%}
+  {%- assign main_object = page -%}
+    {%- comment -%}
+      No default image
+    {%- endcomment -%}
+
+{%- comment -%}
+  handle endpoints without metafields OR tags... search, account, cart, index
+  idea: match request_path against block text field
+{%- endcomment -%}
+{%- endif -%}
+
+{%- comment -%}
+ will show the last block that matches tag or custom field, prioritizing in that order
+ if url matches block, will stop looping and show it
+{%- endcomment -%}
+
+{%- for block in section.blocks -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: block %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+  {%- assign found_tag = false -%}
+  {%- assign matches_path = false -%}
+  {%- assign settings_path = false -%}
+  {%- if block.settings.path -%}
+    {%- assign settings_path = block.settings.path | downcase -%}
+  {%- endif -%}
+
+  {%- if template.name == '404' and block.settings.tag == '404' -%}
+    {%- assign found_tag = true -%}
+  {%- endif -%}
+  {%- if main_object and block.settings.tag == main_object.metafields.c_f.banner_tag -%}
+    {%- assign found_tag = true -%}
+  {%- endif %}
+  {%- if main_object and main_object.tags and main_object.tags contains block.settings.tag -%}
+    {% assign found_tag = true %}
+  {%- endif -%}
+  {%- if settings_path and settings_path == request_path -%}
+    {%- assign matches_path = true -%}
+  {%- endif -%}
+
+  {%- if found_tag or matches_path -%}
+    {%- assign content_source = block -%}
+    {%- break -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- comment -%}
+Fuzzy path matching if we haven't found anything yet
+{%- endcomment -%}
+{%- if matches_path == false and found_tag == false and banner_image == false -%}
+  {%- for block in section.blocks -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: block %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+    {%- if block.settings.path -%}
+      {%- assign settings_path = block.settings.path | downcase -%}
+    {%- endif -%}
+    
+    {%- if settings_path and request_path contains settings_path -%}
+      {%- assign matches_path = true -%}
+      {%- assign content_source = block -%}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+
+{%- comment -%}
+If we still haven't found a banner, loop again and see if a "default" banner exists
+{%- endcomment -%}
+{%- assign default_found = false -%}
+{%- if matches_path == false and found_tag == false and banner_image == false -%}
+  {%- for block in section.blocks -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: block %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+    {%- if block.settings.path == blank and block.settings.tag == blank and block.settings.image -%}
+      {%- assign default_found = true -%}
+      {%- assign content_source = block -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+
+{%- if content_source -%}
+  {%- assign block = content_source -%}
+  {%- assign banner_image = block.settings.image -%}
+  {%- assign banner_image--mobile = banner_image -%}
+  {%- if block.settings.image--mobile -%}
+    {%- assign banner_image--mobile = block.settings.image--mobile -%}
+  {%- endif -%}
+  {%- if block.settings.heading != blank -%}
+    {%- assign banner_heading = block.settings.heading -%}
+  {%- endif -%}
+  {%- if block.settings.description != blank -%}
+    {%- assign banner_description = block.settings.description -%}
+  {%- endif -%}
+  {%- if block.settings.preheading != blank -%}
+    {%- assign banner_preheading = block.settings.preheading -%}
+  {%- endif -%}
+  {%- if block.settings.subheading != blank -%}
+    {%- assign banner_subheading = block.settings.subheading -%}
+  {%- endif -%}
+
+  {%- if block.settings.search_placeholder -%}
+
+    {%- case block.settings.condition -%}
+      {%- when 'or' -%}
+        {%- assign condition = 'OR' -%}
+      {%- when 'not' -%}
+        {%- assign condition = '-' -%}
+      {% else %}
+        {%- assign condition = '' -%}
+    {%- endcase -%}
+
+    {%- capture search_content -%}
+      {%- include 'INF-Banner-search-form' -%}
+    {%- endcapture -%}
+  {%- endif -%}
+
+  {%- capture buttons_content -%}
+    {%- for i in (1..3) -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: i %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+      {%- assign button_text = 'button_text_' | append: i -%}
+      {%- assign button_style = 'button_style_' | append: i -%}
+      {%- assign button_url = 'button_url_' | append: i -%}
+      {%- if block.settings[button_text] != blank -%}
+        {%- include 'INF-Banner__button' -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+
+  {%- unless block.settings.uses_default == true -%}
+    {%- assign style_source = block -%}
+  {%- endunless -%}
+{%- endif -%}
+
+{%- assign section_animation = style_source.settings.section_animation | default: 'none' -%}
+{%- assign content_animation = style_source.settings.content_animation | default: 'none' -%}

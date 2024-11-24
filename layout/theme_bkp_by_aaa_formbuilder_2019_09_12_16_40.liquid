@@ -1,0 +1,114 @@
+<!doctype html>
+<!--[if IE 9]> <html class="ie9 no-js supports-no-cookies" lang="{{ shop.locale }}"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js supports-no-cookies shop-{{ shop.currency | handle }}" lang="{{ shop.locale }}" data-state> <!--<![endif]-->
+<head>
+  
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="{{ settings.color_accent }}">
+  <meta name="google-site-verification" content="ZaGjq3dbqC4TyTkVg5s6RHWApkfM2Q3xIOc8f7f-C9o" />
+  <link rel="canonical" href="{{ canonical_url }}"> 
+
+  {% include 'meta-tags' %}
+  {% include 'GTM' %}
+  {% include 'css-variables' %}
+  {% include 'style-tags', layout: 'theme' %}
+  {% include 'INF-fontawesome' %}
+  <style id="navDropdowns"></style> 
+
+  {% include 'GTM-head' %}
+
+  <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
+
+  <script>
+    document.documentElement.className = document.documentElement.className.replace('no-js', '');
+
+    window.elementLoaded = function(element) {
+      element.classList.add('AnimateOnLoad--preloaded');
+    };
+
+    window.triggerResize = function() {
+      if (window.debouncedResize) {
+        debouncedResize();
+      }
+    };
+
+    window.theme = {
+      strings: {
+        addToCart: {{ 'products.product.add_to_cart' | t | json }},
+        soldOut: {{ 'products.product.sold_out' | t | json }},
+        unavailable: {{ 'products.product.unavailable' | t | json }}
+      },
+      moneyFormat: {{ shop.money_format | json }},
+      currency: {{ shop.currency | json }},
+      show_currency: {{ settings.show_currency }},
+      quantity_ui: {{ settings.quantity_ui | json }},
+      external_links_in_new_window: {{ settings.external_links_in_new_window | json }},
+      settings: {{ settings | json }},
+      breakpoints: {
+        tablet: {{ settings.grid_tablet_min | replace: 'px', '' }},
+        laptop: {{ settings.grid_laptop_min | replace: 'px', '' }},
+        desktop: {{ settings.grid_desktop_min | replace: 'px', '' }},
+        gutters: {{ settings.grid_gutters | replace: 'px', '' }}
+      },
+      cart: {
+        image_size: '420x',
+      },
+      pdp: {
+        image_size: '1194x'
+      },
+      flickity: {
+        dragThreshold: 10
+      },
+      toastr: {
+        positionClass: 'toast-bottom-right',
+        showDuration: 300,
+        hideDuration: 1000,
+        timeOut: 5000,
+        extendedTimeOut: 1000
+      },
+      carousels: {},
+    };
+  </script>
+
+  {%- if shop.permanent_domain == 'biosteel-ca.myshopify.com' -%}
+    <script src="https://global.localizecdn.com/localize.js"></script>
+    <script>!function(a){if(!a.Localize){a.Localize={};for(var e=["translate","untranslate","phrase","initialize","translatePage","setLanguage","getLanguage","detectLanguage","getAvailableLanguages","untranslatePage","bootstrap","prefetch","on","off"],t=0;t<e.length;t++)a.Localize[e[t]]=function(){}}}(window);</script>
+
+    <script>
+    Localize.initialize({
+      key: 'K2yZVBLORgJPs',
+      rememberLanguage: true,
+      blockedClasses: ['ProductInfo__options']
+    });
+    </script>
+  {%- endif -%}
+  
+  {%- include 'INF-injectVimeoPoster' -%}
+  {%- include 'script-tags', layout: 'theme' -%}
+
+  {{ content_for_header }}
+
+  {% include 'INF-bugherd' %}
+<script src="//staticxx.s3.amazonaws.com/aio_stats_lib_v1.min.js?v=1.0"></script></head>
+
+<body id="{{ page_title | handle }}" class="template-{{ template | handle }}">
+  <a class="in-page-link visually-hidden skip-link" href="#MainContent">{{ 'general.accessibility.skip_to_content' | t }}</a>
+  
+  {% include 'GTM-body' %}
+  {% section 'INF-Header' %}
+  {% section 'SliderCart' %}
+  {% include 'modals' %}
+
+  <div class="SiteOverlay" data-site-overlay>
+    <div class="Overlay"></div>
+  </div>
+
+  <main role="main" id="MainContent">
+    {{ content_for_layout }}
+  </main>
+
+  {% section 'INF-Footer' %}
+<input type="hidden" name="page_handle" class="get_current_page_handle" value="{{ page.title }}"></body>
+</html>

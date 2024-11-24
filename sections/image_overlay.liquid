@@ -1,0 +1,192 @@
+<style>
+  @media only screen and (max-width: 768px) {
+
+    .txtt{
+ position: absolute;
+                                    bottom: 20px;
+                                    left: 50%;
+                                    transform: translate(-50%, -0%);
+      
+    }
+.dimg {
+ 
+   display:none;
+  }
+}
+  @media only screen and (min-width: 768px) {
+
+    .txtt{
+ position: absolute;
+                                    bottom: {{ section.settings.padding32 }}%;
+                                    left: 50%;
+                                    transform: translate(-50%, -0%);
+      
+    }
+.mimg {
+  display:none;
+  }
+}
+  .cdd12{
+       border-radius: 29px !important;
+  }
+</style>
+
+<!-- {% include 'css-variables' %} -->
+
+<div class = "mncontainer" style="
+                  position: relative;
+  display: flex;
+              ">
+      <img  class="dimg" src="{{ section.settings.image | img_url: 'master'}}" 
+       style =" 
+        width: 100%;"  >
+      <img  class="mimg" src="{{ section.settings.mimage | image_url}}" 
+        style="
+                width: 100%;
+        
+            ">
+
+          <div class="txtt" style="
+                                   
+                                ">
+             <h1 style="
+                          text-align: center;
+                          display: block;
+                          color: {{ section.settings.txt_color | color_rgba }};
+                          font-size: {{ section.settings.font1 }}px;
+                      "> 
+             {{ section.settings.title }} 
+             </h1>
+             <div style="
+                          text-align: center;
+                          font-size: 1.8vw;
+                          display: block;
+                          color: {{ section.settings.txt1_color | color_rgba }};
+                           font-size: {{ section.settings.font2 }}px;
+                      ">
+             {{ section.settings.text_body }}
+             </div>
+            <div class="cta-btn" style="
+    text-align: center;
+">
+         
+                    <a class="HeroSlide__button cdd12  Button Button--{{ section.settings.cta_style }}" {% if section.settings.button_link %}href="{{ section.settings.button_link }}"{% endif %}>
+                      {{ section.settings.button_label }}
+                    </a>
+              
+            </div>
+       </div>
+</div>
+
+
+{% schema %}
+  {
+    "name": "Image with text overlay",
+    "settings": [   
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mimage",
+          "label": "Mobile Image"
+        },
+         { 
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Add a title or tagline!"
+         },
+         {
+          "type": "range",
+          "id": "font1",
+          "label": "Font size",
+          "default": 24,
+          "min": 8,
+          "max": 80,
+          "step": 1
+        },
+               {
+          "type": "color",
+          "id": "txt_color",
+          "label": "Text Color",
+          "default": "#000000"
+         },
+      {
+          "id": "text_body",
+          "type": "richtext",
+          "label": "Add custom text below",
+          "default": "<p>Add your text here!!</p>"
+        },
+         {
+          "type": "range",
+          "id": "font2",
+          "label": "Font size",
+          "default": 16,
+          "min": 8,
+          "max": 60,
+          "step": 1
+        },
+         {
+          "type": "color",
+          "id": "txt1_color",
+          "label": "Text Color",
+          "default": "#000000"
+         },
+        {
+            "label": "Button style 1",
+            "id": "cta_style",
+            "type": "select",
+            "default": "on-image",
+            "options": [
+              {
+                "value": "on-image",
+                "label": "On Image"
+              },
+              {
+                "value": "primary",
+                "label": "Primary"
+              },
+              {
+                "value": "secondary",
+                "label": "Secondary"
+              }
+            ]
+          },
+       {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button Title",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link",
+          "default": "/"
+        }, {
+          "type": "range",
+          "id": "padding32",
+          "label": "bottom padding",
+          "default": 3,
+          "min": 1,
+          "max": 100,
+          "step": 1
+        }
+    ],
+    "presets": [
+      {
+        "name": "Image with text overlay",
+        "category": "Custom"
+      }
+    ] 
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

@@ -1,0 +1,23 @@
+.section--shipping-method {
+    del.content-box__small-text {
+        display: none;
+        +br {
+            display: none !important;
+        }
+    }
+    [data-shipping-method-label-title] {
+        span.small-text {
+            opacity:0;
+            &.hijacked {
+                opacity:1;
+            }
+        }
+    }
+}
+.small-text.hijacked {
+    display: block;
+}
+
+[data-shipping-methods] .radio__label__accessory .content-box__emphasis{
+    text-transform: uppercase;
+}

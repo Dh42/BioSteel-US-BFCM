@@ -1,0 +1,25 @@
+{%- capture content -%}
+  {{ object.content }}
+  {{ object.description }}
+{%- endcapture -%}
+
+{% unless content == blank %}
+  {%- include 'RteVideo-logic' -%}
+  {% comment %} handled by js {%- include 'RteSplitCaption-logic' -%} {% endcomment %}
+  {%- include 'RteSplitCaption-with-product-logic' -%}
+  {% comment %} handled by js {%- include 'RteFullCaption-logic' -%} {% endcomment %}
+  {% comment %} RteHeroEvent handled by js {% endcomment %}
+  {%- include 'RteCollectionCarousel-logic' -%}
+  {%- include 'RteFeaturedArticles-logic' -%}
+  {%- include 'RteRelatedContent-logic' -%}
+  {%- include 'RteStaggeredArticle' -%}
+  {%- include 'RteHeroArticle' -%}
+  {%- include 'RteCollectionGrid-logic' -%}
+  {%- if wrap -%}
+    <div class="rte MainRte">
+  {%- endif -%}
+      {{ content }}
+  {%- if wrap -%}
+    </div>
+  {%- endif -%}
+{% endunless %}

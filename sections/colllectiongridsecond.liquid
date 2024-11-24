@@ -1,0 +1,713 @@
+<style>
+
+
+  
+  
+  .ProductTile__option{
+margin-bottom: 2px;
+    margin-top: 2px;
+    
+  }
+  
+* {
+  box-sizing: border-box;
+}
+ .btn:hover {
+ background-color: black !important;
+    color: white !important;
+} 
+
+
+  }
+.btn{
+    
+ background-color: white !important;
+    color:  black !important;
+}
+  @media only screen and (max-width: 640px) {
+    .cdesktop{display:none !important;}
+    .cmobile{display:block !important;}
+    .main-colllection{
+     
+      display: grid;
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+    -ms-grid-columns: (1fr)[4];
+    grid-template-columns: repeat(2,1fr);
+    margin: 0;
+}
+ .paddingOnTop{
+  padding-top: {{ section.settings.padding_topdre }}%;
+}
+
+    .ProductTile__title{
+height: 120px;
+
+;
+  
+}
+     }
+   		
+   
+   @media only screen and (min-width: 641px) {
+    
+      .cdesktop{display:block !important;}
+    .cmobile{display:none !important;}
+      .main-colllection{
+     
+      display: grid !important;
+    grid-column-gap: 40px !important;
+    grid-row-gap: 66px !important;
+    -ms-grid-columns: (1fr)[4] ;
+    grid-template-columns: repeat(4,1fr)!important;
+    margin: 0;
+}
+.ProductTile__title{
+
+      height: 110px;
+}
+.child{
+  width: 94%;
+}
+     
+ .multicolumn-card__image:hover {
+         width: 70%;
+    transition: transform .5s;
+  -ms-transform: scale(1.2); /* IE 9 */
+  -webkit-transform: scale(1.2); /* Safari 3-8 */
+  transform: scale(1.1); 
+}
+
+
+     
+   }
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+   .Fontcsize{
+
+       font-size: {{ section.settings.limitFont1 }}px;
+     }
+</style>
+<section
+  id="section{{ section.id }}" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="INF-CollectionGrid second" 
+  class="paddingOnTop Section Section--{{ section.settings.width }} Section--{{ section.settings.width--mobile }} {% if template.name == 'index' and section.settings.section_animation and section.settings.section_animation != 'none' %} Animate Animate--{{ section.settings.section_animation }}{% endif %}"
+  style="{% if section.settings.use_background %}background: {{ section.settings.background }};{% endif %}"
+  > 
+ 
+          <{{ section.settings.heading_class }} class="Section__heading  cdesktop Fontcsize" style="text-align:unset;margin-left:12%;margin-top:3%">{{ section.settings.heading }}</{{ section.settings.heading_class }}>
+  <h3 class="Section__heading  cmobile  {{ section.settings.heading_class }}">{{ section.settings.heading }}</h3>
+  
+   <div class="Section__container">
+       <div class="main-colllection  CollectionGrid--mobile-columns-{{ section.settings.columns }} CollectionGrid--mobile-columns-{{ section.settings.columns--mobile }} ">
+
+
+ {% for block in section.blocks %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: block %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+  
+   
+{% assign collection_main = collections[block.settings.collection_main] %}
+{% assign collection_limit = block.settings.collection_limit %}
+
+{% assign cell_align = section.settings.cell_align %}
+{% assign wrap_around = section.settings.wrap_around %}
+{% assign img_width = section.settings.img_width | append: 'x' %}
+
+
+<div class="child">
+{% for product in collection_main.products limit: 1 %}
+  {% assign first_variant = product.selected_or_first_available_variant %}
+  
+  <!-- Check and display inventory quantity -->
+  {% if first_variant.inventory_quantity < 1 and section.settings.heading contains "Limited Editions" %}
+    <p style="display:none" class="not-long-for-this"></p>
+    {% endif %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: product %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+{% comment %} Wholesale_Club_Product_Prices Start {% endcomment %}
+{% assign base_product = product %}
+{% assign base_variant = product.selected_or_first_available_variant %}
+
+{% if shop.metafields.sawholesale['base_price'] == blank %}
+  {% assign base_price = 'compare_at_price' %}
+{% else %}
+  {% assign base_price = shop.metafields.sawholesale['base_price'] %}
+{% endif %}
+
+{% assign saw_discount = 0 %}{% assign saw_has_discount = false %}
+
+{% if customer.tags != blank %}
+  {% for mf in base_product.metafields.sawholesale %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: mf %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+    {% capture product_customer_tag %}{{ mf | first | replace: 'discount_', '' }}{% endcapture %}
+    {% if customer.tags contains product_customer_tag %}
+      {% assign saw_has_discount = true %}
+      {% assign discount_key = product_customer_tag | prepend: 'discount_' %}
+      {% assign price_key = product_customer_tag | prepend: 'price_' %}
+      {% assign saw_discount = base_product.metafields.sawholesale[discount_key] | divided_by: 100.0 %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% assign saw_discount = 1 | minus: saw_discount %}
+
+{% if base_price == 'price' or base_variant.compare_at_price == blank  or base_variant.compare_at_price == 0 or base_variant.compare_at_price < base_variant.price %}
+  {% assign saw_variant_compare_at_price = base_variant.price %}
+{% else %}
+  {% assign saw_variant_compare_at_price = base_variant.compare_at_price %}
+{% endif %}
+
+{% assign cpe = shop.metafields.sawholesale['cpe'] | default: "true" %}
+{% if base_variant.metafields.sawholesale[price_key] != blank and cpe == "true" %}
+  {% assign saw_variant_price = base_variant.metafields.sawholesale[price_key] %}
+{% else %}
+  {% assign saw_variant_price = saw_variant_compare_at_price | times: saw_discount %}
+{% endif %}
+
+{% if saw_has_discount == false or saw_variant_price >= saw_variant_compare_at_price %}
+  {% assign WCProduct_Price = base_product.price %}
+  {% assign WCProduct_ComparePrice = base_product.compare_at_price %}
+  {% assign WCProduct_PriceMin = base_product.price_min %}
+  {% assign WCProduct_ComparePriceMin = base_product.compare_at_price_min %}
+  {% assign WCProduct_PriceMax = base_product.price_max %}
+  {% assign WCProduct_ComparePriceMax = base_product.compare_at_price_max %}
+  {% assign WCProduct_VariantPrice = base_variant.price %}
+  {% assign WCProduct_VariantComparePrice = base_variant.compare_at_price %}
+{% else %}   
+  {% assign WCProduct_Price = saw_variant_price %}
+  {% assign WCProduct_PriceMin = base_product.price_min | times: saw_discount %}
+  {% assign WCProduct_PriceMax = base_product.price_max | times: saw_discount %}
+  {% assign WCProduct_ComparePrice = saw_variant_compare_at_price %}
+  {% if base_product.compare_at_price_min != 0 %}{% assign WCProduct_ComparePriceMin = base_product.compare_at_price_min %}{% else %}{% assign WCProduct_ComparePriceMin = base_product.price_min %}{% endif %}
+  {% if base_product.compare_at_price_max != 0 %}{% assign WCProduct_ComparePriceMax = base_product.compare_at_price_max %}{% else %}{% assign WCProduct_ComparePriceMax = base_product.price_max %}{% endif %}
+  {% assign WCProduct_VariantPrice = saw_variant_price %}
+  {% assign WCProduct_VariantComparePrice = saw_variant_compare_at_price %}
+{% endif %}
+{% comment %} Wholesale_Club_Product_Prices End {% endcomment %}
+
+
+  
+{%- if product.metafields.inventory.ShappifyHidden == 'true' -%}{%- continue -%}{%- endif -%}
+{% assign first_variant = product.selected_or_first_available_variant %}
+{% assign featured_img_src = first_variant.featured_img.src | default: block.settings.image %}
+{% assign price = first_variant.price %}
+{% assign compare_at_price = first_variant.compare_at_price %}
+       
+    <h2>{{  block.settings.heading}}</h2>
+  <div class="ProductTile__content">
+   
+<a href="{{product.url }}" id="anchor">
+ <img loading="lazy" class="multicolumn-card__image " src="{{ block.settings.image | image_url: width: 550 }}" style="width:100%;">
+
+<div class="ProductTile__title" data-product-tile-title>
+      <a href="{{ product.url | within: collection }}">{{ product.title | split: "-" |first}}</a>
+      {%- include 'ProductOptions' -%}
+      <!-- Stamped - Begin Star Rating Badge -->
+      <span 
+      class="stamped-product-reviews-badge" 
+      data-id="{{ product.id }}"
+      data-product-sku="{{ product.handle }}" 
+      data-product-type="{{product.type}}" 
+      data-product-title="{{product.title}}" 
+      style="display:block;">
+      </span>
+      <!-- Stamped - End Star Rating Badge -->
+    </div>
+</a>
+  
+<a href="{{ product.url}}" >
+  <input style="width:74%;text-align:center;border: 1px solid #0f0d0d;font-weight: 500;    background-color: #fdfffd;" type="submit" value="SELECT SIZE" class="btn" />
+</a>
+  </div>
+{% endfor %}
+  </div>
+      {% endfor %}
+         </div>
+   </div>
+</section>
+
+<style>
+  #section{{ section.id }} .Section__container {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  @media only screen and (max-width: {{ settings.grid_mobile_max }}) {
+    #section{{ section.id }} .Section__container {
+      padding-top: {{ section.settings.padding_top--mobile }}px;
+      padding-bottom: {{ section.settings.padding_bottom--mobile }}px;
+    }      
+  }
+</style>
+
+{% schema %}
+  {
+    "name": "Collection Grid second ",
+    "settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading",
+         "default":"flash"
+      },
+      {
+        "type": "checkbox",
+        "id": "use_background",
+        "label": "Use background color",
+        "default": false,
+        "info": "Check this to use a custom section background color."
+      },
+      {
+        "type": "color",
+        "id": "background",
+        "label": "Background color",
+        "default": "#fff"
+      },
+      {
+        "type": "select",
+        "id": "animation",
+        "label": "Intro animation",
+        "default": "slide-up",
+        "options": [
+          {
+            "value": "fade-in",
+            "label": "Fade in"
+          },
+          {
+            "value": "slide-up",
+            "label": "Fade in & slide up"
+          },
+          {
+            "value": "slide-down",
+            "label": "Fade in & slide down"
+          },          
+          {
+            "value": "slide-left",
+            "label": "Fade in & slide left"
+          },
+          {
+            "value": "slide-right",
+            "label": "Fade in & slide right"
+          },
+          {
+            "value": "zoom-fade-in",
+            "label": "Fade in & zoom out"
+          },
+                    {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "animation--hover",
+        "label": "Hover animation",
+        "default": "zoom",
+        "options": [
+          {
+            "value": "zoom",
+            "label": "Zoom"
+          },
+          {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Buttons"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_button",
+        "label": "Show cart/detail button",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "cta",
+        "label": "CTA",
+        "default": "View Details",
+        "info": "The button copy shown if a product has variants. Products without variants will have 'add to cart' buttons."
+      },
+      {
+        "type": "text",
+        "id": "icon",
+        "label": "Icon",
+        "default": "fa-arrow-right",
+        "info": "Font Awesome icon class (fa-icon-name)"
+      },
+      {
+        "type": "header",
+        "content": "Homepage"
+      },
+      {
+        "type": "paragraph",
+        "content": "These settings are only relevant on the homepage."
+      },
+      
+      {
+        "type": "select",
+        "id": "heading_class",
+        "label": "Heading Style",
+        "default": "h3",
+        "options": [
+          {
+            "value": "h1",
+            "label": "H1"
+          },
+          {
+            "value": "h2",
+            "label": "H2"
+          },
+          {
+            "value": "h3",
+            "label": "H3"
+          },
+          {
+            "value": "h4",
+            "label": "H4"
+          },
+          {
+            "value": "h5",
+            "label": "H5"
+          },
+          {
+            "value": "h6",
+            "label": "H6"
+          },
+          {
+            "value": "h7",
+            "label": "H7"
+          },
+          {
+            "value": "h8",
+            "label": "H8"
+          },
+          {
+            "value": "p",
+            "label": "Paragraph"
+          },
+          {
+            "value": "pbold",
+            "label": "Paragraph (Bold)"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "limitFont1",
+        "min": 2,
+        "max": 100,
+        "step": 1,
+        "label": "Heading font Size",
+        "default": 52
+      },
+      {
+        "type": "text",
+        "id": "description",
+        "label": "Description"
+      },
+      {
+        "type": "select",
+        "id": "section_animation",
+        "label": "Section animation",
+        "default": "slide-up",
+        "options": [
+          {
+            "value": "fade-in",
+            "label": "Fade in"
+          },
+          {
+            "value": "slide-up",
+            "label": "Fade in & slide up"
+          },
+          {
+            "value": "slide-down",
+            "label": "Fade in & slide down"
+          },          
+          {
+            "value": "slide-left",
+            "label": "Fade in & slide left"
+          },
+          {
+            "value": "slide-right",
+            "label": "Fade in & slide right"
+          },
+          {
+            "value": "zoom-fade-in",
+            "label": "Fade in & zoom out"
+          },
+                    {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      },
+      {
+        "type": "collection",
+        "id": "collection",
+        "label": "Collection"
+      },
+      {
+        "type": "header",
+        "content": "Pagination"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_pagination",
+        "label": "Enable pagination",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "limit",
+        "min": 2,
+        "max": 50,
+        "step": 1,
+        "label": "Products per page",
+        "default": 20
+      },
+      {
+        "type": "header",
+        "content": "Desktop :: Settings"
+      },
+      {
+        "type": "select",
+        "id": "width",
+        "label": "Width",
+        "default": "fixed",
+        "options": [
+          {
+            "label": "Full (Edge-to-Edge)",
+            "value": "full"
+          },
+          {
+            "label": "Fixed",
+            "value": "fixed"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "columns",
+        "min": 2,
+        "max": 6,
+        "step": 1,
+        "label": "Products per row",
+        "default": 4
+      },      
+      {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Top Padding",
+        "default": 30
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Bottom Padding",
+        "default": 30
+      },
+      {
+        "type": "header",
+        "content": "Mobile :: Settings"
+      },
+      {
+        "type": "select",
+        "id": "width--mobile",
+        "label": "Width",
+        "default": "mobile-fixed",
+        "options": [
+          {
+            "label": "Full (Edge-to-Edge)",
+            "value": "mobile-full"
+          },
+          {
+            "label": "Fixed",
+            "value": "mobile-fixed"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "columns--mobile",
+        "options": [
+          { "value": "1", "label": "1" },
+          { "value": "2", "label": "2" }
+        ],
+        "label": "Products per row",
+        "default": "2"
+      },
+      {
+        "type": "range",
+        "id": "padding_topdre",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Top Padding  mobile",
+        "default": 4
+      },
+      {
+        "type": "range",
+        "id": "padding_top--mobile",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Top Padding",
+        "default": 15
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom--mobile",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Bottom Padding",
+        "default": 40
+      }     
+    ],
+     "blocks": [
+    {
+      "type": "column",
+      "name": "column",
+      "settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading"
+      },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "image"
+        }  
+        ,{
+        "type": "collection",
+        "id": "collection_main",
+         "label": "Choose a Collection"
+         } 
+      ]
+    }
+
+     ],
+    "presets": [
+      {
+        "name": "Collection Grid second ",
+        "category": "Collection"
+      }
+    ]
+  }
+{% endschema %}
+{% for product in collection.products %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": "{{ product.title }}",
+    "image": [
+      "{{ product.featured_image | img_url: '800x800' }}"
+    ],
+    "description": "{{ product.description | escape }}",
+    "sku": "{{ product.sku }}",
+    "brand": {
+      "@type": "Brand",
+      "name": "BioSteel"
+    },
+    "offers": {
+      "@type": "Offer",
+      "url": "{{ product.url }}",
+      "priceCurrency": "USD",
+      "price": "{{ product.price | money_without_currency }}",
+      "availability": "http://schema.org/InStock",
+      "priceValidUntil": "{{ 'now' | date: '%s' | plus: days | date: '%Y-%m-%d' }}",
+      "shippingDetails": {
+        "@type": "OfferShippingDetails",
+        "shippingRate": {
+          "@type": "MonetaryAmount",
+          "value": "0",
+          "currency": "USD"
+        },
+        "deliveryTime": {
+          "@type": "ShippingDeliveryTime",
+          "transitTime": {
+            "@type": "QuantitativeValue",
+            "minValue": 3,
+            "maxValue": 6,
+            "unitCode": "DAY"
+          },
+          "handlingTime": {
+            "@type": "QuantitativeValue",
+            "minValue": 1,
+            "maxValue": 2,
+            "unitCode": "DAY"
+          }
+        },
+        "shippingDestination": {
+          "@type": "DefinedRegion",
+          "addressCountry": {
+            "@type": "Country",
+            "name": "US"
+          }
+        }
+      },
+      "hasMerchantReturnPolicy": {
+        "@type": "MerchantReturnPolicy",
+        "url": "{{ shop.url }}/pages/shipping-return-policy",
+        "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+        "merchantReturnDays": 6,
+        "applicableCountry": {
+          "@type": "Country",
+          "name": "US"
+        },
+        "returnMethod": "https://schema.org/ReturnByMail",
+        "returnFees": {
+          "@type": "MonetaryAmount",
+          "value": "0",
+          "currency": "USD"
+        }
+      }
+    }
+  }
+  </script>
+{% endfor %}
+<script>
+  $('.not-long-for-this').each(function(){
+    $(this).parent('.child').remove();
+  });
+</script>

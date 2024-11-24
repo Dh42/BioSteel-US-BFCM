@@ -1,0 +1,16 @@
+<div class="RegionSelector" data-region-selector>
+
+  <div class="RegionSelector__notification RegionSelector__notification--desktop" data-region-redirect-notification>
+    {% include 'CloseIcon' %}
+    <p>redirected</p>
+  </div>
+
+  <a data-region-selector-item data-country="US" class="LanguageMenu__item--icon" >
+    <img src="{{ 'Biosteel_MiniFlag_United-States.png' | asset_img_url: 'master' }}" alt="United States" alt="US Flag">
+  </a>
+
+  <a data-region-selector-item data-country="CA" class="LanguageMenu__item--icon" >
+    <img src="{{ 'Biosteel_MiniFlag_CA.png' | asset_img_url: 'master' }}" alt="Canada" alt="CA Flag">
+  </a>
+
+</div>

@@ -1,0 +1,373 @@
+<style>
+    #section{{ section.id }} .Section__container {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+    @media only screen and (max-width: {{ settings.grid_mobile_max }}) {
+      #section{{ section.id }} .Section__container {
+        padding-top: {{ section.settings.padding_top--mobile }}px;
+        padding-bottom: {{ section.settings.padding_bottom--mobile }}px;
+      }      
+    }
+    .plus--columns-2 {
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+      -ms-flex-direction: row;
+      flex-direction: row;
+      -ms-flex-pack: start;
+      justify-content: flex-start;
+      margin: -10px;
+    }
+    
+    @supports (display: grid) {
+      .plus--columns-2 {
+        display: -ms-grid;
+        display: grid;
+        grid-column-gap: {{section.settings.block_spacing}};
+        grid-row-gap: {{section.settings.block_spacing}};
+        -ms-grid-columns: (1fr) [2];
+        grid-template-columns: repeat(2, 1fr);
+        margin: 0;
+      }
+    }
+    .plus--columns-3 {
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+      -ms-flex-direction: row;
+      flex-direction: row;
+      -ms-flex-pack: start;
+      justify-content: flex-start;
+      margin: -10px;
+    }
+    
+    @supports (display: grid) {
+      .plus--columns-3 {
+        display: -ms-grid;
+        display: grid;
+        grid-column-gap: {{section.settings.block_spacing}};
+        grid-row-gap: {{section.settings.block_spacing}};
+        -ms-grid-columns: (1fr) [3];
+        grid-template-columns: repeat(3, 1fr);
+        margin: 0;
+      }
+    }
+    
+    .plus--columns-4 {
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+      -ms-flex-direction: row;
+      flex-direction: row;
+      -ms-flex-pack: start;
+      justify-content: flex-start;
+      margin: -10px;
+    }
+    
+    @supports (display: grid) {
+      .plus--columns-4 {
+        display: -ms-grid;
+        display: grid;
+        grid-column-gap: {{section.settings.block_spacing}};
+        grid-row-gap: {{section.settings.block_spacing}};
+        -ms-grid-columns: (1fr) [4];
+        grid-template-columns: repeat(4, 1fr);
+        margin: 0;
+      }
+    }
+    
+    .plus--container {
+      position: relative;
+      width: 100%;
+    }
+  
+    .plus--image {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+  
+    img.plus--img {
+      object-fit: cover;
+      width: 100%;
+      min-height: 400px;
+      max-height: 400px;
+    }
+  
+    .plus--overlay {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      width: 100%;
+      opacity: 0;
+      transition: .5s ease;
+      background-color: {{ section.settings.background_color | color_modify: 'alpha', 0.6 }};
+    }
+  
+    .plus--container:hover .plus--overlay {
+      opacity: 3;
+    }
+    
+    .plus--hover-text {
+      color: white;
+      font-size: {{ section.settings.text_size }}px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) ;
+      text-align: center;
+      @media only screen and (max-width: 767px) {
+        color: #000;
+        position: inherit;
+      }
+    }
+  
+    h3.plus--title {
+      font-size: {{ section.settings.heading_size }}px;
+      text-align: center;
+    }
+    
+    @media only screen and (max-width: 767px) {
+      .plus--mobile-columns-1 {
+        -ms-grid-columns: (1fr) [1];
+        grid-template-columns: repeat(1, 1fr);
+      }
+    }
+  </style>
+  
+  <section 
+    id="section{{ section.id }}" 
+    data-section-id="{{ section.id }}" 
+    data-section-type="INF-PageContent" 
+    class="Section Section--{{ section.settings.width }} Section--{{ section.settings.width--mobile }}" 
+    style="{% if section.settings.use_background %}background: {{ section.settings.background }};{% endif %}"
+  >
+    <div class="Section__container">
+      <div class="wrapper">
+        {% if section.blocks.size > 0 %}
+          <div class="plus--columns-{{ section.settings.columns }} plus--mobile-columns-1">
+            {% for block in section.blocks %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: block %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+              {% if block.settings.block_link != blank %}<a href="{{ block.settings.block_link }}">{% endif %}
+                <div class="plus--grid">
+                  <div class="plus--container">
+                    <img src="{{ block.settings.image | img_url: '1024x1024' }}" class="plus--image plus--img">
+                      {% if block.settings.text != blank %}
+                          <div class="plus--overlay">
+                          <div class="plus--hover-text">{{ block.settings.text }}</div>
+                          </div>
+                      {% endif %}
+                  </div>
+                  {% if block.settings.title != blank %}
+                    <h3 class="plus--title">{{ block.settings.title }}</h3>
+                  {% endif %}
+                </div>
+              {% if block.settings.block_link != blank %}</a>{% endif %}
+            {% endfor %}
+          </div>
+          <hr class="hr--large">
+        {% endif %}
+      </div>
+    </div>
+  </section>
+  
+  {% schema %}
+    {
+      "name": "Page Content",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "use_background",
+          "label": "Use background color",
+          "default": false,
+          "info": "Check this to use a custom section background color."
+        },
+        {
+          "type": "color",
+          "id": "background",
+          "label": "Background color",
+          "default": "#fff"
+        },
+        {
+          "type": "header",
+          "content": "Desktop :: Settings"
+        },
+        {
+          "type": "select",
+          "id": "width",
+          "label": "Width",
+          "default": "fixed",
+          "options": [
+            {
+              "label": "Full (Edge-to-Edge)",
+              "value": "full"
+            },
+            {
+              "label": "Fixed",
+              "value": "fixed"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "padding_top",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "unit": "px",
+          "label": "Top Padding",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "padding_bottom",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "unit": "px",
+          "label": "Bottom Padding",
+          "default": 50
+        },
+        {
+          "type": "header",
+          "content": "Mobile :: Settings"
+        },
+        {
+          "type": "select",
+          "id": "width--mobile",
+          "label": "Width",
+          "default": "mobile-fixed",
+          "options": [
+            {
+              "label": "Full (Edge-to-Edge)",
+              "value": "mobile-full"
+            },
+            {
+              "label": "Fixed",
+              "value": "mobile-fixed"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "padding_top--mobile",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "unit": "px",
+          "label": "Top Padding",
+          "default": 30
+        },
+        {
+          "type": "range",
+          "id": "padding_bottom--mobile",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "unit": "px",
+          "label": "Bottom Padding",
+          "default": 40
+        },
+        {
+          "type": "header",
+          "content": "Add Image blocks [Plus]"
+        },
+        {
+          "type": "range",
+          "id": "columns",
+          "min": 2,
+          "max": 4,
+          "step": 1,
+          "label": "Products per row",
+          "default": 3
+        },
+        {
+          "type": "range",
+          "id": "text_size",
+          "min": 10,
+          "max": 20,
+          "step": 2,
+          "unit": "px",
+          "label": "Hover text size",
+          "default": 14
+        },
+        {
+          "type": "range",
+          "id": "heading_size",
+          "min": 10,
+          "max": 50,
+          "step": 5,
+          "unit": "px",
+          "label": "Heading font size",
+          "default": 40
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Hover text background color",
+          "default": "#000"
+        },
+        {
+          "type": "select",
+          "id": "block_spacing",
+          "label": "Spacing between blocks",
+          "default": "",
+          "options": [
+            {
+              "label": "Add spacing",
+              "value": "20px"
+            },
+            {
+              "label": "none",
+              "value": ""
+            }
+          ]
+        }
+      ],
+      "max_blocks": 30,
+      "blocks": [
+        {
+          "type": "image",
+          "name": "Image",
+          "settings": [
+            {
+              "type": "image_picker",
+              "id": "image",
+              "label": "Image",
+              "info" : "Add a square image around 800x800px for best results"
+            },
+            {
+              "type": "richtext",
+              "id": "text",
+              "label": "Text",
+              "default": "<p>Add the text here that you would like to show when the user hovers over the image</p>"
+            },
+            {
+              "type": "text",
+              "id": "title",
+              "label": "Heading under image (leave blank for none)",
+              "default": "Heading"
+            },
+            {
+              "type": "url",
+              "id": "block_link",
+              "label": "Add a link for the block"
+            }
+          ]
+        }
+      ]
+    }
+  {% endschema %}

@@ -1,0 +1,17 @@
+{%- assign whats_in_it_article_handle = product.metafields.c_f['[p][_t] 4a. Whats In It Handle']  -%}
+{%- assign product_article = 'whats-in-it/' | append: whats_in_it_article_handle -%}
+{%- assign whats_in_it = articles[product_article] -%}
+{% include 'IngredientFlavorBanner' %}
+{%- if whats_in_it_article_handle -%}
+<div class="ProductArticle ProductWhatsInIt">
+  <div class="ProductArticle__container">
+    <div class="ProductArticle__whats-in-it">
+      <div class="WhatsInIt">
+        <h3>What's In It</h3>
+      </div>
+      {{ whats_in_it.content }}
+    </div>
+  </div>
+<a class="ViewMore" href="#" data-view-more>View More</a>
+</div>
+{%- endif -%}

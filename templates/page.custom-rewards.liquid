@@ -1,0 +1,41 @@
+{%- section 'PageBanner' -%}
+{%- section 'INF-PageContent' -%}
+{%- section 'newsletter' -%}
+{% if page.handle == "email-newsletter-sign-up" or page.handle == "rewards-newsletter-sign-up" %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("body").on('click','.Button__FormStyledButton-p2mbjt-0',function(e){
+      e.preventDefault();
+      var email = $("input[type='email']").val();
+      var first_name = $("input[aria-label='First name']").val();
+      
+      if(!email || email.length <= 0){
+        alert("Email is required");
+        return false;
+      }
+      
+      console.log(email);
+      console.log(first_name);
+      var data = { email : email,first_name:first_name }
+      $.ajax({
+        type: 'POST',
+        headers:{
+          Accept: "application/json",         
+        }, 
+        url: "https://whitewaterapps.com/biosteel-tags/assign-tag-ca.php",
+        data: data,
+        dataType: "text",
+        success: function(response){
+          console.log(response);
+          if(response && response.status == "success"){
+            //alert("success");
+          }
+        },
+        error: function(response){
+          console.log(response);
+        }
+      });
+    });
+  });
+</script>
+{% endif %}

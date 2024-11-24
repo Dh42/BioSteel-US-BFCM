@@ -1,0 +1,104 @@
+<style>
+  .ProductType{
+    margin-bottom:20px;margin-left: -25px;
+  }
+  .ga-product-form {
+    margin-left: 10px !important;
+  }
+  @media only screen and (max-width: 640px) {
+    .productBoughtTogether{
+    
+    height: 100%;
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+      border-style: solid;border-width: 3px;border-color: #f2f2f2;
+       
+    }
+    #ga-product_bought_together h2 {text-align:center !important;}
+  }
+  @media only screen and (min-width: 641px) {
+ 
+  .cdesk12{
+    border-style: solid;border-width: 3px;border-color: #f2f2f2;padding: 21px;margin: 6px;
+  }
+  }
+</style>
+
+<div class="ProductOverview" data-quick-view-container>
+  {%- capture carousel_classes -%}AnimateOnLoad Animate--{{ section.settings.carousel_animation }}{%- endcapture -%}
+  {%- capture product_merch -%}
+    {%- for tag in product.tags -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: tag %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+ 
+      {% if tag contains 'merchandise' %}
+          ProductOverview__left--merch 
+          {% break %}
+      {% endif %}
+    {%- endfor -%}
+  {%- endcapture -%}
+  <div class="ProductOverview__split ProductOverview__left {{ product_merch }}">
+    {%- include 'INF-ProductImages', classes: carousel_classes -%}
+  </div>
+
+  <div class="ProductOverview__split ProductOverview__right Animate Animate--slide-left">
+    {%- include 'ProductHeading', breakpoint: 'mobile' -%}
+    <div class="ProductInfo {% if section.settings.info_animation != 'none' %}Animate Animate--{{ section.settings.info_animation }}{% endif %}">
+
+        
+      {%- include 'ProductHeading', breakpoint: 'desktop' -%}
+     {%- include 'drop_down' -%}
+        <form class="ProductInfo__form" data-productid="{{product.id}}" action="/cart/add" method="post" enctype="multipart/form-data">
+          {% if product.available %}{% include 'subscription-product' %}{% endif %} 
+          
+        {%- include 'INF-ProductInfo__shopify-system' -%}
+        {%- include 'ProductInfo__options' -%}
+                {%- include 'ProductInfo__quantity' -%}
+         {% if product.tags contains 'merchandise' or product.type contains 'merchandise' %}
+                       {%- include 'ProductInfo__add-to-cart' -%}
+           {% elsif product.selected_or_first_available_variant.inventory_quantity  < settings.font_sizett %}   
+                      {%  include "ProductInfo__add-to-cart--lessthan-20" %}
+            {% else  %}
+     
+                      {%- include 'ProductInfo__add-to-cart' -%}
+           {% endif %}
+  
+      
+       
+      </form>
+      {%- include 'ProductValuePropLinks' -%}
+        {%- include 'ProductBadges' -%}
+     
+          {%- include 'ProductValueProp' -%}
+      {%- include 'ProductType' -%}
+     
+   
+<!--        {%- include 'ProductInfo__short-description', breakpoint: 'desktop', enabled: section.settings.short_description_enabled -%} -->
+     
+<!--       {%- include 'ProductInfo__short-description', breakpoint: 'mobile', enabled: section.settings.short_description_enabled--mobile -%} -->
+  {% if product.tags contains "proteins" %}
+  {% else %}
+      <!-- <div class="productBoughtTogether  cdesk12" style=""></div> -->
+  {% endif %}   
+    
+      
+<!--       {%- include 'ProductNutritionalFactBar' -%} -->
+     
+      
+    </div>
+
+  </div>
+  
+  <div style="clear:both;"></div>
+  
+  {%- include 'StickyAddToCart' -%}
+  {%- include 'ProductBouncingArrow' -%}
+</div>

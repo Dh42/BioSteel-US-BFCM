@@ -1,0 +1,100 @@
+{%- assign details = section.settings.details | default: page.content -%}
+
+{% form 'contact', class: "Form ContactForm" %}
+  {% if form.posted_successfully? %}
+    <h3 class="Section__heading Register__heading">{{ 'contact.form.post_success_title' | t }}</h3>
+    <div class="ContactPage__details ContactPage__details--centered">{{ 'contact.form.post_success' | t }}</div>
+  {% else %}
+    {% unless section.settings.heading == blank %}<h3 class="Section__heading Register__heading">{{ section.settings.heading }}</h3>{% endunless %}
+    {% unless details == blank %}<div class="ContactPage__details rte">{{ details }}</div>{% endunless %}
+  {% endif %}
+
+  {{ form.errors | default_errors }}
+
+  <div class="Form__input-group">
+    <div class="Form__input-item">
+      <label for="ContactFormName" class="Form__label {% unless section.settings.show_labels %} label-hidden{% endunless %}">{{ 'contact.form.name' | t }}</label>
+      <div class="Form__input-wrapper">
+        <input type="text"
+          name="contact[name]"
+          id="ContactFormName"
+          class="Form__input"
+          placeholder="{{ 'contact.form.name' | t }}"
+          value="{% if form[name] %}{{ form[name] }}{% elsif customer %}{{ customer.name }}{% endif %}">
+      </div>
+    </div>
+    <div class="Form__input-item">
+      <label for="ContactFormEmail" class="Form__label {% unless section.settings.show_labels %} label-hidden{% endunless %}">{{ 'contact.form.email' | t }}</label>
+      <div class="Form__input-wrapper">
+        <input type="email"
+          name="contact[email]"
+          id="ContactFormEmail"
+          class="Form__input"
+          placeholder="{{ 'contact.form.email' | t }}"
+          value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+          spellcheck="false"
+          autocomplete="off"
+          autocapitalize="off">
+      </div>
+    </div>
+    <div class="Form__input-item">
+      <label for="OrderNumber" class="Form__label">Order Number</label>
+      <!--<label for="ContactFormPhone" class="Form__label {% unless section.settings.show_labels %} label-hidden{% endunless %}">{{ 'contact.form.phone' | t }}</label>-->
+      <input type="number"
+          name="contact[phone]"
+          id="OrderNumber"
+          class="Form__input"
+          placeholder="Order Number"
+          value=""
+          pattern="[0-9\-]*">
+      <!--<div class="Form__input-wrapper">
+        <input type="tel"
+          name="contact[phone]"
+          id="ContactFormPhone"
+          class="Form__input"
+          placeholder="{{ 'contact.form.phone' | t }}"
+          value="{% if form[phone] %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+          pattern="[0-9\-]*">
+      </div> -->
+    </div>
+     <div class="Form__input-item">
+      <label for="ContactFormSubject" class="Form__label {% unless section.settings.show_labels %} label-hidden{% endunless %}">{{ 'contact.form.subject' | t }}</label>
+      <div class="Form__input-wrapper">
+       <select name="contact[subject]"  class="Form__input">
+        <option value="Order Inquiry">Order Inquiry</option>
+        <option value="Sponsorship Inquiry">Sponsorship Inquiry</option>
+         <option value="Wholesale Inquiry">Wholesale Inquiry</option>
+        <option value="Other">Other</option>
+         
+      </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="Form__input-group">
+    <div class="Form__input-item">
+      <label for="ContactFormMessage" class="Form__label {% unless section.settings.show_labels %} label-hidden{% endunless %}">{{ 'contact.form.message' | t }}</label>
+      <div class="Form__input-wrapper">
+        <textarea rows="10"
+          name="contact[body]"
+          id="ContactFormMessage"
+          class="Form__input"
+          placeholder="{{ 'contact.form.message' | t }}">
+          {%- if form.body -%}
+            {{- form.body -}}
+          {%- endif -%}
+        </textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="Form__submit-group Form__submit-group--centered">
+    <input type="submit" value="{{ 'contact.form.send' | t }}" class="ContactForm__button Button Button--{{ section.settings.button_style }}">
+    {% unless section.settings.closing_info == blank %}
+      <div class="Form__closing-info">
+        {{ section.settings.closing_info }}
+      </div> 
+    {% endunless %}
+  </div>
+
+{% endform %}

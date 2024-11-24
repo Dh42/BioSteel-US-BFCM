@@ -1,0 +1,16 @@
+{%- assign recommended_use = product.metafields.c_f['[p][_t] 2c. Recommended Use'] -%}
+  {%- if recommended_use -%}
+    {%- include 'ProductRecommendedUse' -%}
+  {%- endif -%}
+{% schema %}
+  {
+    "name": "Recommended Use",
+    "settings": []
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

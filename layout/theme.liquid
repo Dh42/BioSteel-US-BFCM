@@ -1,0 +1,790 @@
+
+{% comment %} Wholesale_Club_Product_Prices Start {% endcomment %}
+{% assign base_product = product %}
+{% assign base_variant = product.selected_or_first_available_variant %}
+
+{% if shop.metafields.sawholesale['base_price'] == blank %}
+  {% assign base_price = 'compare_at_price' %}
+{% else %}
+  {% assign base_price = shop.metafields.sawholesale['base_price'] %}
+{% endif %}
+
+{% assign saw_discount = 0 %}{% assign saw_has_discount = false %}
+
+{% if customer.tags != blank %}
+  {% for mf in base_product.metafields.sawholesale %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: mf %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+    {% capture product_customer_tag %}{{ mf | first | replace: 'discount_', '' }}{% endcapture %}
+    {% if customer.tags contains product_customer_tag %}
+      {% assign saw_has_discount = true %}
+      {% assign discount_key = product_customer_tag | prepend: 'discount_' %}
+      {% assign price_key = product_customer_tag | prepend: 'price_' %}
+      {% assign saw_discount = base_product.metafields.sawholesale[discount_key] | divided_by: 100.0 %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% assign saw_discount = 1 | minus: saw_discount %}
+
+{% if base_price == 'price' or base_variant.compare_at_price == blank  or base_variant.compare_at_price == 0 or base_variant.compare_at_price < base_variant.price %}
+  {% assign saw_variant_compare_at_price = base_variant.price %}
+{% else %}
+  {% assign saw_variant_compare_at_price = base_variant.compare_at_price %}
+{% endif %}
+
+{% assign cpe = shop.metafields.sawholesale['cpe'] | default: "true" %}
+{% if base_variant.metafields.sawholesale[price_key] != blank and cpe == "true" %}
+  {% assign saw_variant_price = base_variant.metafields.sawholesale[price_key] %}
+{% else %}
+  {% assign saw_variant_price = saw_variant_compare_at_price | times: saw_discount %}
+{% endif %}
+
+{% if saw_has_discount == false or saw_variant_price >= saw_variant_compare_at_price %}
+  {% assign WCProduct_Price = base_product.price %}
+  {% assign WCProduct_ComparePrice = base_product.compare_at_price %}
+  {% assign WCProduct_PriceMin = base_product.price_min %}
+  {% assign WCProduct_ComparePriceMin = base_product.compare_at_price_min %}
+  {% assign WCProduct_PriceMax = base_product.price_max %}
+  {% assign WCProduct_ComparePriceMax = base_product.compare_at_price_max %}
+  {% assign WCProduct_VariantPrice = base_variant.price %}
+  {% assign WCProduct_VariantComparePrice = base_variant.compare_at_price %}
+{% else %}   
+  {% assign WCProduct_Price = saw_variant_price %}
+  {% assign WCProduct_PriceMin = base_product.price_min | times: saw_discount %}
+  {% assign WCProduct_PriceMax = base_product.price_max | times: saw_discount %}
+  {% assign WCProduct_ComparePrice = saw_variant_compare_at_price %}
+  {% if base_product.compare_at_price_min != 0 %}{% assign WCProduct_ComparePriceMin = base_product.compare_at_price_min %}{% else %}{% assign WCProduct_ComparePriceMin = base_product.price_min %}{% endif %}
+  {% if base_product.compare_at_price_max != 0 %}{% assign WCProduct_ComparePriceMax = base_product.compare_at_price_max %}{% else %}{% assign WCProduct_ComparePriceMax = base_product.price_max %}{% endif %}
+  {% assign WCProduct_VariantPrice = saw_variant_price %}
+  {% assign WCProduct_VariantComparePrice = saw_variant_compare_at_price %}
+{% endif %}
+{% comment %} Wholesale_Club_Product_Prices End {% endcomment %}
+<!doctype html>
+<!--[if IE 9]> <html class="ie9 no-js supports-no-cookies" lang="{{ shop.locale }}"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js supports-no-cookies shop-{{ shop.currency | handle }}" lang="{{ shop.locale }}" data-state> <!--<![endif]-->
+<head>
+
+  <meta name="google-site-verification" content="2Xun1pAAmfkUWhaGJKC-yqzOXJsIVOcL_yqAh-WpdEs" />
+  <meta name="facebook-domain-verification" content="sqky6zdggane3twmgqkpp3rc0mebjc" />
+   <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="{{ settings.color_accent }}">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://cdn.shopify.com/s/files/1/2922/3274/files/apple-touch-icon.png?v=1726928497">
+<link rel="icon" type="image/png" sizes="32x32" href="https://cdn.shopify.com/s/files/1/2922/3274/files/favicon-32x32.png?v=1726928497">
+<link rel="icon" type="image/png" sizes="16x16" href="https://cdn.shopify.com/s/files/1/2922/3274/files/favicon-16x16.png?v=1726928497">
+
+  {% if handle contains 'collections' %}
+  <meta name="robots" content="noindex">
+  {% endif %}
+{%- capture contentForQuerystring -%}{{ content_for_header }}{%- endcapture -%}
+  {%- assign pageUrl = contentForQuerystring
+    | split: '"pageurl":"'
+    | last
+    | split: '"'
+    | first
+    | split: '.myshopify.com'
+    | last
+    | replace: '\/', '/'
+    | replace: '%20', ' '
+    | replace: '\u0026', '&'
+  -%}
+  {% capture finalurl %}https://{{ pageUrl }}{% endcapture %}
+  
+  {% comment %}<link rel="canonical" href="{{ canonical_url }}">{% endcomment %}
+  <meta name="google-site-verification" content="ZcIE_HSsvAIsw1zk8NX9wob2UWzkGU-krMPBjteSIkc" />
+
+  {% if pageUrl contains '?' %}
+    <link rel="alternate" href="https://{{ pageUrl }}" hreflang="en-ca" />
+    <link rel="alternate" href="https://{{ pageUrl }}" hreflang="en-us" />
+    <link rel="alternate" href="https://{{ pageUrl }}" hreflang="en" />
+    <link rel="alternate" hreflang="x-default" href="https://{{ pageUrl }}" />
+  {% else %}
+    <link rel="alternate" href="https://biosteel.ca{{ request.path }}" hreflang="en-ca" />
+    <link rel="alternate" href="https://biosteel.com{{ request.path }}" hreflang="en-us" />
+    <link rel="alternate" href="https://biosteel.com{{ request.path }}" hreflang="en" />
+    <link rel="alternate" hreflang="x-default" href="https://biosteel.com{{ request.path }}" />
+  {% endif %}
+  
+
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "k1h3jfurxc");
+  </script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="application/ld+json">
+  {
+    "@context": "https://schema.org/",
+    "@type": "WebSite",
+    "url": "{{ shop.url }}",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "{{ shop.url }}/search?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+   {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "BioSteel",
+    "url": "{{ shop.url }}",
+    "logo": "https://cdn.shopify.com/s/files/1/0080/2547/3142/files/biosteel-emailsignlogo_200x200.png?v=1721925676",
+    "description": "BioSteel is a leading company specializing in high-quality sports nutrition products.",
+    "email": "support@biosteel.com",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "{{ shop.address.street }}",
+      "addressLocality": "{{ shop.address.city }}",
+      "addressRegion": "{{ shop.address.province }}",
+      "postalCode": "{{ shop.address.zip }}",
+      "addressCountry": "US"
+    },
+    "sameAs": [
+      "https://x.com/BioSteelSports",
+      "https://www.facebook.com/BioSteelSports/",
+      "https://www.instagram.com/biosteelsports/?hl=en",
+      "https://www.tiktok.com/@biosteelsports",
+      "https://www.youtube.com/c/biosteelsports"
+    ]
+  }
+  </script>
+  {% include 'meta-tags' %}
+  {% include 'GTM' %}
+  {% include 'css-variables' %}
+  {% include 'style-tags', layout: 'theme' %}
+  {% include 'INF-fontawesome' %}
+  <style id="navDropdowns"></style> 
+<style>
+main{
+top:0px !important;
+}
+</style>
+
+{% if template contains 'index' %}
+
+{% else %}
+   {% include 'GTM-head' %}
+  <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
+
+
+ {% endif %}
+ 
+  <script>
+    document.documentElement.className = document.documentElement.className.replace('no-js', '');
+
+    window.elementLoaded = function(element) {
+      element.classList.add('AnimateOnLoad--preloaded');
+    };
+
+    window.triggerResize = function() {
+      if (window.debouncedResize) {
+        debouncedResize();
+      }
+    };
+
+    window.theme = {
+      strings: {
+        addToCart: {{ 'products.product.add_to_cart' | t | json }},
+        soldOut: {{ 'products.product.sold_out' | t | json }},
+        unavailable: {{ 'products.product.unavailable' | t | json }}
+      },
+      moneyFormat: {{ shop.money_format | json }},
+      currency: {{ shop.currency | json }},
+      show_currency: {{ settings.show_currency }},
+      quantity_ui: {{ settings.quantity_ui | json }},
+      external_links_in_new_window: {{ settings.external_links_in_new_window | json }},
+      settings: {{ settings | json }},
+      breakpoints: {
+        tablet: {{ settings.grid_tablet_min | replace: 'px', '' }},
+        laptop: {{ settings.grid_laptop_min | replace: 'px', '' }},
+        desktop: {{ settings.grid_desktop_min | replace: 'px', '' }},
+        gutters: {{ settings.grid_gutters | replace: 'px', '' }}
+      },
+      cart: {
+        image_size: '420x',
+      },
+      pdp: {
+        image_size: '1194x'
+      },
+      flickity: {
+        dragThreshold: 10
+      },
+      toastr: {
+        positionClass: 'toast-bottom-right',
+        showDuration: 300,
+        hideDuration: 1000,
+        timeOut: 5000,
+        extendedTimeOut: 1000
+      },
+      carousels: {},
+    };
+  </script>
+
+
+
+  {{ content_for_header }}
+ 
+  {% include 'INF-bugherd' %}
+<!-- Global Site Tag (gtag.js) - Google AdWords: 769762648 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-769762648"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'AW-769762648', {'send_page_view': false});
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2NW8ZGNZXL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-2NW8ZGNZXL');
+</script>  
+
+
+
+
+
+
+{% include 'pagefly-app-header' %}</head>
+
+<body id="{{ page_title | handle }}" class="template-{{ template | handle }}">
+  <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PQXFVR9"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+  <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WR7HNC3"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+  
+  {% if template contains "page" %}
+  <span style="display:none;" class="total-recap__final-price" data-checkout-payment-due-target=""></span>
+  {% endif %}
+  
+  
+  
+  {% comment %}
+  {% assign loadGeoPopup = false %}
+  {% if template contains "index" %}
+  	{% assign loadGeoPopup = true %}
+  {% endif %}
+  {% if loadGeoPopup == true %}
+  {% include 'geo-popup' %}
+  {% endif %}
+  {% endcomment %}
+  
+  <a class="in-page-link visually-hidden skip-link" href="#MainContent">{{ 'general.accessibility.skip_to_content' | t }}</a>
+  
+  {% include 'GTM-body' %}
+      {% sections 'header-group' %}
+  {% include 'modals' %}
+
+  <div class="SiteOverlay" data-site-overlay>
+    <div class="Overlay"></div>
+  </div>
+
+  <main role="main" id="MainContent">
+    <div class="globoRecommendationsTop"></div>{{ content_for_layout }}<div class="globoRecommendationsBottom"></div>
+  </main>
+
+  {% comment %} <main role="main" id="MainContent">
+    {{ content_for_layout }}
+  </main> {% endcomment %}
+
+   {%- include 'script-tags', layout: 'theme' -%}
+  {{ 'api.jquery.js' | shopify_asset_url | script_tag }}
+
+  {% section 'INF-Footer' %}
+
+  
+  <script type="text/javascript">(function e(){var e=document.createElement("script");e.type="text/javascript",e.async=true,e.src="//staticw2.yotpo.com/NVvtyQLUFDtyMCsp6NPpj9rr9EpkBHAH2Zr2iUap/widget.js";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)})();</script>
+
+  {%- if shop.permanent_domain == 'biosteel-ca.myshopify.com' -%}
+    <script  src="https://global.localizecdn.com/localize.js"></script>
+    <script>!function(a){if(!a.Localize){a.Localize={};for(var e=["translate","untranslate","phrase","initialize","translatePage","setLanguage","getLanguage","detectLanguage","getAvailableLanguages","untranslatePage","bootstrap","prefetch","on","off"],t=0;t<e.length;t++)a.Localize[e[t]]=function(){}}}(window);</script>
+
+    <script>
+    Localize.initialize({
+      key: 'K2yZVBLORgJPs',
+      rememberLanguage: true,
+      blockedClasses: ['ProductInfo__options']
+    });
+    </script>
+  {%- endif -%}
+  
+  {%- include 'INF-injectVimeoPoster' -%}
+
+
+{%- assign yotpo_offload_content = shop.metafields.yotpo.yotpo_offload_content %}
+{%- assign time_now = 'now' | date: '%s' %}
+{%- assign yotpo_live_time = shop.metafields.yotpo.yotpo_live | date: '%s' %}
+{%- assign diffSeconds = time_now | minus: yotpo_live_time %}
+{%- if yotpo_offload_content == 'yes' and diffSeconds < 86400 -%}
+{{ 'yotpo-full-css.css' | asset_url | stylesheet_tag }}
+{%- endif -%}
+  <!--=========================================Header=========================================-->
+<!-- Global Site Tag (gtag.js) - Google AdWords: 769762648 -->
+
+
+  
+<!-- Adobe Data Layer -->
+  <script>
+    var page_name = "Home";
+    var page_title = "{{page_title}}";
+    var category = "content";
+    
+    {% if template contains "page" %}
+    page_name = "{{page.title}}";
+    {% elsif template contains "product" %}
+    page_name = "product";
+    category = "product";
+    {% elsif template contains "collection" %}
+    page_name = "collection";
+    category = "product";
+    {% elsif template contains "blog" %}
+    page_name = "blog";
+    {% elsif template contains "customer" %}
+    page_name = "customer";
+    {% elsif template contains "cart" %}
+    page_name = "cart";
+    category = "transaction";
+    {% endif %}
+    window.adobeDataLayer = window.adobeDataLayer || [];
+    window.adobeDataLayer.push({
+      "event": "pageLoad",
+      "page": {
+        "name":page_name,
+        "title":page_title,
+        "category":category
+      },
+      "attributes":{
+        "country":"ca",
+        "language":"en"
+      }
+    });
+  </script>
+
+  
+ 
+  
+  <input type="hidden" name="page_handle" class="get_current_page_handle" value="{{ page.title }}"><input type="hidden" name="aaaformbuilder_customer_logged_id" value="{{customer.id}}" id="aaaformbuilder_customer_logged_id">
+  {% include 'special-offers' %}
+  
+  
+  {{ '//cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css' | stylesheet_tag }}
+
+  <script defer src='//cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js'></script>
+
+
+  <style type="text/css">
+    .feature-row{
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      width: 100%;
+      -webkit-justify-content: space-between;
+      -ms-justify-content: space-between;
+      justify-content: space-between;
+      -ms-flex-align: center;
+      -webkit-align-items: center;
+      -moz-align-items: center;
+      -ms-align-items: center;
+      -o-align-items: center;
+      align-items: center;
+    }
+    .Section__container .feature-row__item{      
+      -webkit-flex: 0 1 50%;
+      -moz-flex: 0 1 50%;
+      -ms-flex: 0 1 50%;
+      flex: 0 1 50%;
+    }
+    .clearfix{
+      clear:both;
+    }
+    .feature-row__text {
+      padding-top: 35px;
+      padding-bottom: 35px;
+    }
+    @media only screen and (min-width: 750px){
+      .feature-row__text--left {
+        padding-left: 35px;
+      }
+      .featured-row__subtext {
+        font-size: 1.125em;
+      }
+    }
+    #shopify-section-image-with-text{
+      margin-top:50px;
+    }
+    .FeaturedColumns-inner{
+      margin-top:50px !important;
+      
+    }
+    @media only screen and (max-width: 749px){
+      .feature-row {
+        -webkit-flex-direction: column;
+        -moz-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        display: block;
+      }
+      .feature-row__item {
+        -webkit-flex: 1 1 auto;
+        -moz-flex: 1 1 auto;
+        -ms-flex: 1 1 auto;
+        flex: 1 1 auto;
+        max-width: 100%;
+      }
+      .feature-row__text {
+        order: 2;
+        padding-bottom: 0;
+      }
+    }
+    .image_blocks{
+      padding:0px !important;
+    }
+    .image_blocks .feature-row__item{
+      background-size:100% 100% !important;
+      
+      /*background-size: inherit !important;
+      background-repeat: no-repeat !important;*/
+    }
+  </style>
+  
+  
+  {% if collection and settings.bundle_script_enabled == true %}
+  <script type="text/javascript">
+    if(true){
+      $(".bundle_add_cart_coll").click(function(){
+        var btnthis = this;
+        
+        $(btnthis).html("ADDING...");
+        var variantIds = $(this).attr("variant_ids").split(",");
+
+        var items = [];
+        for(var key in variantIds){
+          items.push({
+            quantity:1,
+            id:parseInt(variantIds[key])
+          });
+        }
+
+        $.ajax({
+          type: 'POST', 
+          url: '/cart/add.js',
+          data: {items:items},
+          success: function(res){
+            window.location.href = "/cart";
+          },
+          error: function(err){
+            $(btnthis).html("ADD TO CART");
+            if(err.responseText.indexOf('"items":') !== -1){
+              window.location.href = "/cart";
+            }
+            else if(err && err.responseText){
+              if(err.responseText.indexOf("description") !== -1){
+                var responseObj = JSON.parse(err.responseText);
+                if(responseObj.description){
+                  alert(responseObj.description);
+                }
+                else{
+                  alert(err.responseText);
+                }
+              }
+              else{
+                alert(err.responseText);
+              }
+            }
+          }
+       });
+      });
+    }
+  </script>
+  
+  {% endif %}
+<script type="text/javascript"  src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=HHgdRF"></script>
+  <script>
+    var _learnq = _learnq || [];
+    if ('{{ customer.email }}') {
+        _learnq.push(['identify', {
+        '$email' : '{{ customer.email }}'
+        }]);
+    }
+  </script>
+  <script src="https://a.klaviyo.com/media/js/onsite/onsite.js"></script>
+  <script>
+    var klaviyo = klaviyo || [];
+    klaviyo.init({
+      account: "HHgdRF",
+      list: 'QdHsUW',
+      platform: "shopify"
+    });
+    klaviyo.enable("backinstock",{ 
+      trigger: {
+        product_page_text: "Notify Me When Available",
+        product_page_class: "btn",
+        product_page_text_align: "center",
+        product_page_margin: "0px",
+        replace_anchor: false
+      },
+      modal: {
+        headline: "{product_name}",
+        body_content: "Register to receive a notification when this item comes back in stock.",
+        email_field_label: "Email",
+        button_label: "Notify me when available",
+        subscription_success_label: "You're in! We'll let you know when it's back.",
+        footer_content: '',
+        additional_styles: "@import url('https://fonts.googleapis.com/css?family=Helvetica+Neue');",
+        drop_background_color: "#000",
+        background_color: "#fff",
+        text_color: "#222",
+        button_text_color: "#fff",
+        button_background_color: "#e4002b",
+        close_button_color: "#e4002b",
+        error_background_color: "#fcd6d7",
+        error_text_color: "#C72E2F",
+        success_background_color: "#d3efcd",
+        success_text_color: "#1B9500"
+      }
+    });
+  </script>
+
+  {% include 'subscription-theme-footer' %}
+  {% section 'annexcloudloyalty' %}
+
+  {% include 'easyorder' %}
+  
+  {{ '//cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css' | stylesheet_tag }}
+  {{ '//cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css' | stylesheet_tag }}
+  <script defer src="//cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.js"></script>
+  <script>
+    jQuery(document).ready(function(){
+      jQuery(".owl-carousel").owlCarousel({
+        loop:false,
+        margin:10,
+        nav:true,
+        autoplay:false,
+        items:4,
+        dots:false,
+        stagePadding:10,
+        navText : ["<i class='fa fa-chevron-left'></i>","<i class='fa fa-chevron-right'></i>"],
+        responsiveClass:true,
+        responsive:{
+            0:{
+                items:1,
+                nav:true
+            },
+            600:{
+                items:3,
+                nav:false
+            },
+            1000:{
+                items:4,
+                nav:true,
+                loop:false
+            }
+        }
+      });
+    });    
+  </script>
+  <style>
+    .owl-nav > button.owl-prev {
+      padding:10px !important;
+    }
+    .owl-nav > button.owl-next {
+      padding:10px !important;
+    }
+  </style>
+  
+{% render 'preorder-now' %}
+  <!-- google dynamic remarketing tag for theme.liquid -->
+{% if template contains 'product' %}
+<script type="text/javascript">
+  var json_product = {%- render 'wc_product_json', product: product -%};
+</script>
+<script>
+  var ecomm_prodid=[];
+  for(var i=0;i<json_product.variants.length;i++)
+    ecomm_prodid.push('shopify_CAD_{{product.id}}_'+json_product.variants[i].id);
+</script>
+<script type="text/javascript">
+  var google_tag_params = {
+    ecomm_prodid: ecomm_prodid,
+    ecomm_pagetype: 'product',
+    ecomm_totalvalue: parseFloat('{{ WCProduct_Price | money_without_currency | remove: ","}}')
+  };
+</script>
+{% elsif template contains 'collection' %}
+<script type="text/javascript">
+  var google_tag_params = {
+    ecomm_pagetype: 'category'
+  };
+</script>
+{% elsif template contains 'cart' %}
+<script type="text/javascript">
+  var id = new Array();
+  {% for item in cart.items %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: item %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+{% comment %} Wholesale_Club_Item_Prices Start {% endcomment %}
+{% if item.product %}{% assign base_product = item.product %}{% else %}{% assign base_product = item %}{% endif %}
+{% if item.variant %}{% assign base_variant = item.variant %}{% else %}{% assign base_variant = item.selected_or_first_available_variant %}{% endif %}
+
+{% if shop.metafields.sawholesale['base_price'] == blank %}
+  {% assign base_price = 'compare_at_price' %}
+{% else %}
+  {% assign base_price = shop.metafields.sawholesale['base_price'] %}
+{% endif %}
+
+{% assign saw_discount = 0 %}{% assign saw_has_discount = false %}
+
+{% if customer.tags != blank %}
+  {% for mf in base_product.metafields.sawholesale %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: mf %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+    {% capture product_customer_tag %}{{ mf | first | replace: 'discount_', '' }}{% endcapture %}
+    {% if customer.tags contains product_customer_tag %}
+      {% assign saw_has_discount = true %}
+      {% assign discount_key = product_customer_tag | prepend: 'discount_' %}
+      {% assign price_key = product_customer_tag | prepend: 'price_' %}
+      {% assign saw_discount = base_product.metafields.sawholesale[discount_key] | divided_by: 100.0 %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% assign saw_discount = 1 | minus: saw_discount %}
+
+{% if base_price == 'price' or base_variant.compare_at_price == blank  or base_variant.compare_at_price == 0 or base_variant.compare_at_price < base_variant.price %}
+  {% assign saw_variant_compare_at_price = base_variant.price %}
+{% else %}
+  {% assign saw_variant_compare_at_price = base_variant.compare_at_price %}
+{% endif %}
+
+{% assign cpe = shop.metafields.sawholesale['cpe'] | default: "true" %}
+{% if base_variant.metafields.sawholesale[price_key] != blank and cpe == "true" %}
+  {% assign saw_variant_price = base_variant.metafields.sawholesale[price_key] %}
+{% else %}
+  {% assign saw_variant_price = saw_variant_compare_at_price | times: saw_discount %}
+{% endif %}
+
+{% if saw_has_discount == false or saw_variant_price >= saw_variant_compare_at_price %}
+  {% assign WCItem_OriginalPrice = item.original_price %}
+  {% assign WCItem_FinalPrice = item.final_price %}
+  {% assign WCItem_Price = item.price %}
+  {% assign WCItem_PriceMin = item.price_min %}
+  {% assign WCItem_PriceMax = item.price_max %}
+  {% assign WCItem_CompareAtPrice = item.compare_at_price %}
+  {% assign WCItem_CompareAtPriceMin = item.compare_at_price_min %}
+  {% assign WCItem_CompareAtPriceMax = item.compare_at_price_max %}
+  {% assign WCItem_OriginalLinePrice = item.original_line_price %}
+  {% assign WCItem_FinalLinePrice = item.final_line_price %}
+  {% assign WCItem_LinePrice = item.line_price %}
+{% else %}
+  {% assign WCItem_OriginalPrice = saw_variant_compare_at_price %}
+  {% assign WCItem_FinalPrice = saw_variant_price %}
+  {% assign WCItem_Price = saw_variant_price %}
+  {% assign WCItem_PriceMin = item.price_min | times: saw_discount %}
+  {% assign WCItem_PriceMax = item.price_max | times: saw_discount %}
+  {% assign WCItem_CompareAtPrice = saw_variant_compare_at_price %}
+  {% if base_product.compare_at_price_min != 0 %}{% assign WCItem_CompareAtPriceMin = base_product.compare_at_price_min %}{% else %}{% assign WCItem_CompareAtPriceMin = base_product.price_min %}{% endif %}
+  {% if base_product.compare_at_price_max != 0 %}{% assign WCItem_CompareAtPriceMax = base_product.compare_at_price_max %}{% else %}{% assign WCItem_CompareAtPriceMax = base_product.price_max %}{% endif %}
+  {% assign WCItem_OriginalLinePrice = WCItem_OriginalPrice | round | times: item.quantity %}
+  {% assign WCItem_FinalLinePrice = WCItem_FinalPrice | round | times: item.quantity %}
+  {% assign WCItem_LinePrice = WCItem_Price | round | times: item.quantity %}
+{% endif %}
+{% comment %} Wholesale_Club_Item_Prices End {% endcomment %}
+
+  id.push('shopify_CAD_{{item.product.id}}_{{item.variant.id}}');
+   {% endfor %}
+
+   var google_tag_params = {
+     ecomm_prodid: id,
+     ecomm_pagetype: 'cart',
+     ecomm_totalvalue: parseFloat('{{ cart.total_price | money_without_currency | remove: ","}}')
+   };
+</script>
+{% elsif template contains 'search' %}
+<script type="text/javascript">
+  var google_tag_params = {
+    ecomm_pagetype: 'searchresults'
+  };
+</script>
+{% elsif template contains 'index' %}
+<script type="text/javascript">
+  var google_tag_params = {
+    ecomm_pagetype: 'home'
+  };
+</script>
+{% else %}
+<script type="text/javascript">
+  var google_tag_params = {
+    ecomm_pagetype: 'other'
+  };
+</script>
+{% endif %}
+<script>
+  gtag('event', 'page_view', {'send_to': 'AW-769762648',
+                              'ecomm_prodid':window.google_tag_params.ecomm_prodid,
+                              'ecomm_pagetype': window.google_tag_params.ecomm_pagetype,
+                              'ecomm_totalvalue':window.google_tag_params.ecomm_totalvalue
+                             });
+</script>
+  
+  <style>
+    .rct_sidebar.slideout-menu{
+      z-index:1000 !important;
+    }
+  </style>
+  
+  <script>
+    $('body').on('click','.QuickView__button',function(){
+      var leftHeight = 0;
+      setTimeout(function(){
+        $(".ProductImages__thumb-container img").each(function(){
+          $(this).removeAttr("data-fancybox");
+        });
+        //$.fancybox.destroy();
+      },2000);
+    });
+  </script>
+  
+<!-- Stamped -->
+
+<script>function myInit(){ StampedFn.init({ 
+apiKey: '18573cbe-8a0c-4eeb-a924-e70bf1afd330', 
+sId: '331099' }); }</script>
+
+
+<script async onload="myInit()" type="text/javascript" src="
+https://cdn1.stamped.io/files/widget.min.js
+"></script>
+
+<!-- End Stamped -->
+
+ {% render 'halo-someone-purchase' %}
+</body>
+</html>

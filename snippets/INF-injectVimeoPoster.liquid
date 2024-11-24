@@ -1,0 +1,10 @@
+<script>
+  function injectVimeoPoster(data){
+    if (data && data[0] && data[0].thumbnail_large) {
+      var posters = document.querySelectorAll('[data-poster-for="' + data[0].id + '"]');
+      for (var i = 0; i < posters.length; i++) {
+        posters[i].style.backgroundImage = 'url("' + data[0].thumbnail_large + '")';
+      }
+    }
+  }
+</script>

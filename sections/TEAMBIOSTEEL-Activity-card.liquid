@@ -1,0 +1,486 @@
+<style>
+  .slick-prev:before, .slick-next:before {
+   font-size: 27px !important;
+   
+    color: #e4002b !important;
+    }
+  
+    @media only screen and (max-width: 640px) {
+     	.cmobile {display:block !important;}
+     	.cdesktop {display:none !important;}
+      
+   }
+   @media only screen and (min-width: 641px) {
+   		.cmobile {display:none !important;}
+     	.cdesktop {display:block !important;}
+       .ceebtnbs12{display: flex;
+        justify-content: center;
+        align-items: center;
+         margin-left: -5%;
+      }
+   } 
+
+  
+  .img__wrap {
+  position: relative;
+ 
+}
+
+.img__description {
+  position: absolute;
+  top: 0;
+   margin:0px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(29, 106, 154, 0.72);
+  color: #fff;
+  display:none;
+  opacity: 0;
+  padding:2%;
+  overflow:hidden;
+  /* transition effect. not necessary */
+  transition: opacity .2s, visibility .2s;
+}
+
+.img__wrap:hover .img__description  {
+  display:block;
+  opacity: 1;
+}
+  
+@import url("https://fonts.googleapis.com/css?family=Lato:400,400i,700");
+	
+
+.slick-wrapper {
+	width: 100%;
+	
+  padding-left:10%;
+  padding-right:10%;
+ 
+}
+.slide-item {
+  
+	
+  box-shadow:  0 4px 8px 0 rgba(0, 0, 0, 0.2);
+	display: flex !important;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+		margin-bottom: 20px;
+	border: 10px solid white;
+    
+    
+ 
+
+}
+  
+
+@media only screen and (max-width: 767px){
+h3 {
+	font-size: 15px;
+}
+
+}
+  .cd12{
+  
+    padding:20px 10px  20px 10px;
+     }
+  @media only screen and (max-width: 640px) {
+    .slide-item {width:95% !important;}
+   .slick-prev, .slick-next {top:48% !important;}
+  .center12{display:grid;gap:15px;justify-content: center;
+        align-items: center;
+	}
+  .slidebtn{	appearance: none;
+	display: inline-block;
+	width: auto;
+	text-decoration: none;
+	text-align: center;
+	vertical-align: middle;
+	white-space: nowrap;
+	padding: 0 25px;
+	line-height: 35px;
+	border-radius: 2px;
+	font-family: Oswald, sans-serif;
+	font-size: 13px;
+	text-transform: uppercase;
+	font-weight: 500;
+	cursor: pointer;
+	background: #e4002b;
+	border: 1px solid rgba(0,0,0,0);
+    border-radius: 19px;
+	color: #ffffff!important;
+	transition: background .25s ease,border-color .25s ease,color .25s ease;}
+  }
+    @media only screen and (min-width: 641px) {
+       .slick-prev, .slick-next {top:100% !important;}.slick-prev {margin-left:50%}.slick-next  {margin-left:5px;left:51% !important;}
+      .htext{font-size:14px !important;}
+      .cddslide1{padding-left: 15%;
+	padding-right: 15%;border-radius: 29px !important;}
+  .center12{display:flex;margin-top:20px;margin-bottom:20px;margin-left:2.8%;
+        justify-content: center;
+        align-items: center;}
+      .cvv{margin-left:2.5%}
+       .cvv12{margin-left:1%}
+      .slidebtn{padding: 8px 40px;border-radius: 29px;font-weight: 500;}
+  }
+    @media only screen and (min-width: 1700px) {
+   .ceebtnbs12{display: flex;
+        justify-content: center;
+        align-items: center;
+         margin-left:1%;
+   }
+       .cvv{margin-left:2%}
+   .htext{font-size:18px !important;} 
+    
+    }
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js" integrity="sha512-XtmMtDEcNz2j7ekrtHvOVR4iwwaD6o/FUJe6+Zq+HgcCsk3kj4uSQQR8weQ2QVj1o0Pk6PwYLohm206ZzNfubg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.css"></noscript>
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.css"></noscript>
+<section 
+  id="section{{ section.id }}" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="BS-section-6" 
+  class="Section Section--{{ section.settings.width }} Section--{{ section.settings.width--mobile }}" style="background-color:{{section.settings.background_styl}}">
+<div class="section-header text-center cd12" >
+  <h2 style="color:{{ section.settings.h2_color}};" class="{{ section.settings.heading_size}} tclick">{{ section.settings.title | escape }}</h2>
+    
+  {%- if section.settings.text != blank -%}
+            <div class="rte tclick cddslide1 tclick" style="color:{{ section.settings.subh_color}};font-size:{{ section.settings.font_size_subheading12}}px">{{ section.settings.text }}</div>
+   {%- endif -%} 
+ </div>
+  <div>
+<div class="slick-wrapper " >
+  <div id="slick12" class="cdesktop " style="
+">
+       {%- for block in section.blocks -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: block %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+           <div class="slide-item " style="background-color: {{section.settings.background_sty2}};margin-left:7px;width:16%" >
+                <div style="display:grid">
+                  
+                  <div class="img__wrap">
+  <a href="{{ block.settings.url_link }}">
+                  <img loading="lazy" class="multicolumn-card__image " src="{{ block.settings.image | image_url: width: 550 }}" style="width:100%;">
+                  <div class="img__description htext" >{{block.settings.text12}}</div>
+  </a>
+  </div>
+                 
+               {%- if block.settings.title != blank -%}
+                  <h3 class="{{block.settings.h2_color}}" style="font-size:{{block.settings.font_size_title21}}px;text-align:center">{{ block.settings.title | escape }}</h3>
+                {%- endif -%}
+            
+           </div>
+    </div>
+		{% endfor %}
+	</div>
+
+
+  <div id="slick1" class="cmobile " >
+		
+       {%- for block in section.blocks -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: block %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+           <div class="slide-item ms12"  style="background-color: {{section.settings.background_sty2}};width:160px;float:left;">
+                <div style="display:grid" >
+                   <div class="img__wrap">
+  <a href="{{ block.settings.url_link }}">
+                  <img loading="lazy" class="multicolumn-card__image " src="{{ block.settings.image | image_url: width: 550 }}" style="width:100%;">
+                  <div class="img__description " style="font-size:10px;" >{{block.settings.text12}}</div>
+  </a>
+  </div>
+               {%- if block.settings.title != blank -%}
+                  <h3 class=" {{block.settings.h2_color}}" style="font-size:{{block.settings.font_size_title2}}px;text-align:center">{{ block.settings.title | escape }}</h3>
+                {%- endif -%}
+            
+           </div>
+    </div>
+		{% endfor %}
+	</div>
+</div>
+  </div>
+  <div>
+  
+              <h2 style="color:{{ section.settings.h2_color12}};text-align:center;margin-left:3%;margin-top:2%" class=" cdesktop {{ section.settings.heading_size12}}">{{ section.settings.title1 | escape }}</h2>
+                
+  <div class="center12 ceebtnbs12"  >
+      {%- if section.settings.button_label != blank -%}
+        <a style="text-align:center;max-width: 30ch; background:{{section.settings.primary_button_background}};color:{{section.settings.button_bg_color}};" class=" slidebtn cvv12 button button--primary "{% if section.settings.button_link == blank %} role="link" aria-disabled="true"{% else %} href="{{ section.settings.button_link }}"{% endif %}>
+          {{ section.settings.button_label | escape }}
+        </a>
+      {%- endif -%}
+    
+     {%- if section.settings.button_label12 != blank -%}
+        <a style="text-align:center;max-width: 30ch; background:{{section.settings.primary_button_background}};color:{{section.settings.button_bg_color}};" class=" slidebtn cvv button button--primary "{% if section.settings.button_link == blank %} role="link" aria-disabled="true"{% else %} href="{{ section.settings.button_link12 }}"{% endif %}>
+          {{ section.settings.button_label12 | escape }}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+<style>
+
+  </style>
+<script>
+
+
+
+$('#slick1').slick({
+		rows: 2,
+		dots: false,
+		arrows: true,
+		infinite: true,
+		speed: 300,
+		slidesToShow: 2,
+		slidesToScroll: 2
+});
+$('#slick12').slick({
+		rows: 1,
+		dots: false,
+		arrows: true,
+		infinite: true,
+		speed: 300,
+		slidesToShow: 6,
+		slidesToScroll: 6
+});
+</script>
+</section>
+{% schema %}
+  {
+    "name": "Team-Activity-card",
+    "settings": [
+{
+   "type": "color",
+   "id": "background_styl",
+   "label": "Background color",
+   "default": "#ffffff"
+},
+{
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": " BS title"
+    },
+ {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h1",
+          "label": "h1"
+        },
+        {
+          "value": "h2",
+          "label": "h2"
+        },
+        {
+          "value": "h3",
+          "label": "h3"
+        },
+        {
+          "value": "h4",
+          "label": "h4"
+        },
+        {
+          "value": "h5",
+          "label": "h5"
+        }
+      ],
+      "default": "h2",
+      "label": "Heading size"
+    },{
+        "type": "color",
+        "id": "h2_color",
+        "label": "heading color",
+        "default": "#e4002b"
+      },
+    {
+          "type": "richtext",
+          "id": "text",
+          "default": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+          "label": "Sub heading"
+        },
+{
+    "type": "range",
+    "id": "font_size_subheading12",
+    "min":  22,
+    "max":  38,
+    "step":  1,
+    "unit": "px" ,
+    "label": "Font size for sub heading",
+    "default":  22
+    },
+{
+        "type": "color",
+        "id": "subh_color",
+        "label": "sub heading color",
+        "default": "#fff"
+      }
+,
+{
+      "type": "text",
+      "id": "title1",
+      "label": "Heading",
+      "default": "Want's to get closer to the team ?"
+    },
+ {
+      "type": "select",
+      "id": "heading_size12",
+      "options": [
+        {
+          "value": "h1",
+          "label": "h1"
+        },
+        {
+          "value": "h2",
+          "label": "h2"
+        },
+        {
+          "value": "h3",
+          "label": "h3"
+        },
+        {
+          "value": "h4",
+          "label": "h4"
+        },
+        {
+          "value": "h5",
+          "label": "h5"
+        }
+      ],
+      "default": "h1",
+      "label": "Heading size 2nd"
+    },{
+        "type": "color",
+        "id": "h2_color12",
+        "label": "heading color 2nd",
+        "default": "#fff"
+      }   ,
+{
+      "type": "text",
+      "id": "button_label",
+      "default": "Button label",
+      "label": "Button label 1st"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button_link left"
+    },{
+      "type": "text",
+      "id": "button_label12",
+      "default": "Button label",
+      "label": "Button label 2nd "
+    },
+    {
+      "type": "url",
+      "id": "button_link12",
+      "label": "Button_link Right"
+    },{
+        "type": "color",
+        "id": "primary_button_background",
+        "label": "Background color",
+        "default": "#e4002b"
+      },
+{
+            "type": "color",
+            "id": "button_bg_color",
+            "label": "Btn text color",
+            "default": "#ffffff"
+           }
+ 
+  ,
+{
+   "type": "color",
+   "id": "background_sty2",
+   "label": "Background color for slider",
+   "default": "#ffffff"
+}
+
+   ],
+"blocks": [
+          
+    {
+      "type": "column",
+      "name": "column",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "image"
+        },
+        {
+      "type": "url",
+      "id": "url_link",
+      "label": "Redirect url link"
+    }
+        ,{
+      "type": "text",
+      "id": "title",
+      "label": "Card footer text",
+      "default": "title"
+    },
+{
+    "type": "range",
+    "id": "font_size_title21",
+    "min":  14,
+    "max":  100,
+    
+    "unit": "px" ,
+    "label": "Font size for desktop view text ",
+    "default":  22
+    },
+{
+    "type": "range",
+    "id": "font_size_title2",
+    "min":  14,
+    "max":  100,
+    
+    "unit": "px" ,
+    "label": "Font size for mobile view text ",
+    "default":  14
+    },{
+        "type": "color",
+        "id": "h2_color12",
+        "label": "Card footer text color",
+        "default": "#000"
+      },
+      {
+          "type": "richtext",
+          "id": "text12",
+          "default": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+          "label": "Hover text"
+        }
+      ]
+    }
+  ],
+
+  "presets": [
+    {
+      "name": "Team-Activity-card"
+      
+      
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

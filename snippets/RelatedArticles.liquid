@@ -1,0 +1,58 @@
+{%- unless article_handles.size == 0 -%}
+<section 
+  class="Section Section--fixed Section--mobile-fixed Section--dark Animate Animate--slide-up" 
+  style="background-image: url('{{ 'black-scratches-bg.jpg' | asset_img_url: 'master' }}');"
+>
+  <div class="Section__container">
+    <div class="Section__intro Section__intro--thin Animate Animate--fade-in">
+      <h5 class="Section__intro-preheading">{{ 'blogs.general.keep_cruisin' | t }}</h5>
+      <h3 class="Section__intro-heading">{{ 'blogs.general.related_content' | t }}</h3>
+    </div>
+    <div class="RelatedArticles"> 
+      {% for article_handle_unchangeable in article_handles %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: article_handle_unchangeable %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+        {% assign article_handle = article_handle_unchangeable %}
+        {%- unless article_handle contains '/' -%}
+          {% if blog %}
+            {% assign blog_handle = blog.handle %}
+          {% else %}
+            {% assign blog_handle = 'truetothis' %}
+          {% endif %}
+          {% assign article_handle = blog_handle | append: '/' | append: article_handle %}
+        {%- endunless -%}
+        {% assign related_article = articles[article_handle] %}
+        {% unless related_article == blank %}
+          <div class="RelatedArticle" {% unless related_article.image == blank %} style="background-image: url('{{ related_article.image.src | img_url: '595x' }}');"{% endunless %}>
+            <a aria-label="{{ related_article.title }}" class="RelatedArticle__container" href="{{ related_article.url }}">
+              <div class="RelatedArticle__card">
+                {% include 'truetothis-tag', article: related_article, classes: 'RelatedArticle__tag' %}
+                <h6 class="RelatedArticle__title">{{ related_article.title }}</h6>
+                <img class="RelatedArticle__icon" src="{{ 'arrow-right.png' | asset_img_url: '40x'}}">
+              </div>
+            </a>
+          </div>
+        {% endunless %}
+      {% endfor %}
+    </div>
+  </div>
+
+  <style>
+    #section{{ section.id }} .Section__container {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+    @media only screen and (max-width: {{ settings.grid_mobile_max }}) {
+      #section{{ section.id }} .Section__container {
+        padding-top: {{ section.settings.padding_top--mobile }}px;
+        padding-bottom: {{ section.settings.padding_bottom--mobile }}px;
+      }      
+    }
+  </style>
+</section>
+{%- endunless -%}

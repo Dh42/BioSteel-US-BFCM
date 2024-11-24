@@ -1,0 +1,111 @@
+{% unless product.has_only_default_variant %}
+  {%- assign advanced_recovery_chocolate_handles = 'advanced-recovery-formula-chocolate-1224g|1224g,advanced-recovery-formula-chocolate-1800g|1800g' | split: ',' -%}
+  {%- assign advanced_recovery_vanilla_handles = 'advanced-recovery-formula-vanilla-1224g|1224g,advanced-recovery-formula-vanilla-1800g|1800g' | split: ',' -%}
+  {%- assign advanced_recovery_chocolate-peanut-butter_handles = 'advanced-recovery-formula-chocolate-peanut-butter-1224g|1224g,advanced-recovery-formula-chocolate-peanut-butter-1800g|1800g' | split: ',' -%}
+  {%- assign high_performance_sports_mix_blue-raspberry_handles = 'high-performance-sports-mix-140g-blue-raspberry|140g,high-performance-sports-mix-315g-blue-raspberry|315g,high-performance-sports-drink-mix-blue-raspberry-700g|700g,high-performance-sports-mix-tube-blue-raspberry|Singles' | split: ',' -%}
+  {%- assign high_performance_sports_mix_grape_handles = 'high-performance-sports-drink-mix-grape-140g|140g,high-performance-sports-drink-mix-grape-315g|315g,high-performance-sports-drink-mix-grape-700g|700g,high-performance-sports-mix-tube-grape|Singles' | split: ',' -%}
+  {%- assign high_performance_sports_mix_lemon-lime_handles = 'high-performance-sports-mix-140g-lemon-lime|140g,high-performance-sports-mix-315g-lemon-lime|315g,high-performance-sports-mix-700g-lemon-lime|700g,high-performance-sports-mix-tube-lemon-lime|Singles' | split: ',' -%}
+  {%- assign high_performance_sports_mix_mixed-berry_handles = 'high-performance-sports-mix-140g-mixed-berry|140g,high-performance-sports-mix-315g-mixed-berry|315g,high-performance-sports-mix-700g-mixed-berry|700g,high-performance-sports-mix-tube-mixed-berry|Singles' | split: ',' -%}
+  {%- assign high_performance_sports_mix_orange_handles = 'high-performance-sports-mix-140g-orange|140g,high-performance-sports-mix-315g-orange|315g,high-performance-sports-mix-700g-orange|700g,high-performance-sports-mix-tube-orange|Singles' | split: ',' -%}
+
+  {%- assign high_performance_sports_mix_watermelon_handles = 'high-performance-sports-mix-140g-watermelon|140g,high-performance-sports-mix-315g-watermelon|315g,high-performance-sports-mix-700g-watermelon|700g,high-performance-sports-mix-tube-watermelon|Singles' | split: ',' -%}
+
+  {%- assign options = '' -%}
+  {%- assign options_list = '' -%}
+  {%- assign flavour = product.variants.first.option1 | handleize -%}
+
+  {%- if product.handle contains 'advanced-recovery-formula' -%}
+    {%- assign options_list_name = 'advanced_recovery_' | append: flavour | append: '_handles' -%}
+  {%- endif -%}
+
+  {%- if product.handle contains 'high-performance-sports' -%}
+    {%- assign options_list_name = 'high_performance_sports_mix_' | append: flavour | append: '_handles' -%}
+  {%- endif -%}
+
+  {%- assign options_list = [options_list_name] -%}
+  {%- assign options_html = '' -%}
+  {%- assign option_html = '' -%}
+  {%- for size in options_list -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: size %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+    {%- assign size_parts = size | split: '|' -%}
+    {%- assign selected = '' -%}
+
+    {%- if product.handle == size_parts[0] -%}
+      {%- assign selected = ' selected' -%}
+    {%- endif -%}
+
+    {%- if all_products[size_parts[0]].available == true -%}
+      {%- assign option_html = '<option' | append: selected | append: ' value="' | append: size_parts[0] | append: '"> ' | append: size_parts[1] | append: '</option>' -%}
+      {%- assign options_html = options_html | append: option_html -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- if options_html != '' -%}
+    <div class="ProductInfo__options">
+      {%- for option in product.options_with_values -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: option %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+        {% comment %} Just the 1st options (size) is supported right now {% endcomment %}
+        {%- if forloop.index == 1 -%}
+          <div 
+            class="ProductOption ProductOption--{{ section.settings.option_type }}" 
+            data-custom-option-selector="option{{ forloop.index }}" 
+            data-shopify-option-selector="#SingleOptionSelector-{{ forloop.index0 }}"
+          >
+            <div class="ProductOption__name">Size</div>
+            <select class="ProductOption__variants" data-select-size>
+              {{ options_html }}
+            </select>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  {%- else -%}
+    {% unless product.has_only_default_variant or product.options_with_values[0].name == 'Flavour' %}
+      <div class="ProductInfo__options">
+        {% for option in product.options_with_values %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: option %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+          <div
+            class="ProductOption ProductOption--{{ section.settings.option_type }}" 
+            data-custom-option-selector="option{{ forloop.index }}"
+            data-shopify-option-selector="#SingleOptionSelector-{{ forloop.index0 }}"
+          >
+            <div class="ProductOption__name">
+              {{ option.name }}
+            </div>
+
+            <select class="ProductOption__variants" data-custom-variant-selector>
+              {% for value in option.values %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: value %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+                <option value="{{ value | escape }}" {% if option.selected_value == value %}selected{% endif %}>{{ value }}</option>
+              {% endfor %}
+            </select>
+          </div>      
+        {% endfor %}
+      </div>
+    {% endunless %}
+  {%- endif -%}
+{% endunless %}

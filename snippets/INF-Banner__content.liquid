@@ -1,0 +1,41 @@
+<div class="Banner__content Overlay__content">
+  <div class="Section__container {% unless content_animation == 'none' %} Animate Animate--{{ content_animation }} {% endunless %}">
+    <div class="AnnouncementsBarPlaceholder {% if settings.preheader_enabled %}AnnouncementsBarPlaceholder--hide-desktop{% endif %} {% if settings.preheader_enabled--mobile %}AnnouncementsBarPlaceholder--hide-mobile{% endif %}"></div>
+    {%- if banner_preheading -%}
+      <h2 class="Banner__preheading {{ style_source.settings.preheading_class }}">
+        {{ banner_preheading }}
+      </h2>
+    {%- endif %}
+    
+    {% unless style_source.settings.hide_heading %}
+      {% if search.performed %}
+        <h2 class="h1 Banner__heading {{ style_source.settings.heading_class }}">{{ banner_heading }}</h2>
+      {% else %}
+        <h1 class="Banner__heading {{ style_source.settings.heading_class }}">{{ banner_heading }}</h1>
+      {% endif %}
+    {% endunless %}
+
+    {%- if banner_subheading -%}
+      <h2 class="Banner__subheading {{ style_source.settings.subheading_class }}">
+        {{ banner_subheading }}
+      </h2>
+    {%- endif %}
+    {%- if search_content -%}
+      {{ search_content }}
+    {%- endif -%}
+    {%- if banner_description -%}
+      <div class="Banner__description rte">
+        {{ banner_description }}
+      </div>
+    {%- endif %}
+    {%- if buttons_content and buttons_content != '' -%}
+      <div class="Banner__buttons">
+        {{ buttons_content }}
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.show_author -%}
+      <h5 class="Banner__author">By {{ article.author }}</h5>
+    {%- endif -%}
+  </div>
+</div>

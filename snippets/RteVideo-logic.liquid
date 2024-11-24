@@ -1,0 +1,31 @@
+{% assign video_split = content | split: 'data-rte-video=""' | join: 'data-rte-video' | split: 'data-rte-video' %}
+{% for attr in video_split %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: attr %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+  {% assign cover = attr | split: 'data-cover="' %}
+  {% assign cover = cover[1] | split: '"' | first %}
+  {% assign end_of_cover = 'data-cover="' | append: cover | append: '">' %}
+  {% assign original_video = attr | split: end_of_cover %}
+  {% assign original_video = original_video[1] | split: '</div>' | first %}
+  {% assign video = original_video | replace: 'autoplay;', '' | replace: 'autoplay=0&', '' | replace: 'autoplay=1&', '' | replace: 'autoplay=0', '' | replace: 'autoplay=1', '' | replace: '<p>', '' | replace: '</p>', '' %}
+  {% comment %} empty attributes may or may not have assigned blank value, depending on if content has been edited - we'll just handle  both cases {% endcomment %}
+  {% assign old_html_1 = '<div data-rte-video data-cover="' | append: cover | append: '">' | append: original_video | append: '</div>' %}
+  {% assign old_html_2 = '<div data-rte-video="" data-cover="' | append: cover | append: '">' | append: original_video | append: '</div>' %}
+
+  {% capture new_video_html %}
+    <div class="RteVideo" tabindex="0" role="button" data-rte-video>
+      <div class="RteVideo__cover RteVideo__cover--active">
+        <div class="RteVideo__cover-image" style="background-image: url('{{ cover }}');"></div>
+        {% include 'PlayButton', classes: 'PlayButton--active' %}
+      </div>
+      {{ video }}
+    </div>
+  {% endcapture %}
+
+  {% assign content = content | replace: old_html_1, new_video_html | replace: old_html_2, new_video_html  %}
+{% endfor %}

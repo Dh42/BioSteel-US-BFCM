@@ -1,0 +1,36 @@
+{%- include 'ArticleTile-thumb-logic', columns: 3, aspect_ratio: 1.5 -%}
+<div class="Press__post" data-article-tile>
+  {% if external_link %}
+  <a href="{{ external_link }}" class="Link" target="_blank"></a>
+  {% else %}
+  <a href="{{ article.url }}" class="Link"></a>
+{% endif %}
+  <div data-article-tile-image>
+    <img 
+      src="{{ article.image | img_url: img_size, crop: 'center' }}" 
+      alt="{{ article.title }}" 
+      class="AnimateOnHover--{{ animation_hover }}"
+      width="{{ img_width }}"
+      height="{{ img_height }}"
+      onload="elementLoaded(this);"
+    >
+    <div class="content">
+      {% for tag in article.tags %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: tag %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+          <h4>{{ tag | replace: '-', ' ' }}</h4>
+      {% endfor %}
+      {% if external_link %}
+        <a href="{{ external_link }}" target="_blank">{{ article.title }}</a>
+        {% else %}
+            {%- if article.title != blank -%}<h3 data-article-tile-title>{{ article.title }}</h3>{%- endif -%}
+            {%- if short_description != blank -%}<p data-article-tile-title>{{ short_description }}</p>{%- endif -%}
+      {% endif %}
+    </div>
+  </div>
+</div>

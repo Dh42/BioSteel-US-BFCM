@@ -1,0 +1,178 @@
+{{ '//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js' | script_tag }}
+    {% if customer  %}
+{% if handle contains 'customer-survey' %}
+
+  <script>            
+    $(document).on('click','#submit', function () {
+       var shop_url = '{{shop.secure_url}}';
+       var shop_domain = '{{shop.domain}}';
+       var payload = '{{customer.email}}';
+       //Check condition for all mandatory fields from the survey form
+
+  //For example:
+
+  //if(email !=""){
+       var data = {'store_id':shop_domain, 'payload':payload, 'action':'survey'};
+      $.ajax({
+        type: 'POST',
+        url: '/apps/loyalty/jwt_generator.php/',
+        data: JSON.stringify(data),
+        dataType: "json",
+        success: function(res) {
+        }
+      });
+      //}                      
+    });
+  </script>
+	{% endif %}
+     <script>          
+      var shop_url = '{{shop.secure_url}}';
+      var shop_domain = '{{shop.domain}}';
+      var shop_domain_permanent = '{{shop.permanent_domain}}';
+      var cpayload = '{{customer.email}}';
+      var cemail = '{{customer.id}}';
+      function getTiers(){
+        var data = {'store_id':shop_domain,'shop_domain_permanent':shop_domain_permanent, 'payload':cpayload, 'cid':cemail, 'action':'add_tier_tag'};
+        $.ajax({
+          type: 'POST',
+          url: shop_url+'/apps/loyalty/jwt_generator.php/',
+          data: JSON.stringify(data),
+          dataType: "json",
+          success: function(res) {
+          }
+        });                            
+      }
+      getTiers();
+    </script>
+
+  {% assign customerTags = customer.tags | join:',' %}  
+
+  	{% if customerTags contains 'optin' and customerTags contains 'klaviyo' %}
+
+    <script>
+         
+      var shop_url = '{{shop.secure_url}}';
+      var shop_domain = '{{shop.domain}}';
+      var shop_domain_permanent = '{{shop.permanent_domain}}';
+      var payload = '{{customer.id}}';
+      var cemail = '{{customer.email}}';
+      var cfname = '{{customer.first_name}}';
+      var clname = '{{customer.last_name}}';
+      
+      function klaviyo_signup(){
+      	var data = {'store_id':shop_domain,'shop_domain_permanent':shop_domain_permanent, 'payload':payload,'firstname':cfname,'lastname':clname,'email':cemail, 'action':'klaviyo_signup'};
+        $.ajax({
+          type: 'POST',
+          url: shop_url+'/apps/loyalty/jwt_generator.php',
+          data: JSON.stringify(data),
+          dataType: "json",
+          success: function(res) {
+            console.log(res);
+          }
+        });                            
+      }
+      setTimeout(function(){ 
+               klaviyo_signup();   
+           
+      }, 3000); 
+      
+    </script>
+
+  	{% endif %}
+
+
+  {% if customerTags contains 'loyal' %}   
+
+    <script>
+         
+      var shop_url = '{{shop.secure_url}}';
+      var shop_domain = '{{shop.domain}}';
+      var payload = '{{customer.id}}';
+      var cemail = '{{customer.email}}';
+      function getOptin(){
+      	var data = {'store_id':shop_domain,'shop_domain_permanent':shop_domain_permanent, 'payload':payload, 'id':cemail,'email':cemail, 'action':'optin', 'optInStatus':'YES', 'createAction': '101'};
+        $.ajax({
+          type: 'POST',
+          url: shop_url+'/apps/loyalty/jwt_generator.php',
+          data: JSON.stringify(data),
+          dataType: "json",
+          success: function(res) {
+            console.log(res);
+          }
+        });                            
+      }
+      setTimeout(function(){ 
+               getOptin();   
+           
+      }, 3000); 
+      
+    </script>
+
+  {% endif %}
+
+    {% endif %}
+
+    
+  
+    
+<style>
+.lds-dual-ring {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+}
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 13px;
+  height: 13px;
+  margin: 1px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  border-color: #fff transparent #fff transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+#apply_dollar_button_wrapper{
+  padding-bottom:21px;
+  height:45px;
+}
+.reward-dashboard {
+    position: fixed;
+    bottom: 3%;
+    left: 1%;
+    background: #363f49;
+    border-radius: 30px;
+    color: #fff !important;
+    padding: 0 30px;
+    z-index: 999999 !important;
+}  
+.reward-dashboard a{
+    color: #fff !important;
+} 
+  
+div#annex-field {
+    display: none;
+}  
+</style>
+<!-- Annex Cloud loyalty code end -->
+
+{% schema %}
+  {
+    "name": "Section name",
+    "settings": []
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

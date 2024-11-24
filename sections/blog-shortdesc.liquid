@@ -1,0 +1,92 @@
+{%- assign short_description_banner = section.settings.show_short_description -%}
+{%- if short_description_banner -%}
+<section
+  id="Section{{ section.id }}" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="ShortDescription" 
+  class="Section"
+  >
+  <div class="ShortDescription">
+    <div class="ShortDescription__block">
+      <div class="ShortDescription__content">
+        <h1>{{ section.settings.description_heading }}</h1>
+        <p>{{ section.settings.description_sub }}</p>
+      </div>
+    </div>
+  </div>
+  </section>
+  
+{%- endif -%}
+<style>
+  #Section{{ section.id }} .ShortDescription {
+    margin-bottom: {{ section.settings.bottom_white_space }}px;
+  }
+
+  #Section{{ section.id }} .ShortDescription__content h1 {
+    font-size: {{ section.settings.heading_font_size }}px;
+  }
+
+  #Section{{ section.id }} .ShortDescription__content p {
+    font-size: {{section.settings.description_font_size}}px;
+  }
+
+</style>
+{% schema %}
+{
+  "name": "Short Description",
+  "settings": [
+    {
+    "type": "header",
+    "content": "Short Description Bar"
+    },
+    {
+    "label": "Show Short Description Bar",
+    "id": "show_short_description",
+    "type": "checkbox",
+    "default": false
+    },
+    {
+    "label": "Bottom White Space",
+    "id": "bottom_white_space",
+    "type": "range",
+    "min": 0,
+    "max": 100,
+    "step": 5,
+    "unit": "px",
+    "default": 70
+    },
+    {
+    "type": "html",
+    "id": "description_heading",
+    "label": "Heading",
+    "default": "Heading"
+    },
+    {
+    "label": "Heading Font Size",
+    "id": "heading_font_size",
+    "type": "range",
+    "min": 0,
+    "max": 40,
+    "step": 5,
+    "unit": "px",
+    "default": 15
+    },
+    {
+    "type": "html",
+    "id": "description_sub",
+    "label": "Description",
+    "default": "Description"
+    },
+    {
+    "label": "Description Font Size",
+    "id": "description_font_size",
+    "type": "range",
+    "min": 0,
+    "max": 20,
+    "step": 5,
+    "unit": "px",
+    "default": 15
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,222 @@
+{% comment %}
+  #CustomerLoginForm attribute powers Slate's default toggle for login/forgotten password
+{% endcomment %}
+<div id="CustomerLoginForm">
+  <section 
+    id="section{{ section.id }}" 
+    data-section-id="{{ section.id }}" 
+    data-section-type="INF-LoginPage" 
+    class="Section Section--{{ section.settings.width }} Section--{{ section.settings.width--mobile }}" 
+    style="{% if section.settings.use_background %}background: {{ section.settings.background }};{% endif %}"
+  >
+    <div class="Section__container">
+      {% include 'LoginPage' %}
+    </div>
+
+    <style>
+      #section{{ section.id }} .Section__container {
+        padding-top: {{ section.settings.padding_top }}px;
+        padding-bottom: {{ section.settings.padding_bottom }}px;
+      }
+      @media only screen and (max-width: {{ settings.grid_mobile_max }}) {
+        #section{{ section.id }} .Section__container {
+          padding-top: {{ section.settings.padding_top--mobile }}px;
+          padding-bottom: {{ section.settings.padding_bottom--mobile }}px;
+        }      
+      }
+    </style>
+  </section>
+</div>
+{% include 'subscription-account-login' %}  
+{% schema %}
+  {
+    "name": "Login Page",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "use_background",
+        "label": "Use background color",
+        "default": false,
+        "info": "Check this to use a custom section background color."
+      },
+      {
+        "type": "color",
+        "id": "background",
+        "label": "Background color",
+        "default": "#fff"
+      },
+      {
+        "type": "header",
+        "content": "Desktop :: Settings"
+      },
+      {
+        "type": "select",
+        "id": "width",
+        "label": "Width",
+        "default": "fixed",
+        "options": [
+          {
+            "label": "Full (Edge-to-Edge)",
+            "value": "full"
+          },
+          {
+            "label": "Fixed",
+            "value": "fixed"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 200,
+        "step": 5,
+        "unit": "px",
+        "label": "Top Padding",
+        "default": 30
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 200,
+        "step": 5,
+        "unit": "px",
+        "label": "Bottom Padding",
+        "default": 60
+      },
+      {
+        "type": "header",
+        "content": "Mobile :: Settings"
+      },
+      {
+        "type": "select",
+        "id": "width--mobile",
+        "label": "Width",
+        "default": "mobile-fixed",
+        "options": [
+          {
+            "label": "Full (Edge-to-Edge)",
+            "value": "mobile-full"
+          },
+          {
+            "label": "Fixed",
+            "value": "mobile-fixed"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "padding_top--mobile",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Top Padding",
+        "default": 15
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom--mobile",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Bottom Padding",
+        "default": 40
+      },
+      {
+        "type": "header",
+        "content": "Login Settings"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_labels",
+        "label": "Show input labels",
+        "default": true
+      },
+      {
+        "type": "richtext",
+        "id": "login_instructions",
+        "label": "Instructions"
+      },
+      {
+        "type": "text",
+        "id": "required_fields_message",
+        "label": "Required fields message"
+      },
+      {
+        "type": "select",
+        "id": "login_button_style",
+        "label": "Button Style",
+        "default": "primary",
+        "options": [
+          {
+            "label": "Primary",
+            "value": "primary"
+          },
+          {
+            "label": "Secondary",
+            "value": "secondary"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Create Account Settings"
+      },
+      {
+        "type": "text",
+        "id": "create_account_heading",
+        "label": "Heading",
+        "default": "Create an account"
+      },
+      {
+        "type": "richtext",
+        "id": "create_account_details",
+        "label": "Details"
+      },
+      {
+        "type": "text",
+        "id": "benefits_icon_default",
+        "label": "Default benefits icon",
+        "default": "fa-check"
+      },
+      {
+        "type": "select",
+        "id": "create_account_button_style",
+        "label": "Button Style",
+        "default": "primary",
+        "options": [
+          {
+            "label": "Primary",
+            "value": "primary"
+          },
+          {
+            "label": "Secondary",
+            "value": "secondary"
+          }
+        ]
+      }
+    ],
+    "blocks": [
+      {
+        "type": "account_benefit",
+        "name": "Account Benefit",
+        "settings": [
+          {
+            "type": "text",
+            "id": "icon",
+            "label": "Icon",
+            "info": "Font Awesome icon class (fa-icon-name)"
+          },
+          {
+            "type": "text",
+            "id": "text",
+            "label": "Text"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

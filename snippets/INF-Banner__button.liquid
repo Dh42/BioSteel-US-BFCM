@@ -1,0 +1,5 @@
+<a href="{% if block.settings[button_url] %}{{ block.settings[button_url] }}{% endif %}" class="Banner__button">
+  <div class="Button Button--{{ block.settings[button_style] }}">
+    {{ block.settings[button_text] }}
+  </div>
+</a>

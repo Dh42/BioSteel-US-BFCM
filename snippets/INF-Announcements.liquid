@@ -1,0 +1,35 @@
+{%- assign announcement_autoplay = false -%}
+{%- if section.settings.announcement_autoplay -%}
+  {%- assign announcement_autoplay = section.settings.announcement_autoplay_speed | times: 1000 -%}
+{%- endif -%}
+
+<div class="Announcements" data-announcements-carousel data-prev-next-buttons="true" data-auto-play="{{ announcement_autoplay }}">
+{%- for block in section.blocks -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: block %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+{%- capture announcement_button -%}
+  {% unless block.settings.button_text == blank %}
+    <div class="Announcement__button Button Button--{{ block.settings.button_style }}">{{ block.settings.button_text }}</div>
+  {% endunless %}
+{%- endcapture -%}
+{%- capture announcement_button--mobile -%}
+  {% unless block.settings.button_text--mobile == blank %}
+    <div class="Announcement__button Button Button--{{ block.settings.button_style }}">{{ block.settings.button_text--mobile }}</div>
+  {% endunless %}
+{%- endcapture -%}
+  <div class="Announcement" data-announcement="{{block.id}}" data-block-{{ block.id }} {{ block.shopify_attributes }}>
+  {%- if block.settings.url == blank -%}
+    <span class="Announcement__desktop" data-announcement-desktop>{{ block.settings.text }}{{ announcement_button }}</span>
+    <span class="Announcement__mobile">{{ block.settings.mobile_text | default: block.settings.text }}{{ announcement_button }}</span>
+  {%- else -%}
+    <span class="Announcement__desktop" data-announcement-desktop><a href="{{ block.settings.url }}">{{ block.settings.text }}{{ announcement_button }}</a></span>
+    <span class="Announcement__mobile"><a href="{{ block.settings.url }}">{{ block.settings.mobile_text | default: block.settings.text }}{{ announcement_button--mobile }}</a></span>
+  {%- endif -%}
+  </div>
+{%- endfor -%}
+</div>

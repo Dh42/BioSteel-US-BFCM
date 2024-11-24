@@ -1,0 +1,177 @@
+{%- assign featured_image = current_variant.featured_image | default: product.featured_image -%}
+{% if featured_image %}
+<style>
+    @media only screen and (min-width: 721px){
+      .maxstick {
+            max-width: 66%!important;
+      margin-top: 12%!important;
+      
+      max-height: 69vh!important;
+         
+/*           max-height: 63vh!important; */ */
+  }
+.ProductImages__slide  {
+/*     top: 29%top: 205px; */
+top: 222px!important;
+  } 
+  }
+  @media only screen and (min-width: 2100px) {
+   .csticky12 {
+     margin-bottom:200px !important;
+  }
+  
+</style>
+{% endif %}
+<div 
+     style="position:sticky !important;"
+  class="ProductImages {{ classes }}   csticky12" 
+  data-product-images
+  data-carousel-scope="{{ section.settings.carousel_type }}"
+  data-prev-next-buttons="{{ section.settings.prevNextButtons }}"
+  data-prev-next-buttons-mobile="{{ section.settings.prevNextButtons--mobile }}"
+  data-page-dots="{{ section.settings.pageDots }}"
+  data-page-dots-mobile="{{ section.settings.pageDots--mobile }}"
+  data-draggable="{{ section.settings.draggable }}"
+  data-draggable-mobile="{{ section.settings.draggable--mobile }}"
+  data-wrap-around="{{ section.settings.wrapAround }}"
+  data-wrap-around-mobile="{{ section.settings.wrapAround--mobile }}"
+  data-filmstrip="{{ section.settings.filmstrip }}"
+  data-filmstrip-mobile="{{ section.settings.filmstrip--mobile }}"
+  data-filmstrip-draggable="{% if section.settings.filmstrip_draggable %}true{% else %}false{% endif %}"
+  data-filmstrip-draggable-mobile="{% if section.settings.filmstrip_draggable--mobile %}true{% else %}false{% endif %}"
+  data-filmstrip-cell-align="{{ section.settings.filmstrip_cellAlign }}"
+  data-filmstrip-cell-align-mobile="{{ section.settings.filmstrip_cellAlign--mobile }}"
+  data-filmstrip-prev-next-buttons="{% if section.settings.filmstrip_arrows %}true{% else %}false{% endif %}"    
+  data-filmstrip-prev-next-buttons-mobile="{% if section.settings.filmstrip_arrows--mobile %}true{% else %}false{% endif %}"  
+  data-initial-option1="{{ current_variant.option1 }}"
+  data-initial-option2="{{ current_variant.option2 }}"
+>
+
+        {% for tag in product.tags %}
+        {% if tag contains 'coupon-' %}
+          <div class="product-label bogo-label">{{tag |replace:'coupon-',''}}</div>
+        {% endif %}
+      {% endfor %}
+  
+  <div class="ProductImages__placeholder" data-product-images-placeholder></div>
+  <div class="ProductImages__dots-placeholder" data-product-images-dots-placeholder></div>
+  <div class="ProductImages__seo" data-product-images-seo>
+    {% for image in product.media %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: image %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+      {% if image.media_type == "image" %}
+      <img href="{{ image | img_url: '1100x' }}" data-fancybox="gallery_{{product.id}}" class="product_image_thumb ProductImages__image maxstick" src="{{ image | img_url: '1100x' }}" alt="{{ image.alt | escape }}">
+      {% elsif image.media_type == "video" %}
+      <img image_id="{{image.id}}" video-url="{{image.sources[0].url}}" href="{{ image.preview_image | img_url: 'master' }}" data-fancybox="gallery_{{product.id}}" class="product_video_thumb ProductImages__image image_{{image.id}}" src="{{ image.preview_image | img_url: '1100x' }}" alt="{{ image.alt | escape }}">
+      {% endif %}
+    {% endfor %}    
+  </div>
+  <div data-product-images-carousels></div>
+  {%- if section.settings.filmstrip or section.settings.filmstrip--mobile -%}
+    <div class="ProductImages__thumbs-placeholder {% if section.settings.filmstrip %}ProductImages__thumbs-placeholder--desktop{% endif %} {% if section.settings.filmstrip--mobile %}ProductImages__thumbs-placeholder--mobile{% endif %}" data-product-images-thumbs-placeholder></div>
+  {%- endif -%}
+</div>
+
+<script type="text/javascript">
+  var videoTags = [];
+  {% for media in product.media %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: media %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+    {% if media.media_type == "video" %}
+      videoTags[{{media.id}}] = '<div class="media_tag_div" id="media_tag_{{media.id}}">{{ media | video_tag: controls: true, image_size: "1024x", autoplay:true }}</div>';
+    {% elsif media.media_type == "external_video" %}
+      videoTags[{{media.id}}] = '<div class="media_tag_div" id="media_tag_{{media.id}}">{{ media | external_video_tag }}</div>';
+    {% endif %}
+  {% endfor %}
+  var videoRunning = "";
+  
+  function updateVideoTag(element){
+    var video_url = element.attr("video-url");
+    var image_id = element.attr("image_id");
+    var image_url = element.attr("src");
+
+    if(video_url && video_url.length > 0 && videoTags[image_id]){
+      videoRunning = '#media_tag_'+image_id+' video';
+      $("#ProductCarousel{{product.id}}").find(".image_"+image_id).parent().addClass("main_image_"+image_id);
+      $("#ProductCarousel{{product.id}}").find(".image_"+image_id).parent().css("max-height","inherit");
+      $("#ProductCarousel{{product.id}}").find(".image_"+image_id).parent().html(videoTags[image_id]);
+
+      var video = document.querySelector(videoRunning);
+      video.currentTime = 0;
+      video.muted =false;
+      $(videoRunning).trigger('play');      
+    }
+  }
+  
+  $(document).ready(function(){
+    $('.ProductImages__thumb-container .product_image_thumb').click(function(){
+      $(videoRunning).trigger('pause');
+    });
+    
+    $('.ProductImages__thumb-container .ProductImages__image').click(function(){
+      updateVideoTag($(this));
+    });
+    
+    $('body').on('click','.video-thumb-play-icon',function(){
+      updateVideoTag($(this).prev());
+    });
+    
+    setTimeout(function(){
+      $('.ProductImages__thumb-container').each(function(){
+        if($(this).find(".product_video_thumb").length > 0){
+          var imgtag = '<svg aria-hidden="false" width="24px" height="24px" viewBox="0 0 16 16" class="video-thumb-play-icon CarouselVideoIcon-aufiul-5 gNZfTm Icon-sc-1ny8wc9-0 eMKOdI" transform="rotate(0)"><path d="M4 13.15V2.946c0-.403.452-.636.783-.408l8.156 5.608a.5.5 0 01-.038.847l-8.156 4.588A.498.498 0 014 13.15z" fill="#fff"></path></svg>';
+          $(this).append(imgtag);
+        }
+      });
+    },500);
+    
+    
+    
+    
+    $("body").on('click','.flickity-prev-next-button',function(){
+      $(videoRunning).trigger('pause');
+    
+      var video_url = $(".ProductImages__slide.is-selected img").attr("video-url");
+      if(video_url && video_url.length > 0){
+        updateVideoTag($(".ProductImages__slide.is-selected img"));
+      }
+      else if($(".ProductImages__slide.is-selected .media_tag_div").length > 0){
+        var video = document.querySelector(videoRunning);
+        video.currentTime = 0;
+        video.muted =false;
+        $(videoRunning).trigger('play');
+      }
+    });
+    
+  });
+</script>
+<style>
+ 
+  
+  .video-thumb-play-icon{    
+    text-align: center;
+    width: auto;
+    display: inline-block;
+    position: relative;
+    top: -30px;
+  }
+  
+  .media_tag_div video{
+    width:100%;
+  }
+  
+  .ProductImages__thumb-container img{
+    max-width:40px !important;
+  }
+  
+</style>

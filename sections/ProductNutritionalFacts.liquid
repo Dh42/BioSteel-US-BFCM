@@ -1,0 +1,18 @@
+{%- assign nutritional_facts = product.metafields.c_f['[p][_t] 2b. Nutritional Fact'] -%}
+{%- if nutritional_facts -%}
+  {%- include 'ProductNutritionalFacts' -%}
+{%- endif -%}
+
+
+{% schema %}
+  {
+    "name": "Nutrition Facts",
+    "settings": []
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

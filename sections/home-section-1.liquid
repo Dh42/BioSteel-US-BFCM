@@ -1,0 +1,212 @@
+{% if section.settings.enable_section %}
+<section 
+  id="section{{ section.id }}" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="image" 
+  class="Section Section--{{ section.settings.width }} Section--{{ section.settings.width--mobile }}">
+
+  <div class="Section__container {% if section.settings.animation != 'none' %}Animate Animate--{{ section.settings.animation }}{% endif %}">
+    <div class="Section__container Content__section Section__container__hoome_section1">
+      <div class="left_image_section">
+        {% if section.settings.image_left %}
+        <div class="image_container">
+          {% if section.settings.left_image_url %}<a href="{{section.settings.left_image_url}}">{% endif %}
+          <img src="{{ section.settings.image_left | img_url:'master' }}" onLoad="elementLoaded(this);">
+          {% if section.settings.left_image_url %}</a>{% endif %}
+        </div>
+        {% endif %}
+      </div>
+      
+      <div class="right_image_section">
+        {% if section.settings.image_right %}
+        <div class="image_container">
+          <img src="{{ section.settings.image_right | img_url:'master' }}" onLoad="elementLoaded(this);">
+        </div>
+        {% endif %}
+        
+        {% if section.settings.right_button_text and section.settings.right_button_url %}
+        <a class="HeroSlide__button Button Button--primary" href="{{section.settings.right_button_url}}">
+          {{section.settings.right_button_text}}
+        </a>
+        {% endif %}
+        
+      </div>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</section>
+<style type="text/css">
+  .Section__container__hoome_section1{
+    
+    margin-top:10px !important;
+    margin-bottom:10px !important;
+    padding-left:0px !important;
+    padding-right:0px !important;
+  }
+  .Section__container__hoome_section1 .left_image_section{
+    width:65%;
+    float:left;
+    padding:10px;
+    text-align:center;
+  }
+  .Section__container__hoome_section1 .right_image_section{
+    width:35%;
+    float:left;
+    padding:10px;
+    text-align:center;
+    position:relative;
+  }
+  
+  .Section__container__hoome_section1 .right_image_section .HeroSlide__button{
+    position: absolute;
+    bottom: 10%;
+    left: 33%;
+  }
+  
+  /*
+  .Section__container__hoome_section1{
+    border-bottom:1px solid #000;
+  }
+  
+  
+  .Section__container__hoome_section2 .left_image_section{
+    position:relative;
+  }
+  .Section__container__hoome_section2 .left_image_section .HeroSlide__button{
+    position: absolute;
+    top: 39%;
+    left: 33%;
+  }
+  */
+  
+  .Section__container__hoome_section1 .image_container img{
+    max-width:100%;
+    width:100%;
+    
+  }
+  .Section__container__hoome_section1 .clearfix{
+    clear:both;
+    width:100%;
+    height:1px;
+  }
+  @media only screen and (max-width: 768px) {
+    .left_image_section,.right_image_section{
+      width:100% !important;
+    }
+  }
+</style>
+{% endif %}
+
+
+{% schema %}
+  {
+    "name": "Home Section 1",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_section",
+        "label": "Enable Section",
+        "default": true
+      },
+      {
+        "label": "Image Left",
+        "id": "image_left",
+        "type": "image_picker"
+      },
+      {
+        "label": "Left Image Link",
+        "id": "left_image_url",
+        "type": "url"
+      },
+      {
+        "label": "Image Right",
+        "id": "image_right",
+        "type": "image_picker"
+      },
+      {
+        "label": "Right Button Link",
+        "id": "right_button_url",
+        "type": "url"
+      },
+      {
+        "label": "Right Button Text",
+        "id": "right_button_text",
+        "type": "text"
+      },
+      {
+        "type": "select",
+        "id": "width",
+        "label": "Width Desktop",
+        "default": "fixed",
+        "options": [
+          {
+            "label": "Full (Edge-to-Edge)",
+            "value": "full"
+          },
+          {
+            "label": "Fixed",
+            "value": "fixed"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "width--mobile",
+        "label": "Width Mobile",
+        "default": "mobile-full",
+        "options": [
+          {
+            "label": "Full (Edge-to-Edge)",
+            "value": "mobile-full"
+          },
+          {
+            "label": "Fixed",
+            "value": "mobile-fixed"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "animation",
+        "label": "Animation",
+        "default": "slide-up",
+        "options": [
+          {
+            "value": "fade-in",
+            "label": "Fade in"
+          },
+          {
+            "value": "slide-up",
+            "label": "Fade in & slide up"
+          },
+          {
+            "value": "slide-down",
+            "label": "Fade in & slide down"
+          },          
+          {
+            "value": "slide-left",
+            "label": "Fade in & slide left"
+          },
+          {
+            "value": "slide-right",
+            "label": "Fade in & slide right"
+          },
+          {
+            "value": "zoom-fade-in",
+            "label": "Fade in & zoom out"
+          },
+                    {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Home Section 1",
+        "category": "Image"
+      }
+    ]
+  }
+{% endschema %}

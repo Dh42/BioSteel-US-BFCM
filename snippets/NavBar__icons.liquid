@@ -1,0 +1,28 @@
+{%- comment -%}
+This is just a recommended starting point...customize away!
+Note: this is only used when the pre-header is disabled. If you have a pre-header, you'll want to modify snippets/PreHeader__icons.liquid instead.
+{%- endcomment -%}
+<div>
+  {%- if shop.customer_accounts_enabled and settings.preheader_enabled == false -%}
+    <a class="NavBar__icon" href="/account"><i class="{{ settings.fa }} fa-user"></i></a>
+  {%- endif -%}
+
+  <a class="NavBar__icon NavBar__icon--search">{%- include 'INF-IconToggle', icon: 'fa-search', direction: 'down', data: 'data-search-toggle' -%}</a>
+  {% if slide_cart_status != true %}
+  <a class="NavBar__icon NavBar__icon--cart" href="/cart">
+    <div class="IconToggle IconToggle--right">
+      <div class="IconToggle__placeholder">
+        <i class="{{ settings.fa }} {{ settings.cart_icon }}"></i>
+      </div>
+      <div class="IconToggle__closed">
+        <i class="{{ settings.fa }} {{ settings.cart_icon }}"></i>
+        {% if settings.cart_show_item_count %}
+          <span class="IconToggle__count IconToggle__count--cart" data-cart-count="{{ cart.item_count }}">{{ cart.item_count }}</span>
+        {% endif %}
+      </div>
+    </div>
+  </a>
+  {% else %}
+  <a class="NavBar__icon">{%- include 'INF-IconToggle', icon: settings.cart_icon, direction: 'right', data: 'data-cart-toggle' -%}</a>
+  {% endif %}
+</div>

@@ -1,0 +1,35 @@
+<div class="ProductSubstance">
+{% for tag in product.tags %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: tag %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+  {% if tag contains 'sugar-free' %}
+    <div class="ProductSubstance__block">
+      <img src="{{ 'substance-icon-sugar-free.png' | asset_img_url: '40px' }}">
+      <div class="ProductSubstance__content">
+          <h4>High in Electrolytes</h4>
+      </div>
+    </div>
+  {% endif %}
+  {% if tag contains 'gluten-free' %}
+    <div class="ProductSubstance__block">
+      <img src="{{ 'substance-icon-gluten-free.png' | asset_img_url: '40x' }}">
+      <div class="ProductSubstance__content">
+          <h4>All Natural Flavors</h4>
+      </div>
+    </div>
+  {% endif %}
+  {% if tag contains 'caffeine-free' %}
+    <div class="ProductSubstance__block">
+      <img src="{{ 'substance-icon-caffeine-free.png' | asset_img_url: '40x' }}">
+      <div class="ProductSubstance__content">
+          <h4>All Natural Colors</h4>
+      </div>
+    </div>
+  {% endif %}
+{% endfor %}
+</div>

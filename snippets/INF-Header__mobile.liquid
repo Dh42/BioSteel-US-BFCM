@@ -1,0 +1,34 @@
+{%- assign logo = section.settings.logo--mobile | default: section.settings.logo -%}
+
+<header class="Header__mobile" role="banner">
+  <div class="MobileBar">
+
+    <div class="MobileLogo">
+      <a href="/" itemprop="url" class="MobileLogo__{% if logo == blank %}text{% else %}image{% endif %}">
+        {%- if logo != blank -%}
+          {%- assign image_size = section.settings.mobile_logo_width | times: 3 | append: 'x' -%}
+          <img src="{{ logo | img_url: image_size }}" alt="{{ logo.alt | default: shop.name }}" itemprop="logo">
+        {%- else -%}
+          {{ shop.name }}
+        {%- endif -%}
+      </a>
+    </div>
+
+    <div class="MobileBar__left">
+      <div class="MobileBar__icon Hamburger" data-hamburger>
+        <a class="Hamburger__icon" data-hamburger-icon>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </a>
+      </div>
+    </div>
+
+    <div class="MobileBar__right">
+      <a class="MobileBar__icon MobileBar__icon--search">{%- include 'INF-IconToggle', icon: 'fa-search', direction: 'down', data: 'data-search-toggle' -%}</a>
+      <a class="MobileBar__icon">{%- include 'INF-IconToggle', icon: settings.cart_icon, direction: 'right', data: 'data-cart-toggle' -%}</a>
+    </div>
+    
+  </div>
+</header>

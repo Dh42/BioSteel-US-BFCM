@@ -1,0 +1,60 @@
+<section
+  id="section{{ block.id }}"
+  data-section-id="{{ block.id }}"
+  data-section-type="INF-ImageFull"
+  class="Section Section--fixed Section--fixed INF-ImageFull"
+  style=""
+>
+  {% capture image_layout %}
+    <div class="feature-row__itemm" style="text-align:center;">
+      {% if block.settings.image_link != blank %}
+      <a href="{{block.settings.image_link}}">
+      {% endif %}
+        
+
+      {% if block.settings.image_desktop != blank %}
+        <div class="desktop_image_banner">
+        {%- assign img_url = block.settings.image_desktop | img_url: 'master' -%}
+        <img style="max-width:100%;display:inline-block;" src="{{ img_url }}">
+        </div>
+      {% endif %}
+        
+      {% if block.settings.image_mobile != blank %}
+        <div class="mobile_image_banner">
+        {%- assign img_url = block.settings.image_mobile | img_url: 'master' -%}
+        <img style="max-width:100%;display:inline-block;" src="{{ img_url }}">
+        </div>
+      {% endif %}
+        
+        
+      {% if block.settings.image_link != blank %}
+      </a>
+      {% endif %}
+    </div>
+  {% endcapture %}
+  
+  <div class="Section__container feature-row" style="display:block;">
+    {{ image_layout }}
+    <div class="clearfix"></div>
+  </div>
+</section>
+
+<style type="text/css">
+  .INF-ImageFull .responsive-image__wrapper,
+  .INF-ImageFull .responsive-image__image{
+    max-width:100% !important;
+  }
+  .INF-ImageFull{
+    margin-top:50px;
+  }
+  @media only screen and (min-width: 769px){
+    .mobile_image_banner{
+      display:none;
+    }
+  }
+  @media only screen and (max-width: 768px){
+    .desktop_image_banner{
+      display:none;
+    }
+  }
+</style>

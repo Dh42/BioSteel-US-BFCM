@@ -1,0 +1,54 @@
+{% assign hero_split = content | split: 'data-rte-hero-article=""' | join: 'data-rte-hero-article' | split: 'data-rte-hero-article' %}
+{% for attr in hero_split %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: attr %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+  {% assign hero_article_handle = attr | split: 'data-article="' %}
+  {% assign hero_article_handle = hero_article_handle[1] | split: '"' | first %}
+  {% assign end_of_hero_article_handle = hero_article_handle | append: '">' %}
+  {% assign hero_contents =  attr | split: end_of_hero_article_handle %}
+  {% assign hero_contents =  hero_contents[1] | split: '</div>' | first %}
+
+    {% comment %} empty attributes may or may not have assigned blank value, depending on if content has been edited - we'll just handle  both cases {% endcomment %}
+  {% assign old_html_1 = '<div data-rte-hero-article data-article="' | append: hero_article_handle | append: '">' | append: hero_contents | append: '</div>' %}
+  {% assign old_html_2 = '<div data-rte-hero-article="" data-article="' | append: hero_article_handle | append: '">' | append: hero_contents | append: '</div>' %}
+  {% capture new_html %}
+    {%- unless hero_article_handle contains '/' -%}
+      {% if blog %}
+        {% assign blog_handle = blog.handle %}
+      {% else %}
+        {% assign blog_handle = 'truetothis' %}
+      {% endif %}
+      {% assign hero_article_handle = blog_handle | append: '/' | append: hero_article_handle %}
+    {%- endunless -%}
+    {% assign hero_article = articles[hero_article_handle] %}
+    {% assign img_size = 1700 | minus: 40 | divided_by: 2 %}
+    {% capture img_size %}{{ img_size }}x{{ img_size }}{% endcapture %}
+    {% unless hero_article == blank  %}
+      {%- capture img_src -%}
+        {{ hero_article.image.src | img_url: img_size, crop: 'center' }}
+      {%- endcapture -%}
+      {% assign img_src = img_src | strip_newlines %}
+      <div class="ArticleThumb RteHeroArticle" data-slide>
+        <a aria-label="{{ hero_article.title }}" href="{{ hero_article.url }}" class="ArticleThumb__display RteHeroArticle__display">
+          <div class="ArticleThumb__image-container">
+            <img src="{{ img_src }}" alt="{{ hero_article.title }}" class="ArticleThumb__image">
+          </div>
+          <div class="ArticleThumb__content-container">
+            <div class="ArticleThumb__title-clip">
+              <h3 class="ArticleThumb__title RteHeroArticle__title">{{ hero_article.title }}</h3>
+            </div>
+            <div class="ArticleThumb__SizingContent SizingContent" aria-hidden="true" data-prevent-tab>
+              <img src="{{ img_src }}" alt="{{ hero_article.title }}">
+            </div>
+          </div>
+        </a>
+      </div>
+    {% endunless %}
+  {% endcapture %}
+  {% assign content = content | replace: old_html_1, new_html | replace: old_html_2, new_html %}
+{% endfor %}

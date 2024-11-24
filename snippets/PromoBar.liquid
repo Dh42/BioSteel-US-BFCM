@@ -1,0 +1,26 @@
+<style>
+#section{{ section.id }} .SliderCart__promo-bar {
+background-color: {{section.settings.promo_bar_background_color}};
+}
+#section{{ section.id }} .SliderCart__promo-bar p {
+  color: {{section.settings.promo_bar_content_color}};
+}
+</style>
+
+  <div class="SliderCart__promo-bar" data-slider-cart-promo data-dynamic="{% if section.settings.promo_bar_content != blank %}false{% else %}true{% endif %}">
+    {%- if section.settings.promo_bar_content  != blank -%}
+      <p>{{ section.settings.promo_bar_content }}</p>
+      {%- else -%}
+        {% comment %} <div id="fsb_placeholder"></div> {% endcomment %}
+        {%- assign away = 10000 | minus: cart.total_price -%}
+            {%- if away > 0 -%}
+              {%- if cart.total_price == 0 -%}
+                <p>Free shipping for orders over $100</p>
+              {%- else -%}
+                <p>Only {{ away | money_with_currency }} away from free shipping</p>
+              {%- endif -%}
+            {%- else -%}
+            <p>Congratulations! You've got free shipping</p>
+    {%- endif -%}
+    {%- endif -%}
+  </div>

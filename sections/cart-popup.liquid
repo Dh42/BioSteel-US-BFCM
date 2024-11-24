@@ -1,0 +1,72 @@
+{% assign cart_total = cart.total_price | divided_by: 100.00 %}
+{% if section.settings.enable_popup == true and cart_total < section.settings.cart_total %}
+{{ 'magnific.scss.css' | asset_url | stylesheet_tag }}
+{{ 'magnific.js' | asset_url | script_tag }}
+
+<div id="welcome_box_popup" class="white-popup mfp-hide" style="text-align:center;">
+  <h3 class="head" style="color: #000;text-align:center;">{{section.settings.title}}</h3>
+  <p style="color:red;">{{section.settings.text}}</p>
+  <p style="text-align:center;">
+    <a style="padding:0.4em 0.7em;" href="{{section.settings.button_link}}" class="ProductTile__button Button Button--primary btn btn--secondary cart__update cart__continue--small">
+      {{section.settings.button_label}}
+    </a>
+  </p>
+</div>
+
+
+<script type="text/javascript">
+  var jq = $;
+  setTimeout(function(){
+  jq.magnificPopup.open({
+    items: {
+      src: '#welcome_box_popup',
+      type: 'inline'
+    }
+  });
+  },3000);
+</script>
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Cart Popup",
+    "class": "cart-popup-section",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_popup",
+        "label": "Show Popup",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "You're Almost There!"
+      },
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Text",
+        "default": "Get a FREE Hydration Mix (20 servings) with your order over $100!"
+      },
+      {
+        "type": "text",
+        "id": "button_label",
+        "label": "Button label",
+        "default":"Keep Shopping"
+      },
+      {
+        "type": "url",
+        "id": "button_link",
+        "label": "Button link"
+      },
+      {
+        "type": "number",
+        "id": "cart_total",
+        "label": "Cart total",
+        "default":100
+      }
+    ]
+  }
+{% endschema %}

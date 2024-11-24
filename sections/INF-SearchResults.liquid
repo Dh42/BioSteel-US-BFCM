@@ -1,0 +1,200 @@
+{% include 'search-redirect' %}
+{%- include 'INF-raw-query-logic' -%}
+
+<section
+  id="section{{ section.id }}" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="INF-SearchResults" 
+  class="Section Section--{{ section.settings.width }} Section--{{ section.settings.width--mobile }}"
+  style="{% if section.settings.use_background %}background: {{ section.settings.background }};{% endif %}"
+  > 
+  <div class="Section__container">
+    {%- paginate search.results by section.settings.limit -%}
+      {%- if search.performed -%}
+        {% include 'SearchResults' %}
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</section>
+<div id="smoothie-search-redirects-app-data" style="display: none !important;" count="{{ search.results_count }}" shop="{{ shop.permanent_domain }}" query="{{ search.terms }}"></div>
+
+<style>
+  #section{{ section.id }} .Section__container {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    {% if section.settings.width == 'fixed' %}
+      max-width: {{ section.settings.max_width }}px;
+    {% endif %}
+  }
+  @media only screen and (max-width: {{ settings.grid_mobile_max }}) {
+    #section{{ section.id }} .Section__container {
+      padding-top: {{ section.settings.padding_top--mobile }}px;
+      padding-bottom: {{ section.settings.padding_bottom--mobile }}px;
+    }      
+  }
+</style>
+
+{% schema %}
+  {
+    "name": "Search Results",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "use_background",
+        "label": "Use background color",
+        "default": false,
+        "info": "Check this to use a custom section background color."
+      },
+      {
+        "type": "color",
+        "id": "background",
+        "label": "Background color",
+        "default": "#fff"
+      },
+      {
+        "type": "select",
+        "id": "animation",
+        "label": "Intro animation",
+        "default": "slide-up",
+        "options": [
+          {
+            "value": "fade-in",
+            "label": "Fade in"
+          },
+          {
+            "value": "slide-up",
+            "label": "Fade in & slide up"
+          },
+          {
+            "value": "slide-down",
+            "label": "Fade in & slide down"
+          },          
+          {
+            "value": "slide-left",
+            "label": "Fade in & slide left"
+          },
+          {
+            "value": "slide-right",
+            "label": "Fade in & slide right"
+          },
+          {
+            "value": "zoom-fade-in",
+            "label": "Fade in & zoom out"
+          },
+                    {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "limit",
+        "min": 2,
+        "max": 50,
+        "step": 1,
+        "label": "Results per page",
+        "default": 20
+      },
+      {
+        "type": "range",
+        "id": "max_words",
+        "min": 10,
+        "max": 200,
+        "step": 5,
+        "label": "Description max words",
+        "default": 50
+      },
+      {
+        "type": "header",
+        "content": "Desktop :: Settings"
+      },
+      {
+        "type": "select",
+        "id": "width",
+        "label": "Width",
+        "default": "fixed",
+        "options": [
+          {
+            "label": "Full (Edge-to-Edge)",
+            "value": "full"
+          },
+          {
+            "label": "Fixed",
+            "value": "fixed"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "max_width",
+        "label": "Max width",
+        "min": 500,
+        "max": 1180,
+        "step": 20,
+        "unit": "px",
+        "default": 720
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Top Padding",
+        "default": 30
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Bottom Padding",
+        "default": 45
+      },
+      {
+        "type": "header",
+        "content": "Mobile :: Settings"
+      },
+      {
+        "type": "select",
+        "id": "width--mobile",
+        "label": "Width",
+        "default": "mobile-fixed",
+        "options": [
+          {
+            "label": "Full (Edge-to-Edge)",
+            "value": "mobile-full"
+          },
+          {
+            "label": "Fixed",
+            "value": "mobile-fixed"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "padding_top--mobile",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Top Padding",
+        "default": 15
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom--mobile",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Bottom Padding",
+        "default": 40
+      }     
+    ]
+  }
+{% endschema %}

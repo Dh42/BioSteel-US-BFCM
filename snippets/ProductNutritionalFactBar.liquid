@@ -1,0 +1,22 @@
+{%- assign nutritional_fact_one = product.metafields.c_f['[p][_t] 1a. Nutrition Fact One'] -%}
+{%- assign nutritional_fact_two = product.metafields.c_f['[p][_t] 1b. Nutrition Fact Two'] -%}
+{%- assign nutritional_fact_three = product.metafields.c_f['[p][_t] 1c. Nutrition Fact 3'] -%}
+{% if nutritional_fact_one != blank %}
+  <section class="ProductNutritionalFactBar QuickView--hide">
+    <div class="ProductNutritionalFactBar__container">
+      <div class="ProductNutritionalFactBar__placeholder"></div>
+      <div class="ProductNutritionalFactBar__items">
+        {% if nutritional_fact_one != blank %}
+          <p>{{ nutritional_fact_one }}</p>
+        {% endif %}
+        {% if nutritional_fact_two != blank %}
+          <p>{{ nutritional_fact_two }}</p>
+        {% endif %}
+        {% if nutritional_fact_three != blank %}
+          <p>{{ nutritional_fact_three }}</p>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+{% endif %}
+ 

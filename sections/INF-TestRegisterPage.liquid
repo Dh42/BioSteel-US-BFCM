@@ -1,0 +1,246 @@
+<section 
+  id="section{{ section.id }}" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="INF-RegisterPage" 
+  class="Section Section--{{ section.settings.width }} Section--{{ section.settings.width--mobile }}" 
+  style="{% if section.settings.use_background %}background: {{ section.settings.background }};{% endif %}"
+>
+  <div class="Section__container">
+    <div class="RegisterPage">
+      {%- include 'INF-RegisterForm-logic' -%}
+      <div id="form_msg"></div>
+      <div class="errors" id="errors" style="color:red;"></div>
+      <h2 class="success" id="success" style="color:green;"></h2>
+      <div class="reg_form_cont">
+      {% form 'create_customer', class: "Form RegisterForm" %}
+        {% unless section.settings.heading == blank %}<h3 class="Section__heading Register__heading">{{ section.settings.heading }}</h3>{% endunless %}
+        {% unless section.settings.details == blank %}<div class="RegisterPage__details">{{ section.settings.details }}</div>{% endunless %}
+
+        {%- include 'RegisterForm-fields' -%}
+
+        <div class="Form__input-group">
+          <div class="Form__input-item">
+            <input type="hidden" name="customer[accepts_marketing]" value="" />
+            <input style="height: auto;" id="accepts_marketing" type="checkbox" name="customer[accepts_marketing]"{% if shop.currency == 'USD' %} checked="checked"{% endif %}/>
+            {% assign newsletter_default = 'shopify.checkout.marketing.accept_marketing_checkbox_label' | t %}
+            <span class="RegisterForm__newsletter">{{ section.settings.newsletter_text | default: newsletter_default }}</span>
+          </div>
+        </div>
+
+        <div class="Form__submit-group Form__submit-group--centered">
+          {% unless section.settings.required_fields_message == blank %}
+            <div class="RegisterForm__required-fields-message Form__required-fields-message">
+              <span class="Form__required"></span>{{ section.settings.required_fields_message }}
+            </div> 
+          {% endunless %}
+          <input type="submit" value="{{ 'customer.register.submit' | t }}" class="RegisterForm__button Button Button--{{ section.settings.button_style }}">
+          {% unless section.settings.closing_info == blank %}
+            <div class="Form__closing-info">
+              {{ section.settings.closing_info }}
+            </div> 
+          {% endunless %}
+        </div>
+      {% endform %}
+      </div>
+    </div>
+  </div>
+  
+  <style>
+    #section{{ section.id }} .Section__container {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+    @media only screen and (max-width: {{ settings.grid_mobile_max }}) {
+      #section{{ section.id }} .Section__container {
+        padding-top: {{ section.settings.padding_top--mobile }}px;
+        padding-bottom: {{ section.settings.padding_bottom--mobile }}px;
+      }      
+    }
+  </style>
+</section>
+
+
+{% schema %}
+  {
+    "name": "Register Page",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "use_background",
+        "label": "Use background color",
+        "default": false,
+        "info": "Check this to use a custom section background color."
+      },
+      {
+        "type": "color",
+        "id": "background",
+        "label": "Background color",
+        "default": "#fff"
+      },
+      {
+        "type": "header",
+        "content": "Desktop :: Settings"
+      },
+      {
+        "type": "select",
+        "id": "width",
+        "label": "Width",
+        "default": "fixed",
+        "options": [
+          {
+            "label": "Full (Edge-to-Edge)",
+            "value": "full"
+          },
+          {
+            "label": "Fixed",
+            "value": "fixed"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Top Padding",
+        "default": 50
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Bottom Padding",
+        "default": 50
+      },
+      {
+        "type": "header",
+        "content": "Mobile :: Settings"
+      },
+      {
+        "type": "select",
+        "id": "width--mobile",
+        "label": "Width",
+        "default": "mobile-fixed",
+        "options": [
+          {
+            "label": "Full (Edge-to-Edge)",
+            "value": "mobile-full"
+          },
+          {
+            "label": "Fixed",
+            "value": "mobile-fixed"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "padding_top--mobile",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Top Padding",
+        "default": 30
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom--mobile",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Bottom Padding",
+        "default": 40
+      },
+      {
+        "type": "header",
+        "content": "Register Form"
+      },
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading"
+      },
+      {
+        "type": "richtext",
+        "id": "details",
+        "label": "Details"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_labels",
+        "label": "Show input labels",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "newsletter_text",
+        "label": "Newsletter text"
+      },
+      {
+        "type": "select",
+        "id": "button_style",
+        "label": "Button Style",
+        "default": "primary",
+        "options": [
+          {
+            "label": "Primary",
+            "value": "primary"
+          },
+          {
+            "label": "Secondary",
+            "value": "secondary"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "required_fields_message",
+        "label": "Required fields message"
+      },
+      {
+        "type": "richtext",
+        "id": "closing_info",
+        "label": "Closing information"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "custom_field",
+        "name": "Custom Field",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Custom Field will be added to customer note"
+          },
+          {
+            "type": "text",
+            "id": "label",
+            "label": "Label"
+          },
+          {
+            "type": "text",
+            "id": "name",
+            "label": "Name"
+          },
+          {
+            "type": "text",
+            "id": "placeholder",
+            "label": "Placeholder"
+          },
+          {
+            "type": "checkbox",
+            "id": "required",
+            "label": "Required input",
+            "default": false
+          }
+        ]
+      }   
+    ]
+  }
+{% endschema %}

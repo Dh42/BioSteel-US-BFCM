@@ -1,0 +1,269 @@
+{%- comment -%}
+This file was auto-generated with the infinite cli.
+Be sure to review the section schema and change out placeholders like "Section Name" and "SomeBlockType"
+{%- endcomment -%}
+  
+<section 
+  id="section{{ section.id }}" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="ContentBlock" 
+  class="Section Section--{{ section.settings.width }} Section--{{ section.settings.width--mobile }} Animate Animate--slide-up" 
+  style="{% if section.settings.use_background %}background: {{ section.settings.background }};{% endif %}
+  {% if section.settings.use_background_image %}background-image: url('{{ section.settings.background_image | img_url: '2048x' }}');background-size: cover;background-position: 50% 50%;{% endif %}"
+>
+  <div class="Section__container">
+    <div class="ContentBlockCustom">
+      <div class="ContentBlockCustom__content">
+          <h3>{{ section.settings.heading }}</h3>
+          <p>{{ section.settings.sub_heading }}</p>
+          {% if section.settings.cta_button != empty %}
+            <a href="{{ section.settings.cta_button_link }}" class="Button Button--on-image">{{ section.settings.cta_button }}</a>
+          {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <style>
+    #section{{ section.id }} {
+      position: relative;
+    }
+    #section{{ section.id }} .Section__container {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+      height: {{ section.settings.height }}px;;
+    }
+    #section{{ section.id }} .Section__container .ContentBlockCustom__content{
+      color: {{ section.settings.content_color }};
+    }
+
+    #section{{ section.id }} .Section__container .ContentBlockCustom__content h3 {
+      font-size:{{ section.settings.heading_size }}px;
+    }
+    #section{{ section.id }} .Section__container .ContentBlockCustom__content p {
+      font-size:{{ section.settings.subhead_size }}px;
+    }
+
+    @media only screen and (max-width: {{ settings.grid_mobile_max }}) {
+      #section{{ section.id }} .Section__container {
+        padding-top: {{ section.settings.padding_top--mobile }}px;
+        padding-bottom: {{ section.settings.padding_bottom--mobile }}px;
+        height: {{ section.settings.height_mobile }}px;
+      }
+      #section{{ section.id }} .Section__container .ContentBlockCustom__content h3 {
+        font-size:{{ section.settings.heading_size_mobile }}px;
+      }
+      #section{{ section.id }} .Section__container .ContentBlockCustom__content p {
+        font-size:{{ section.settings.subhead_size_mobile }}px;
+      }
+    }
+  </style>
+</section>
+
+{% schema %}
+  {
+    "name": "Content Block",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "use_background",
+        "label": "Use background color",
+        "default": false,
+        "info": "Check this to use a custom section background color."
+      },
+      {
+        "type": "checkbox",
+        "id": "use_background_image",
+        "label": "Use background Image",
+        "default": true,
+        "info": "Check this to use a custom section background imag."
+      },
+      {
+        "type": "image_picker",
+        "id": "background_image",
+        "label": "Image",
+        "info": "For best results, upload a retina background image"
+      },
+      {
+        "type": "color",
+        "id": "background",
+        "label": "Background color",
+        "default": "#fff"
+      },
+      {
+        "type": "html",
+        "id": "heading",
+        "label": "Content Block Heading",
+        "default": "Content Block Heading"
+      },
+      {
+        "type": "html",
+        "id": "sub_heading",
+        "label": "Content Block Sub Heading",
+        "default": "Content Block Sub Heading"
+      },
+      {
+        "type": "color",
+        "id": "content_color",
+        "label": "Content Color",
+        "default": "#fff"
+      },
+      {
+      "type": "text",
+      "id": "cta_button",
+      "label": "Content Block CTA Button Text",
+      "default": "Content Block CTA Button Text"
+      },
+      {
+      "type": "text",
+      "id": "cta_button_link",
+      "label": "Content Block CTA Button Link"
+      },
+      {
+        "type": "header",
+        "content": "Desktop :: Settings"
+      },
+      {
+        "type": "range",
+        "id": "height",
+        "min": 0,
+        "max": 1000,
+        "step": 50,
+        "unit": "px",
+        "label": "Content Block Height",
+        "default": 500
+      },
+      {
+        "type": "range",
+        "id": "heading_size",
+        "min": 10,
+        "max": 50,
+        "step": 5,
+        "unit": "px",
+        "label": "Content Heading font size",
+        "default": 50
+      },
+      {
+        "type": "range",
+        "id": "subhead_size",
+        "min": 10,
+        "max": 28,
+        "step": 2,
+        "unit": "px",
+        "label": "Content Subheading font size",
+        "default": 14
+      },
+      {
+        "type": "select",
+        "id": "width",
+        "label": "Width",
+        "default": "fixed",
+        "options": [
+          {
+            "label": "Full (Edge-to-Edge)",
+            "value": "full"
+          },
+          {
+            "label": "Fixed",
+            "value": "fixed"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Top Padding",
+        "default": 30
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Bottom Padding",
+        "default": 30
+      },
+      {
+        "type": "header",
+        "content": "Mobile :: Settings"
+      },
+      {
+        "type": "range",
+        "id": "height_mobile",
+        "min": 0,
+        "max": 1000,
+        "step": 50,
+        "unit": "px",
+        "label": "Content Block Height on mobile",
+        "default": 350
+      },
+      {
+        "type": "range",
+        "id": "heading_size_mobile",
+        "min": 10,
+        "max": 50,
+        "step": 5,
+        "unit": "px",
+        "label": "Content Heading font size for mobile",
+        "default": 50
+      },
+      {
+        "type": "range",
+        "id": "subhead_size_mobile",
+        "min": 10,
+        "max": 28,
+        "step": 2,
+        "unit": "px",
+        "label": "Content Subheading font size for mobile",
+        "default": 14
+      },
+      {
+        "type": "select",
+        "id": "width--mobile",
+        "label": "Width",
+        "default": "mobile-full",
+        "options": [
+          {
+            "label": "Full (Edge-to-Edge)",
+            "value": "mobile-full"
+          },
+          {
+            "label": "Fixed",
+            "value": "mobile-fixed"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "padding_top--mobile",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Top Padding",
+        "default": 15
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom--mobile",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Bottom Padding",
+        "default": 15
+      }
+    ],
+    "presets": [
+      {
+        "name": "Content Block",
+        "category": "Content"
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,49 @@
+{% assign raw_query = search.terms %}
+
+{%- comment -%} Capture the content for header containing the tracking data {%- endcomment -%}
+{%- capture contentForQuerystring -%}{{ content_for_header }}{%- endcapture -%}
+
+{%- comment -%} Use string splitting to pull the value from content_for_header and apply some string clean up {%- endcomment -%}
+{%- assign pageUrl = contentForQuerystring | split:'"pageurl":"' | last | split:'"' | first | split:'.myshopify.com' | last |
+   replace:'\/','/' |
+  replace:'+',' ' |
+   replace:'%20',' ' |
+   replace:'\u0026','&'
+-%}
+{%- for i in (1..1) -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: i %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+  {%- comment -%} If the string doesn't contain a ? then we have no querystring. Go no further {%- endcomment -%}
+  {%- unless pageUrl contains "?" -%}{% break %}{%- endunless -%}
+
+  {%- comment -%} Split the url at the ? to get all values after it {%- endcomment -%}
+  {%- assign pageQuerystring = pageUrl | split:'?' | last -%}
+
+  {%- comment -%} Split the remaining string at & to get the list of keys and values (if any) {%- endcomment -%}
+  {%- assign parts = pageQuerystring | split:'&' -%}
+
+  {%- comment -%} Loop over them... {%- endcomment -%}
+  {%- for part in parts -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: part %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+    {%- comment -%} Split the part at the =. Not all querystrings will be in pairs so we need to account for that {%- endcomment -%}
+    {%- assign keyAndValue = part | split:'=' -%}
+
+    {%- if keyAndValue.size > 1 -%}
+      {%- if keyAndValue[0] == "raw" -%}
+        {%- assign raw_query = keyAndValue[1] -%}
+      {%- endif -%}
+
+    {%- endif -%}
+  {%- endfor -%}
+{%- endfor -%}

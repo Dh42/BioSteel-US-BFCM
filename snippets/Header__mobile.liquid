@@ -1,0 +1,49 @@
+<header class="Header__mobile" role="banner">
+  <div class="MobileBar">
+
+    <div class="MobileLogo">
+      <a href="/" itemprop="url" class="MobileLogo__{% if section.settings.logo == blank %}text{% else %}image{% endif %}">
+        {%- if section.settings.logo != blank -%}
+          {%- assign image_size = section.settings.mobile_logo_width | times: 3 | append: 'x' -%}
+          <img src="{{ section.settings.logo | img_url: image_size }}" alt="{{ section.settings.logo.alt | default: shop.name }}" itemprop="logo">
+        {%- else -%}
+          {{ shop.name }}
+        {%- endif -%}
+      </a>
+    </div>
+
+    <div class="MobileBar__left">
+      <div class="MobileBar__icon Hamburger" data-hamburger>
+        <a class="Hamburger__icon" data-hamburger-icon>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </a>
+      </div>
+    </div>
+
+    <div class="MobileBar__right">
+      <a class="MobileBar__icon MobileBar__icon--search">{%- include 'INF-IconToggle', icon: 'fa-search', direction: 'down', data: 'data-search-toggle' -%}</a>
+      {% if slide_cart_status != true %}
+      <a class="MobileBar__icon" href="/cart">
+        <div class="IconToggle IconToggle--right">
+          <div class="IconToggle__placeholder">
+            <i class="{{ settings.fa }} {{ settings.cart_icon }}"></i>
+          </div>
+          <div class="IconToggle__closed">
+            <i class="{{ settings.fa }} {{ settings.cart_icon }}"></i>
+            {% if settings.cart_show_item_count %}
+              <span class="IconToggle__count IconToggle__count--cart" data-cart-count="{{ cart.item_count }}">{{ cart.item_count }}</span>
+            {% endif %}
+          </div>
+        </div>
+      </a>
+      {% else %}
+      <a class="MobileBar__icon">{%- include 'INF-IconToggle', icon: settings.cart_icon, direction: 'right', data: 'data-cart-toggle' -%}</a>
+      {% endif %}
+      
+    </div>
+
+  </div>
+</header>

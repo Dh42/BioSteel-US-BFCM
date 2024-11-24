@@ -1,0 +1,154 @@
+<section 
+  id="section{{ section.id }}" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="INF-ArticleContent" 
+  class="Section Section--{{ section.settings.width }} Section--{{ section.settings.width--mobile }}" 
+  style="{% if section.settings.use_background %}background: {{ section.settings.background }};{% endif %}"
+>
+  <div class="Section__container">
+    {% include 'ArticleContent' %}
+  </div>
+  
+  <style>
+    #section{{ section.id }} .Section__container {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+    @media only screen and (max-width: {{ settings.grid_mobile_max }}) {
+      #section{{ section.id }} .Section__container {
+        padding-top: {{ section.settings.padding_top--mobile }}px;
+        padding-bottom: {{ section.settings.padding_bottom--mobile }}px;
+      }
+    }
+
+    #section{{ section.id }} .rte p,
+    #section{{ section.id }} .rte h1,
+    #section{{ section.id }} .rte h2,
+    #section{{ section.id }} .rte h3,
+    #section{{ section.id }} .rte h4,
+    #section{{ section.id }} .rte h5,
+    #section{{ section.id }} .rte ol,
+    #section{{ section.id }} .rte ul {
+      max-width: {{ section.settings.text_max_width }}px;
+    }
+  </style>
+</section>
+
+
+{% schema %}
+  {
+    "name": "Article Content",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_date",
+        "label": "Show date",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "use_background",
+        "label": "Use background color",
+        "default": false,
+        "info": "Check this to use a custom section background color."
+      },
+      {
+        "type": "color",
+        "id": "background",
+        "label": "Background color",
+        "default": "#fff"
+      },
+      {
+        "type": "header",
+        "content": "Desktop :: Settings"
+      },
+      {
+        "type": "select",
+        "id": "width",
+        "label": "Width",
+        "default": "fixed",
+        "options": [
+          {
+            "label": "Full (Edge-to-Edge)",
+            "value": "full"
+          },
+          {
+            "label": "Fixed",
+            "value": "fixed"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "text_max_width",
+        "label": "Text max width",
+        "min": 500,
+        "max": 1180,
+        "step": 20,
+        "unit": "px",
+        "default": 720,
+        "info": "Max width for paragraphs, headings, etc. Images not wrapped in a <p> tag will fill the full/fixed width specified in the 'width' setting above."
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Top Padding",
+        "default": 30
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Bottom Padding",
+        "default": 50
+      },
+      {
+        "type": "header",
+        "content": "Mobile :: Settings"
+      },
+      {
+        "type": "select",
+        "id": "width--mobile",
+        "label": "Width",
+        "default": "mobile-fixed",
+        "options": [
+          {
+            "label": "Full (Edge-to-Edge)",
+            "value": "mobile-full"
+          },
+          {
+            "label": "Fixed",
+            "value": "mobile-fixed"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "padding_top--mobile",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Top Padding",
+        "default": 20
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom--mobile",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Bottom Padding",
+        "default": 30
+      }
+    ]
+  }
+{% endschema %}

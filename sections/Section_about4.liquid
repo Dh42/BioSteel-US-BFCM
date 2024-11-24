@@ -1,0 +1,303 @@
+<style>
+  @media only screen and (min-width: 640px) {
+.Newsletter__content{
+    max-width: 1073px;
+  }
+}
+.colorchange p{
+
+  color: {{ section.settings.thried_heading_coloryth}};
+}
+  .colorfdf p{
+  color: {{ section.settings.sub_heading_colorfdd}};
+  }
+</style>
+
+
+  
+
+{%- comment -%}
+This file was auto-generated with the infinite cli.
+Be sure to review the section schema and change out placeholders like "Section Name" and "SomeBlockType"
+{%- endcomment -%}
+{% if section.settings.enable_section %}
+<section 
+  id="section{{ section.id }}" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="Newsletter" 
+  class="Section Section--{{ section.settings.width }} Section--{{ section.settings.width--mobile }}" 
+  style="{% if section.settings.use_background %}background: {{ section.settings.background_color }};{% endif %}"
+>
+  <div class="Section__container">
+    <div class="Newsletter">
+      <div class="Newsletter__content Animate Animate--slide-up">
+          {% if section.settings.section_title != blank %}
+            <{{ section.settings.heading_sizemn}}  style ="font-size: {{ section.settings.font_size}}px;    color:{{ section.settings.heading_coloree}} ;
+"
+              >{{ section.settings.section_title | escape }}</{{ section.settings.heading_sizemn}}>
+          {% endif %}
+          {% if section.settings.subheading != blank %}
+            <div class="colorfdf" style ="font-size: {{ section.settings.font_sizetwo}}px;" >{{ section.settings.subheading }}</div>
+          {% endif %}
+    <div class="colorchange" style ="font-size: {{ section.settings.font_sizethrid}}px;">{{ section.settings.thriedheading}}</div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    #section{{ section.id }} {
+      position: relative;
+      
+   
+        background-position: 50% 50%;
+        background-size:cover;
+      
+    }
+    #section{{ section.id }} .Section__container {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+    @media only screen and (max-width: {{ settings.grid_mobile_max }}) {
+      #section{{ section.id }} .Section__container {
+        padding-top: {{ section.settings.padding_top--mobile }}px;
+        padding-bottom: {{ section.settings.padding_bottom--mobile }}px;
+      }
+    }
+  #section{{ section.id }} .Newsletter__content h4 {
+    color: {{ section.settings.heading_color }};
+    font-size: {{ section.settings.font_size }}px;
+    line-height: normal;
+  }
+  #section{{ section.id }} .Newsletter__content p {
+    color: {{ section.settings.sub_heading_color }};
+  }
+  @media only screen and (max-width: {{ settings.grid_mobile_max }}) {
+    #section{{ section.id }} {
+      {% if section.settings.background_image_mobile != blank %}
+        background-image: url('{{ section.settings.background_image_mobile | img_url: '2048x' }}');
+        background-position: 50% 50%;
+        background-size:cover;
+      {% endif %}
+    }
+  }
+  </style>
+</section>
+{% endif %}
+{% schema %}
+  {
+    "name": "newSection_5",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_section",
+        "label": "Enable Section ?",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "use_background",
+        "label": "Use background color",
+        "default": false,
+        "info": "Check this to use a custom section background color."
+      },
+      {
+        "type": "color",
+        "id": "background_color",
+        "label": "Background Color",
+        "default": "#fff"
+      },
+      {
+        "type": "checkbox",
+        "id": "use_background_image",
+        "label": "Use background Image",
+        "default": false,
+        "info": "Check this to use a custom section background image."
+      },
+
+     
+      {
+        "type": "text",
+        "id": "section_title",
+        "label": "Heading",
+        "default": "Subscribe to our newsletter"
+      },
+      {
+        "type": "range",
+        "id": "font_size",
+        "min": 12,
+        "max": 40,
+        "step": 2,
+        "unit": "px",
+        "label": "Heading font size",
+        "default": 14
+      },
+      {
+        "type": "color",
+        "id": "heading_coloree",
+        "label": "Heading Color",
+        "default": "#fff"
+      }, 
+      {
+        "type": "richtext",
+        "id": "subheading",
+        "label": "Subheading",
+        "default": "<p>A short sentence describing what someone will receive by subscribing</p>"
+      },
+      {
+        "type": "range",
+        "id": "font_sizetwo",
+        "min": 12,
+        "max": 40,
+        "step": 2,
+        "unit": "px",
+        "label": "Heading font size",
+        "default": 14
+      },
+      {
+        "type": "color",
+        "id": "sub_heading_colorfdd",
+        "label": "Sub Heading Color-2",
+        "default": "#fff"
+      },
+      {
+        "type": "richtext",
+        "id": "thriedheading",
+        "label": "Third heading",
+        "default": "<p>A short sentence describing what someone will receive by subscribing</p>"
+      },{
+        "type": "range",
+        "id": "font_sizethrid",
+        "min": 12,
+        "max": 40,
+        "step": 2,
+        "unit": "px",
+        "label": "Heading font size",
+        "default": 14
+      },
+      {
+        "type": "color",
+        "id": "thried_heading_coloryth",
+        "label": "sub Heading Color-3",
+        "default": "#fff"
+      },
+      {
+        "type": "paragraph",
+        "content": "Any customers who sign up will have an account created for them in Shopify. [View customers](/admin/customers?query=&accepts_marketing=1)"
+      },
+      {
+        "type": "header",
+        "content": "Desktop :: Settings"
+      },
+      {
+        "type": "select",
+        "id": "width",
+        "label": "Width",
+        "default": "fixed",
+        "options": [
+          {
+            "label": "Full (Edge-to-Edge)",
+            "value": "full"
+          },
+          {
+            "label": "Fixed",
+            "value": "fixed"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Top Padding",
+        "default": 30
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Bottom Padding",
+        "default": 30
+      },
+      {
+      "type": "select",
+      "id": "heading_sizemn",
+      "options": [
+        {
+          "value": "h2",
+          "label": "h1"
+        },
+        {
+          "value": "h1",
+          "label": "h2"
+        },
+        {
+          "value": "h4",
+          "label": "h3"
+        },
+        {
+          "value": "h3",
+          "label": "h4"
+        },
+        {
+          "value": "h5",
+          "label": "h5"
+        }
+      ],
+      "default": "h1",
+      "label": "Heading Tag 1"
+    },
+      {
+        "type": "header",
+        "content": "Mobile :: Settings"
+      },
+      {
+        "type": "select",
+        "id": "width--mobile",
+        "label": "Width",
+        "default": "mobile-full",
+        "options": [
+          {
+            "label": "Full (Edge-to-Edge)",
+            "value": "mobile-full"
+          },
+          {
+            "label": "Fixed",
+            "value": "mobile-fixed"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "padding_top--mobile",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Top Padding",
+        "default": 15
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom--mobile",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Bottom Padding",
+        "default": 15
+      }
+    ],
+    "presets": [
+      {
+        "name": "newSection_5",
+        "category": "Promotional"
+      }
+    ]
+  }
+{% endschema %}

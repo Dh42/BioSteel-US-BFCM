@@ -1,0 +1,39 @@
+ {% if product_url != blank %}
+
+        <a class="ProductTile__button Button Button--primary" href="{{ product_url }}" target="_blank">Buy Now</a>
+
+    {% else %}
+      <form class="ProductInfo__form" action="/cart/add" method="post" enctype="multipart/form-data">
+        {%- assign current_variant = product.selected_or_first_available_variant -%}
+        <input type="hidden" name="id" value="{{ current_variant.id }}" />
+        <input type="hidden" name="quantity" value="1" />
+        
+        {% if product.tags contains "BUNDLE_PRODUCT" and product.metafields.bundle and product.metafields.bundle.variants %}
+        <button 
+          type="button" 
+          class="bundle_add_cart_coll ProductTile__button Button Button--primary"
+          variant_ids="{{product.metafields.bundle.variants}}"
+        >
+          <span data-add-to-cart-text>
+            {{ 'products.product.add_to_cart' | t }}
+          </span>
+        </button>
+        {% else %}
+        <button 
+          type="submit" 
+          name="add" 
+          class="ProductTile__button Button Button--primary" 
+          data-add-to-cart 
+          {% unless current_variant.available %}disabled="disabled"{% endunless %}
+        >
+          <span data-add-to-cart-text>
+            {% if current_variant.available %}
+              {{ 'products.product.add_to_cart' | t }}
+            {% else %}
+              {{ 'products.product.sold_out' | t }}
+            {% endif %}
+          </span>
+        </button>
+        {% endif %}
+      </form>
+    {% endif %}

@@ -1,0 +1,41 @@
+{% if product.tags contains 'shortdated' and current_variant.available %}
+  <span class="shortdated" style="margin-bottom:10px">
+<span class="trigger"><i class="far fa-warning"></i>Short dated product</span>
+    <span class="sd_popup">This product will expire in less than 90 days.<br> Buy now while it's still fresh!</span>
+  </span>
+  {% endif %}
+  <div></div>
+<div class="ProductInfo__quantity ProductOption">
+  <div class="ProductOption__name">QTY</div>
+  {% if settings.quantity_ui == 'input' %}
+    <div class="Quantity__button Quantity__button--left" data-quantity-minus><i class="{{ settings.fa }} fa-minus }}"></i></div>
+    <input 
+      class="Quantity__input {% unless settings.quantity_input_allowed %}Quantity__input--readonly{% endunless %}" 
+      type="number" 
+      name="quantity" 
+      value="1" 
+      min="1"
+      data-quantity-input 
+      {% unless settings.quantity_input_allowed %}readonly{% endunless %}
+    >
+    <div class="Quantity__button Quantity__button--right" data-quantity-plus><i class="{{ settings.fa }} fa-plus }}"></i></div>
+  {% else %}
+    <select id="Quantity" name="quantity" class="ProductInfo__quantity-select">
+    {% for i in (1..10) %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: i %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+      <option
+        value="{{ i }}" 
+        {%- if i > 4 -%} class="QuickView--hide" {%- endif -%}
+      >
+        {{ i }}
+      </option>
+    {% endfor %}
+    </select>
+  {% endif %}
+</div>

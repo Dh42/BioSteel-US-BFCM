@@ -1,0 +1,41 @@
+{% assign price_left = section.settings.threshold | times: 100 | minus: cart.total_price %}
+{%- capture free_gift_message -%}
+  Add <span class="FreeGift__remaining" data-gift-remaining="{{ price_left }}">
+    {{ price_left | money }}
+    {% if settings.show_currency %} <span class="FreeGift__currency">{{ shop.currency }}</span>{% endif %}
+  </span> 
+  <span class="FreeGift__sentence--desktop">to your cart</span>
+  to get your free gift!
+{%- endcapture -%}
+{%- capture free_gift_val_1 -%}
+  <span class="FreeGift__remaining" data-gift-remaining="{{ price_left }}">
+    {{ price_left | money }}
+    {% if settings.show_currency %} <span class="FreeGift__currency">{{ shop.currency }}</span>{% endif %}
+  </span> 
+  <span class="FreeGift__sentence--desktop">
+{%- endcapture -%}
+
+<div class="FreeGift {% if price_left <= 0 %}FreeGift--qualified{% endif %}" data-gift>
+  <p class="FreeGift__sentence">
+    {% include 'INF-translation', translate: 'cart.general.free_gift_message_html', val_1: free_gift_val_1, val_2: '</span>', default: free_gift_message %}
+  </p>
+  <div class="FreeGift__product">
+    {% assign gift_image = gift.featured_image %}
+    {% for image in gift.images %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: image %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+      {% if image.alt == 'gift' %}
+        {% assign gift_image = image %}
+        {% break %}
+      {% endif %}
+    {% endfor %}
+    <a href="{{ gift.url }}"><img class="FreeGift__image" src="{{ gift_image | img_url: '420x' }}" alt="{{ gift.title }}"></a>
+    <a href="{{ gift.url }}" class="FreeGift__title">{{ gift.title }}</a>
+    <p class="FreeGift__price">({{ gift.price | money }}{% if settings.show_currency %} <span class="FreeGift__currency">{{ shop.currency }}</span>{% endif %} value)</p>
+  </div>
+</div>

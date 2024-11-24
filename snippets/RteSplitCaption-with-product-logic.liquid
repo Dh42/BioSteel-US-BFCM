@@ -1,0 +1,60 @@
+{% assign caption_split = content | split: 'data-rte-split-caption=""' | join: 'data-rte-split-caption' | split: 'data-rte-split-caption' %}
+{% for attr in caption_split %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: attr %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+  {% assign img = attr | split: 'data-img-src="' %}
+  {% assign img = img[1] | split: '"' | first %}
+  {% assign end_of_img = img | append: '" ' %}
+  {% assign img_position =  attr | split: end_of_img | last | split: 'data-img-position="' %}
+  {% assign img_position = img_position[1] | split: '"' | first %}
+  {% assign end_of_img_position = img_position | append: '" ' %}
+  {% assign product_handle = attr | split: end_of_img_position %}
+  {% assign product_handle = product_handle[1] | split: 'data-product="' %}
+  {% assign product_handle = product_handle[1] | split: '"' | first %}
+  {% assign end_of_product_handle = 'data-product="' | append: product_handle | append: '">' %}
+  {% assign caption =  attr | split: end_of_product_handle %}
+  {% assign caption =  caption[1] | split: '</div>' | first %}
+
+    {% comment %} empty attributes may or may not have assigned blank value, depending on if content has been edited - we'll just handle  both cases {% endcomment %}
+  {% assign old_html_1 = '<div data-rte-split-caption data-img-src="' | append: img | append: '" ' | append: 'data-img-position="' | append: img_position | append: '" ' | append: 'data-product="' | append: product_handle | append: '">' | append: caption | append: '</div>' %}
+  {% assign old_html_2 = '<div data-rte-split-caption="" data-img-src="' | append: img | append: '" ' | append: 'data-img-position="' | append: img_position | append: '" ' | append: 'data-product="' | append: product_handle | append: '">' | append: caption | append: '</div>' %}
+  {% capture new_html %}
+    <section class="Section Section--fixed Section--mobile-full">
+      <div class="Section__container">
+        <div class="Caption RteSplitCaption">
+          {% assign caption_product = all_products[product_handle] %}
+          {%- capture image_panel -%}
+            <div class="Caption__panel Caption__product AnimateOnLoad Animate--slide-up">
+              {%- capture product_content -%}
+                <a href="{{ caption_product.url }}" aria-label="{{ caption_product.title }}"><img onload="elementLoaded(this);" src="{{ img }}"></a>
+                <div class="Caption__product-title"><a aria-hidden="true" href="{{ caption_product.url }}">{{ caption_product.title }}</a></div>
+                <div class="Caption__product-price">{% include 'product-pricing-logic', product: caption_product %}</div>
+              {%- endcapture -%}
+              <div class="Caption__product-main">{{ product_content }}</div>
+              <div class="SizingContent" aria-hidden="true" data-prevent-tab>{{ product_content }}</div>
+            </div>
+          {%- endcapture -%}
+          {%- capture content_panel -%}
+            <div class="Caption__panel Animate Animate--slide-up">
+              <div class="Caption__content Caption__content--full">{{ caption }}</div>
+              <div class="Caption__content Caption__content--full SizingContent" aria-hidden="true" data-prevent-tab>{{ caption }}</div>
+            </div>
+          {%- endcapture -%}
+          {%- if img_position == 'left' -%}
+            {{ image_panel }}
+            {{ content_panel }}
+          {%- else -%}
+            {{ content_panel }}
+            {{ image_panel }}
+          {%- endif -%}
+        </div>
+      </div>
+    </section>
+  {% endcapture %}
+  {% assign content = content | replace: old_html_1, new_html | replace: old_html_2, new_html %}
+{% endfor %}

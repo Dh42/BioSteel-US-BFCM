@@ -1,0 +1,91 @@
+{% for block in section.blocks %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: block %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+
+  {% case block.type %}
+
+    {% when 'image-full-width' %}
+    {% include 'image-full-width-block' %}
+
+    {% when 'custom-html' %}
+    {% include 'custom-html-block' %}
+
+    {% when 'join-team-form' %}
+    {% include 'join-team-form-block' %}
+
+  {% endcase %}
+
+{% endfor %}
+
+{% schema %}
+  {
+    "name": "Landing Page Sections",
+    "settings": [],
+    "blocks": [
+      {
+        "type": "image-full-width",
+        "name": "Image Full Width",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image_desktop",
+            "label": "Desktop Image"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_mobile",
+            "label": "Mobile Image"
+          },
+          {
+            "type": "url",
+            "id": "image_link",
+            "label": "Image link"
+          }
+        ]
+      },
+      {
+        "type": "custom-html",
+        "name": "Custom Html",
+        "settings": [
+          {
+            "type": "html",
+            "id": "title",
+            "label": "Heading"
+          },
+          {
+            "type": "html",
+            "id": "content",
+            "label": "Content"
+          },
+          {
+            "type": "select",
+            "id": "align_text",
+            "label": "Text alignment",
+            "default": "left",
+            "options": [
+              {
+                "value": "left",
+                "label": "Left"
+              },
+              {
+                "value": "center",
+                "label": "Centered"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "join-team-form",
+        "name": "Join Team Form",
+        "settings": [
+        ]
+      }
+    ]
+  }
+{% endschema %}

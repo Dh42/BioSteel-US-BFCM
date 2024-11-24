@@ -1,0 +1,32 @@
+{%- capture search_input_classes -%}
+  Banner__search-input
+  {% if block.settings.submit_button_text == blank %} Banner__search-input--no-button{% endif %}
+  {% if block.settings.show_search_icon %} Form__icon-neighbor{% endif %}
+{%- endcapture -%}
+
+<form class="Form" data-search-form action="/search">
+  <span class="Form__align-item">
+    {% if block.settings.show_search_icon %}<i class="{{ settings.fa }} fa-search Form__icon"></i>{% endif %}
+    <input 
+      class="{{ search_input_classes }}"
+      type="text" 
+      data-search-input
+      {% unless block.settings.search_main_field == blank %}data-prepend="{{ block.settings.search_main_field }}:"{% endunless %}
+      {% unless block.settings.search_hidden_field_value == blank %}
+        data-condition="{{ condition }}" 
+        data-append="{% unless block.settings.search_hidden_field == blank %}{{ block.settings.search_hidden_field }}:{% endunless %}{{ block.settings.search_hidden_field_value }}"
+      {% endunless %}
+      placeholder="{{ block.settings.search_placeholder }}"
+      value="{{ raw_query | escape }}"
+    >
+  </span>
+  <input type="hidden" name="q" data-search-query>
+  <input type="hidden" name="raw" data-search-raw>
+  <input name="type" type="hidden" value="{{ block.settings.search_type }}">
+  {%- unless block.settings.search_view == blank -%}
+    <input name="view" type="hidden" value="{{ block.settings.search_view }}">
+  {%- endunless -%}
+  {%- unless block.settings.submit_button_text == blank -%}
+    <input type="submit" class="Button Button--{{ block.settings.submit_button_style }} Form__align-item" value="{{ block.settings.submit_button_text }}">
+  {%- endunless -%}
+</form>

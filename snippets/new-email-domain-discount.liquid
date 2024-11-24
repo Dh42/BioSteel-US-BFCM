@@ -1,0 +1,101 @@
+{% if settings.domain_based_discount_enable == true %}
+<script type="text/javascript">
+  let discounts = [];  
+</script>
+{% assign domains = settings.domains_list | split:"|" %}
+{% assign coupons = settings.coupons_list | split:"," %}
+
+{% for i in (1..6) %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: i %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+{% assign key1 = "domain_based_discount_enable" | append:i %}
+{% assign key2 = "domains_list" | append:i %}
+{% assign key3 = "coupons_list" | append:i %}
+
+{% assign domains_list = settings[key2] | split:"," %}
+{% assign coupon = settings[key3] %}
+
+{% if domains_list.size > 0 and coupon.size > 0 %}
+<script type="text/javascript">
+  discounts.push({
+    domains: {{domains_list|json}},
+    coupon: "{{coupon}}"
+  });
+</script>
+{% endif %}
+
+{% endfor %}
+
+<script type="text/javascript">
+  
+  function getEmailDomain(){
+    var emailDomain = null;
+    var cemail = '{{ checkout.email }}';
+    if(cemail && cemail != "" && cemail != null){
+      var email_arr = cemail.split("@");
+      if(email_arr && email_arr[1]){
+        emailDomain = email_arr[1];
+      }
+    }
+    return emailDomain;
+  }
+  
+  function getDomainDiscount(emailDomain){
+    if(discounts.length > 0){
+      for(var key in discounts){
+        var domains = discounts[key].domains;
+        if(domains.indexOf(emailDomain) !== -1){
+          return discounts[key];
+        }
+      }
+    }    
+  }
+  
+  
+  var checkDomainDiscountTimer;
+  function checkDomainDiscountCoupon(){
+    var emailDomain = getEmailDomain();
+    var discount = getDomainDiscount(emailDomain);
+    if(!emailDomain || !discount || !discount.domains || !discount.coupon) return;
+    var staffCouponCode = discount.coupon;
+    var staffEmailDomain = discount.domains;
+    
+    var staffDiscountFound = false;
+    var otherDiscountFound = false;
+    
+    $('.reduction-code').each(function(i,obj){
+      var couponCode = ($(this).find(".reduction-code__text").text()).trim();      
+      
+      if(couponCode == staffCouponCode){
+        if(staffEmailDomain.includes(emailDomain)){
+          staffDiscountFound = true;
+          clearInterval(checkDomainDiscountTimer);
+        }
+        else{
+          $(this).parent().parent().find(".tag__button").click();
+        }
+      }
+      else if(couponCode && couponCode != "" && couponCode != null){
+        otherDiscountFound = true;
+      }
+    });
+    
+    if(staffEmailDomain.includes(emailDomain) && staffDiscountFound == false && otherDiscountFound == false){  
+      $("#checkout_reduction_code").val(staffCouponCode);
+      $("#checkout_reduction_code").parent().parent().find(".field__input-btn").removeAttr("disabled");
+      $("#checkout_reduction_code").parent().parent().find(".field__input-btn").click();
+    }
+  }
+  
+  $(document).ready(function(){
+    checkDomainDiscountTimer = setInterval(checkDomainDiscountCoupon,1000);
+  });
+  
+</script>
+
+{% endif %}

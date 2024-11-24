@@ -1,0 +1,44 @@
+{{ 'modernizr.min.js' | asset_url | script_tag }}
+{{ 'magnific.scss.css' | asset_url | stylesheet_tag }}
+{{ 'magnific.js' | asset_url | script_tag }}
+{{ 'toucheffects.js' | asset_url | script_tag }}
+<div id="geo-popup" class="white-popup mfp-hide">
+  We've detected that you are in US. Would you like to go to the US Store? If not, click below to set your location to the CA.
+  <br>
+  <input id="close-button-CA" type="button" value="Stay on the Canada" style="cursor:pointer;" />
+  <input id="close-button-US" type="button" value="Change to U.S. store" style="cursor:pointer;" />
+</div>
+
+<script type="text/javascript">
+  $('#close-button-US').click(function(){
+    localStorage.setItem('CountryCode','US');
+    window.location.href = "https://www.biosteel.com/";
+    //$.magnificPopup.close();
+  });
+  $('#close-button-CA').click(function(){
+    localStorage.setItem('CountryCode','CA');
+    $.magnificPopup.close();
+  });
+  $(document).ready(function(){
+    if(localStorage.getItem("CountryCode") != 'CA'){
+      $.ajax({
+        //url:"https://api.wipmania.com/jsonp?callback=?",
+        url:"https://ipinfo.io?callback=?",
+        dataType: "jsonp",
+      }).done(function(data){
+        //console.log(data);
+        //var CountryCode = data.address.country_code;
+        var CountryCode = data.country;
+        localStorage.setItem('CountryCode', CountryCode);
+        if(CountryCode != 'CA'){
+          $.magnificPopup.open({
+            items: {
+              src: '#geo-popup',
+              type: 'inline'
+            }
+          });
+        }          
+      });
+    }
+  });
+</script>

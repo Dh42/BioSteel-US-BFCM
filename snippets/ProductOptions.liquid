@@ -1,0 +1,8 @@
+{%- assign related_products_collection = product.metafields.c_f['[p][_t] Product Related'] -%}
+{%- if related_products_collection -%}
+{%- assign collection = collections[related_products_collection] -%}
+{%- assign product_size = collection.products.size -%}
+  {%- if product_size > 1 -%}
+    <p class="ProductTile__option">+ {{ product_size | minus: 1 }} option{%- if product_size > 2 -%}s{%- endif -%}</p>
+  {%- endif -%}
+{%- endif -%}

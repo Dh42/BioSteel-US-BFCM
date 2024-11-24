@@ -1,0 +1,9 @@
+<div class="FrequentlyAskedQuestions">
+    {% assign cq_handle = product.handle | prepend: 'frequently-asked-questions/' %}
+    {% assign frequently_asked_questions = articles[cq_handle] %}
+    {% unless frequently_asked_questions == empty %}
+        <div class="common__questions--container">
+               {{ frequently__asked_questions.content }}
+        </div>
+    {% endunless %}
+</div>

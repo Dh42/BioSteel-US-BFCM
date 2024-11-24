@@ -1,0 +1,20 @@
+<div class="NavList__dropdown" data-nav-dropdown>
+  <ul class="NavList__sublist NavList__sublist--in-dropdown" id="sublist{% increment sublist_number %}" data-nav-sublist>
+  {%- for child_link in link.links -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: child_link %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+    {%- assign child_link_title = child_link.title | replace: '[[ ', icon_start | replace: '[[', icon_start | replace: ' ]]', icon_end | replace: ']]', icon_end -%}
+    <li class="NavList__item">
+      <a href="{{ child_link.url }}">
+        {%- if section.settings.nav_tier3_bullets -%}<i class="{{ settings.fa }} {{ section.settings.nav_tier3_bullets }}"></i> &nbsp;{%- endif -%}
+        {{ child_link_title }}
+      </a>
+    </li>
+  {%- endfor -%}
+  </ul>
+</div>

@@ -1,0 +1,33 @@
+{%- section 'PageBanner' -%}
+<div class="TeamBiosteel">
+  <div class="Section--fixed Section--mobile-fixed">
+    <div class="TeamBiosteel__container Section__container">
+      {%- paginate blogs['team-biosteel'].articles by 50 -%}
+          {%- for article in blogs['team-biosteel'].articles limit: 50 -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: article %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+            {%- assign facebook_link = article.metafields.c_f.facebook_link -%}
+            {%- assign instagram_link = article.metafields.c_f.instagram_link -%}
+            {%- assign twitter_link = article.metafields.c_f.twitter_link -%}
+            {%- assign short_description = article.metafields.c_f.short_description -%}
+              {%- include 'TeamTile' -%}
+          {%- endfor -%}
+
+          {% comment %} {% if paginate.next %}
+            <div class="pagination">
+              <a href="{{ paginate.next.url }}" class="viewMore--btn">View More</a>
+            </div>
+          {% endif %} {% endcomment %}
+
+        {% endpaginate %}
+
+      </div>
+
+  </div>
+</div>
+{%- section 'newsletter' -%}

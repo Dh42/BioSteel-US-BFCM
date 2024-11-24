@@ -1,0 +1,54 @@
+{% assign value_prop_image_1 = product.metafields.c_f['[p][_t] 3a. Value Prop Image 1'] %}
+{% assign value_prop_title_1 = product.metafields.c_f['[p][_t] 3a. Value Prop Title 1']%}
+{% assign value_prop_image_2 = product.metafields.c_f['[p][_t] 3b. Value Prop Image 2'] %}
+{% assign value_prop_title_2 = product.metafields.c_f['[p][_t] 3b. Value Prop Title 2']%}
+{% assign value_prop_image_3 = product.metafields.c_f['[p][_t] 3c. Value Prop Image 3'] %}
+{% assign value_prop_title_3 = product.metafields.c_f['[p][_t] 3c. Value Prop Title 3']%}
+
+<div class="ProductValuePropImage__images" style="display:none">
+{% if value_prop_image_1 != blank %}
+  <div class="ProductValuePropImage__block">
+    <div class="ProductValuePropImage__image">
+        <img src="{{ value_prop_image_1 }}">
+    </div>
+    <div class="ProductValuePropImage__content">
+      <h3>{{ value_prop_title_1 }}</h3>
+    </div>
+    <div class="ProductValuePropImage__overlay"></div>
+  </div>
+{% endif %}
+{% if value_prop_image_2 != blank %}
+  <div class="ProductValuePropImage__block">
+    <div class="ProductValuePropImage__image">
+        <img src="{{ value_prop_image_2 }}">
+    </div>
+    <div class="ProductValuePropImage__content">
+      <h3>{{ value_prop_title_2 }}</h3>
+    </div>
+    <div class="ProductValuePropImage__overlay"></div>
+  </div>
+{% endif %}
+{% if value_prop_image_3 != blank %}
+  <div class="ProductValuePropImage__block">
+    <div class="ProductValuePropImage__image">
+        <img src="{{ value_prop_image_3 }}">
+    </div>
+    <div class="ProductValuePropImage__content">
+      <h3>{{ value_prop_title_3 }}</h3>
+    </div>
+    <div class="ProductValuePropImage__overlay"></div>
+  </div>
+{% endif %}
+</div>
+{% schema %}
+  {
+    "name": "Product Value Images",
+    "settings": []
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

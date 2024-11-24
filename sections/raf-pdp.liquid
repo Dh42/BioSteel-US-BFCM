@@ -1,0 +1,53 @@
+{% if customer %}
+{% if template contains 'product' %}
+<script>
+if(universalType){
+var universalType = 'loaded';
+}else{
+var universalType = 'RAFPDP';
+}
+var sa_page = '2';
+</script>
+<style>
+div#AC_refer_friend {
+display: block;
+float: left;
+margin: 2% 3%;
+cursor:pointer;
+}
+</style>
+<script>
+var node = document.createElement('div');
+node.setAttribute('id','AC_refer_friend');
+node.setAttribute('onclick','s2_raf_popup();');
+node.innerHTML = '<p><img src=https://cdn.socialannex.com/custom_images/8989280/ELSGBN_ref-friend.png alt=sharelink /></p>';
+document.getElementsByClassName('product-single')[0].appendChild(node);
+if(universalType!='loaded'){
+if(!document.getElementById('acUniversal')){
+var sa_uni = sa_uni || [];
+sa_uni.push(['sa_pg', sa_page]);
+(function () { function a_async_load() {
+var sa = document.createElement('script');
+sa.type = 'text/javascript';
+sa.id = 'acUniversal';
+sa.async = true;
+sa.src = '//cdn.socialannex.com/partner/37966021/universal.js';
+var sax = document.getElementsByTagName('script')[0];
+sax.parentNode.insertBefore(sa, sax);
+} if (window.attachEvent) {
+window.attachEvent('onload', sa_async_load);
+} else {
+window.addEventListener('load', sa_async_load, false);
+}
+})();
+}
+} 
+</script>
+{% if customer %}
+<input type='hidden' id='sa_cust_email' value='{{ customer.email }}' > 
+<input type='hidden' id='sa_cust_fname' value='{{ customer.first_name }}' >
+ <input type='hidden' id='sa_cust_lname' value='{{ customer.last_name }}' >
+{% endif %}
+<div id='sa_refer_friend' style='display: none;'></div>
+{% endif %}
+{% endif %}

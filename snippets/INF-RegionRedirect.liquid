@@ -1,0 +1,26 @@
+<div class="Modal {% if settings.preheader_enabled %}Modal--has-preheader{% endif %} RegionRedirect" data-modal data-region-redirect-modal>
+  <div class="Modal__close Modal__close--outside" data-close-modal>
+    {% include 'CloseIcon' %}
+  </div>
+  <div class="Modal__overlay" data-close-modal></div>
+  <div class="Modal__content">
+    <div class="Modal__close Modal__close--inside" data-close-modal>
+      {% include 'CloseIcon' %}
+    </div>
+    <h2 class="Modal__heading">{{ 'region_redirect.modal.title' | t }}</h2>
+    <p>{{ 'region_redirect.modal.intro' | t }}</p>
+    <div class="RegionRedirect__location">
+      <div class="RegionRedirect__flag"><img data-region-redirect-flag></div>
+      <h4 class="RegionRedirect__country" data-region-redirect-country></h4>
+    </div>
+    <p>
+      {{ 'region_redirect.modal.question_start' | t }} 
+      <a class="RegionRedirect__domain" data-region-redirect-url data-region-redirect-domain></a> 
+      {{ 'region_redirect.modal.question_end' | t }}
+      <span data-region-redirect-country></span>.
+    </p>
+    <a class="Button Button--primary RegionRedirect__button RegionRedirect__button--yes" data-region-redirect-url data-region-redirect-button>
+      {{ 'region_redirect.modal.yes' | t }}
+    </a>
+  </div>
+</div>

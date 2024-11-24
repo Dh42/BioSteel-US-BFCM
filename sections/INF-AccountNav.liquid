@@ -1,0 +1,317 @@
+{%- assign background_opacity = section.settings.background_opacity | divided_by: 100.0 -%}
+{%- assign background = section.settings.background | color_modify: 'alpha', background_opacity -%}
+
+<section 
+  id="section{{ section.id }}" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="INF-MyOrders"
+  style="background: {{ background }};"
+>
+  <div class="Section__container AccountNav">
+    <ul class="AccountNav__list">
+    {%- assign request_path = request.path | downcase -%}
+      <li class="AccountNav__item {% if request_path == settings_path %} AccountNav__item--active{% endif %}"><a href="/pages/loyalty-dashboard">My Rewards</a></li>
+      {%- for block in section.blocks -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: block %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+      {%- assign settings_path = block.settings.url | downcase -%}
+      <li class="AccountNav__item {% if request_path == settings_path %} AccountNav__item--active{% endif %}"><a href="{{ block.settings.url }}">{{ block.settings.title }}</a></li>
+      {%- endfor -%}
+      {% if customer.metafields.subscriptions.customer_string %}
+      <li class="AccountNav__item"><a href="/tools/recurring/customer/{{customer.metafields.subscriptions.customer_string}}/subscriptions/">Manage Subscriptions</a></li>      
+      {% endif %}
+    </ul>
+  </div>
+
+  <style>
+    {{ section.settings.font | font_face }}
+
+    #section{{ section.id }} .AccountNav {
+      height: {{ section.settings.height }}px;
+    }    
+    #section{{ section.id }} .AccountNav__item {
+      line-height: {{ section.settings.height }}px;
+      font-family: {{ section.settings.font.family }}, {{ section.settings.font.fallback_families }};
+      font-size: {{ section.settings.font_size }}px;
+      font-weight: {{ section.settings.font.weight }};
+      font-style: {{ section.settings.font.style }};
+      text-transform: {{ section.settings.text_capitalization }};
+    }
+    #section{{ section.id }} a {
+      color: {{ section.settings.link_color }};
+    }
+    #section{{ section.id }} a:hover {
+      color: {{ section.settings.link_color--hover }};
+    }
+
+    {%- if section.settings.inside_banner -%}
+      #section{{ section.id }} {
+        margin-top: -{{ section.settings.height }}px;
+        position: relative;
+        z-index: 1;
+      }
+
+      #SectionINF-PageBanner .Overlay--center .Overlay__content,
+      #SectionINF-PageBanner .Overlay--center-left .Overlay__content,
+      #SectionINF-PageBanner .Overlay--center-right .Overlay__content {
+        margin-top: -{{ section.settings.height | divided_by: 2 }}px;
+      }
+
+      #SectionINF-PageBanner .Overlay--bottom-center .Overlay__content,
+      #SectionINF-PageBanner .Overlay--bottom-left .Overlay__content,
+      #SectionINF-PageBanner .Overlay--bottom-right .Overlay__content {
+        bottom: {{ section.settings.height }}px;
+      }
+    {%- endif -%}
+
+    /* TABLET */
+    @media only screen and (max-width: {{ settings.grid_tablet_max }}) {
+      #section{{ section.id }} .AccountNav {
+        height: {{ section.settings.height--tablet }}px;
+      }      
+      #section{{ section.id }} .AccountNav__item {
+        line-height: {{ section.settings.height--tablet }}px;
+        font-size: {{ section.settings.font_size--tablet }}px;
+      }
+
+      {%- if section.settings.inside_banner -%}
+        #section{{ section.id }} {
+          margin-top: -{{ section.settings.height--tablet }}px;
+        }
+
+        #SectionINF-PageBanner .Overlay--center .Overlay__content,
+        #SectionINF-PageBanner .Overlay--center-left .Overlay__content,
+        #SectionINF-PageBanner .Overlay--center-right .Overlay__content {
+          margin-top: -{{ section.settings.height--tablet | divided_by: 2 }}px;
+        }
+
+        #SectionINF-PageBanner .Overlay--bottom-center .Overlay__content,
+        #SectionINF-PageBanner .Overlay--bottom-left .Overlay__content,
+        #SectionINF-PageBanner .Overlay--bottom-right .Overlay__content {
+          bottom: {{ section.settings.height--tablet }}px;
+        }
+      {%- endif -%}
+    }
+
+    /* MOBILE */
+    @media only screen and (max-width: {{ settings.grid_mobile_max }}) {
+      #section{{ section.id }} .AccountNav {
+        height: {{ section.settings.height--mobile }}px;
+      }      
+      #section{{ section.id }} .AccountNav__item {
+        line-height: {{ section.settings.height--mobile }}px;
+        font-size: {{ section.settings.font_size--mobile }}px;
+      }
+
+      {%- if section.settings.inside_banner -%}
+        #section{{ section.id }} {
+          margin-top: -{{ section.settings.height--mobile }}px;
+        }
+
+        #SectionINF-PageBanner .Overlay--center .Overlay__content,
+        #SectionINF-PageBanner .Overlay--center-left .Overlay__content,
+        #SectionINF-PageBanner .Overlay--center-right .Overlay__content {
+          margin-top: -{{ section.settings.height--mobile | divided_by: 2 }}px;
+        }
+
+        #SectionINF-PageBanner .Overlay--bottom-center .Overlay__content,
+        #SectionINF-PageBanner .Overlay--bottom-left .Overlay__content,
+        #SectionINF-PageBanner .Overlay--bottom-right .Overlay__content {
+          bottom: {{ section.settings.height--mobile }}px;
+        }
+      {%- endif -%}
+    }
+  </style>
+</section>
+
+{% schema %}
+  {
+    "name": "Account Navigation",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "inside_banner",
+        "label": "Display inside page banner",
+        "default": false
+      },
+      {
+        "type": "color",
+        "id": "background",
+        "label": "Background color",
+        "default": "#000"
+      },
+      {
+        "type": "range",
+        "id": "background_opacity",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "%",
+        "label": "Background opacity",
+        "default": 100
+      },
+      {
+        "type": "color",
+        "id": "link_color",
+        "label": "Link color",
+        "default": "#fff"
+      },
+      {
+        "type": "color",
+        "id": "link_color--hover",
+        "label": "Link color (hover)",
+        "default": "#ccc"
+      },
+      {
+        "type": "font_picker",
+        "id": "font",
+        "default": "open_sans_n4",
+        "label": "Font family"
+      },
+      {
+        "type": "select",
+        "id": "text_capitalization",
+        "label": "Text capitalization",
+        "default": "uppercase",
+        "options": [
+          {
+            "label": "Uppercase (all caps)",
+            "value": "uppercase"
+          },
+          {
+            "label": "Capitalize (first letter)",
+            "value": "capitalize"
+          },
+          {
+            "label": "Lowercase",
+            "value": "lowercase"
+          },
+          {
+            "label": "None (as-is)",
+            "value": "none"
+          }
+        ]
+      },      
+      {
+        "type": "header",
+        "content": "Desktop :: Settings"
+      },
+      {
+        "type": "range",
+        "id": "height",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Height",
+        "default": 70
+      },
+      {
+        "type": "range",
+        "id": "font_size",
+        "min": 10,
+        "max": 30,
+        "step": 1,
+        "unit": "px",
+        "label": "Font size",
+        "default": 16
+      },
+      {
+        "type": "header",
+        "content": "Tablet :: Settings"
+      },
+      {
+        "type": "range",
+        "id": "height--tablet",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Height",
+        "default": 60
+      },
+      {
+        "type": "range",
+        "id": "font_size--tablet",
+        "min": 10,
+        "max": 30,
+        "step": 1,
+        "unit": "px",
+        "label": "Font size",
+        "default": 14
+      },
+      {
+        "type": "header",
+        "content": "Mobile :: Settings"
+      },
+      {
+        "type": "range",
+        "id": "height--mobile",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Height",
+        "default": 50
+      },
+      {
+        "type": "range",
+        "id": "font_size--mobile",
+        "min": 10,
+        "max": 30,
+        "step": 1,
+        "unit": "px",
+        "label": "Font size",
+        "default": 13
+      }
+    ],
+    "blocks": [
+      {
+        "type": "link",
+        "name": "Link",
+        "settings": [
+          {
+            "label": "Title",
+            "id": "title",
+            "type": "text"
+          },
+          {
+            "label": "URL",
+            "id": "url",
+            "type": "url"
+          }
+        ]
+      }
+    ],
+    "default": {
+      "blocks": [
+        {
+          "type": "link",
+          "settings": {
+            "title": "My Orders",
+            "url": "/account"
+          }
+        },
+        {
+          "type": "link",
+          "settings": {
+            "title": "Change Password",
+            "url": "#change_password"
+          }
+        },
+        {
+          "type": "link",
+          "settings": {
+            "title": "Log Out",
+            "url": "/account/logout"
+          }
+        }
+      ]
+    }
+  }
+{% endschema %}

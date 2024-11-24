@@ -1,0 +1,26 @@
+{% assign product_url = product.metafields.c_f['[p][_t] 10a. Product URL'] %}
+
+<div class="StickyAddCart__desktop" data-sticky-add-cart>
+  <div class="StickyAddCart__container" >
+    <div class="StickyAddCart__options">
+      <img src="{{ product.featured_image | img_url: '115x' }}" alt="{{ product.featured_image.alt }}">
+      {% include 'ProductHeading' %}
+    </div>
+    
+    <div class="ProductInfo__add-to-cart" data-add-to-cart data-sticky-add-to-cart>
+      {%- if product_url != blank -%}
+        <button class="Button Button--primary BuyNow">
+          <a href="{{ product_url }}" target="_blank">Buy Now</a>
+        </button>
+      {%- else -%}
+        <button class="ProductInfo__button Button Button--primary" data-add-to-cart-text>
+          {% if current_variant.available %}
+            {{ 'products.product.add_to_cart' | t }}
+          {% else %}
+            {{ 'products.product.sold_out' | t }}
+          {% endif %}
+        </button>
+      {%- endif -%}
+    </div>
+  </div>
+</div>

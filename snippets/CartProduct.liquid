@@ -1,0 +1,45 @@
+<div class="CartProduct" data-id="[[ id ]]">
+  <div class="CartProduct__image">
+    <a href="[[ url ]]">
+      [[ formatted_image ]]
+    </a>
+  </div>
+
+  <div class="CartProduct__info">
+    <a class="CartProduct__title" href="[[ url ]]">[[ product_title ]]</a>
+    <div class="CartProduct__options" data-cart-variant-title>[[ variant_title ]]</div>
+
+    {% comment %}
+    ##SKU##
+      <div class="CartProduct__options">
+        <span>SKU: [[ sku ]]</span>
+      </div>
+    ##SKU##
+    {% endcomment %}
+
+    {% comment %}
+    ##VENDOR##
+      <div class="CartProduct__options">
+        <span>[[ vendor ]]</span>
+      </div>
+    ##VENDOR##
+    {% endcomment %}
+
+    <div class="CartProduct__price [[ discounted ]]" data-label="{{ 'cart.label.price' | t }}">[[ formatted_price ]]</div>
+
+    ##DISCOUNT_DESCRIPTION##
+      <div class="CartProduct__discount">[[ discount_description ]]</div>
+    ##DISCOUNT_DESCRIPTION##
+
+    <div class="CartProduct__quantity" data-label="{{ 'cart.label.quantity' | t }}">
+      <label for="quantity_[[ key ]]">QTY</label>
+      <select name="quantity" id="quantity_[[ key ]]" aria-label="{{ 'cart.general.item_quantity' | t }}">
+        ##QUANTITIES##
+          <option value="[[ quantity_index ]]" selected>[[ quantity_index ]]</option>
+        ##QUANTITIES##
+      </select>
+
+      <div class="CartProduct__remove" data-cart-remove><i class="{{ settings.fa }} fa-times"></i> <span>REMOVE</span></div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,196 @@
+{%- comment -%}
+This file was auto-generated with the infinite cli.
+Be sure to review the section schema and change out placeholders like "Section Name" and "SomeBlockType"
+{%- endcomment -%}
+{% if section.settings.enable_section %}
+<section 
+  id="section{{ section.id }}" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="Newsletter" 
+  class="Section Section--{{ section.settings.width }} Section--{{ section.settings.width--mobile }}" 
+  style="{% if section.settings.use_background %}background: {{ section.settings.background_color }};{% endif %}"
+>
+  <div class="Section__container">
+    <div class="Newsletter" 
+  
+>
+      <div class="Newsletter__content Animate Animate--slide-up">               
+          {% if section.settings.subheading96 != blank %}
+          <div style="font-size: {{ section.settings.font_size_heading12hed1r4}}px;color: {{ section.settings.sub_heading_color}};">{{ section.settings.subheading96  }}</div>
+          {% endif %}
+      
+      </div>
+    </div>
+  </div>
+
+  <style>
+    #section{{ section.id }} {
+      position: relative;
+  
+        background-position: 50% 50%;
+        background-size:cover;
+    }
+    #section{{ section.id }} .Section__container {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+    @media only screen and (max-width: {{ settings.grid_mobile_max }}) {
+      #section{{ section.id }} .Section__container {
+        padding-top: {{ section.settings.padding_top--mobile }}px;
+        padding-bottom: {{ section.settings.padding_bottom--mobile }}px;
+      }
+    }
+  
+  #section{{ section.id }} .Newsletter__content p {
+    color: {{ section.settings.sub_heading_color }};
+  }
+  @media only screen and (max-width: {{ settings.grid_mobile_max }}) {
+    #section{{ section.id }} {
+        background-position: 50% 50%;
+        background-size:cover;
+    }
+  }
+  </style>
+</section>
+{% endif %}
+{% schema %}
+  {
+    "name": "NewSection_2",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_section",
+        "label": "Enable Section ?",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "use_background",
+        "label": "Use background color",
+        "default": false,
+        "info": "Check this to use a custom section background color."
+      },
+      {
+        "type": "color",
+        "id": "background_color",
+        "label": "Background Color",
+        "default": "#fff"
+      },
+      {
+        "type": "richtext",
+        "id": "subheading96",
+        "label": "Subheading",
+        "default": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>"
+      },
+      {
+        "type": "color",
+        "id": "sub_heading_color",
+        "label": "Sub Heading Color",
+        "default": "#fff"
+      },
+
+       {
+    "type": "range",
+    "id": "font_size_heading12hed1r4",
+    "min":  15,
+    "max":  100,
+    
+    "unit": "px" ,
+    "label": "Font size for  heading",
+    "default":  28
+    },
+      {
+        "type": "paragraph",
+        "content": "Any customers who sign up will have an account created for them in Shopify. [View customers](/admin/customers?query=&accepts_marketing=1)"
+      },
+      {
+        "type": "header",
+        "content": "Desktop :: Settings"
+      },
+      {
+        "type": "select",
+        "id": "width",
+        "label": "Width",
+        "default": "fixed",
+        "options": [
+          {
+            "label": "Full (Edge-to-Edge)",
+            "value": "full"
+          },
+          {
+            "label": "Fixed",
+            "value": "fixed"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Top Padding",
+        "default": 30
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Bottom Padding",
+        "default": 30
+      },
+
+      
+      {
+        "type": "header",
+        "content": "Mobile :: Settings"
+      },
+      {
+        "type": "select",
+        "id": "width--mobile",
+        "label": "Width",
+        "default": "mobile-full",
+        "options": [
+          {
+            "label": "Full (Edge-to-Edge)",
+            "value": "mobile-full"
+          },
+          {
+            "label": "Fixed",
+            "value": "mobile-fixed"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "padding_top--mobile",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Top Padding",
+        "default": 15
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom--mobile",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Bottom Padding",
+        "default": 15
+      }
+    ],
+    "presets": [
+      {
+        "name": "NewSection_2",
+        "category": "Promotional"
+      }
+    ]
+  }
+{% endschema %}

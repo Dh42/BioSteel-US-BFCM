@@ -1,0 +1,16 @@
+{%- comment -%}Doing responsive images based on aspect ratio and number of columns...{%- endcomment -%}
+{%- assign multiplier = 2 -%}
+{%- if blog.handle == 'news' -%}
+  {%- assign multiplier = 1 -%}
+{%- endif -%}
+{%- if aspect_ratio -%}
+  {%- assign aspect_ratio = aspect_ratio | times: 1.00 -%}
+{%- else -%}
+  {%- assign aspect_ratio = 1.5 -%}
+{%- endif -%}
+{%- assign gutters = columns | plus: 1 -%}
+{%- assign gutter_width = settings.grid_gutters | remove: 'px' | times: gutters -%}
+{%- assign width_available = settings.grid_page_width | remove: 'px' | times: 1 | minus: gutter_width -%}
+{%- assign img_width = width_available | divided_by: columns | times: multiplier | round -%}
+{%- assign img_height = img_width | divided_by: aspect_ratio | round -%}
+{%- capture img_size -%}{{ img_width }}x{{ img_height }}{%- endcapture -%}

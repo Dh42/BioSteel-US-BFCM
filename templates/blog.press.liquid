@@ -1,0 +1,26 @@
+{%- section 'PageBanner' -%}
+<div class="Press">
+  <div class="Section--fixed Section--mobile-fixed">
+    <div class="Press__container Section__container">
+        {% paginate blogs['press'].articles by 12 %}
+            {% for article in blogs['press'].articles %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: article %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+              {%- assign external_link = article.metafields.c_f.external_link %}
+              {%- assign short_description = article.metafields.c_f.short_description %}
+              {% comment %} {%- include 'ArticleTile' -%} {% endcomment %}
+              {%- include 'PressTile' -%}
+            {% endfor %}
+          {%- include 'pagination' -%}
+          {% endpaginate %}
+
+      </div>
+
+  </div>
+</div>
+{%- section 'newsletter' -%}

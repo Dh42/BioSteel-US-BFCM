@@ -1,0 +1,77 @@
+<style>
+@media only screen and (min-width: 640px){
+
+.phoneImage{
+
+  display: none;
+}
+  
+.heading_box{
+/*     width: 555px !important; */
+}
+  
+}
+@media only screen and (max-width: 640px){
+.heading_box{
+     width: 100%;
+  }
+.img_div{
+
+  display: none;
+
+  
+}
+
+  
+}
+  .main_box{
+ 
+   border-width: 5px;
+/*       width: 100%; */
+  display: flex;
+}
+  
+  .img_box{
+/*      width: 100%; */
+  }
+.center_box{
+     
+      margin: auto;}
+</style>
+
+<div class="main_box">
+  <div class="center_box">
+
+  <div class="img_box">
+  <img  loading="lazy" src="{{ section.settings.second_image | img_url: '1200x'  |  format: 'pjpg'  }}" class="img_div" />
+<img  loading="lazy" src="{{ section.settings.second_imageF1 | img_url: '640x'  |  format: 'pjpg'  }}" class="phoneImage" />
+</div>
+  
+</div>  
+     
+</div>
+
+{% schema %}
+  {
+    "name": "NewSection_NHL",
+    "settings": [ 
+      {
+        "type": "image_picker",
+        "label": "Desktop Image",
+        "id": "second_image"
+      },
+      {
+        "type": "image_picker",
+        "label": "mobile Image ",
+        "id": "second_imageF1"
+      }
+      
+    ],
+    "presets": [
+      {
+        "name": "NewSection_NHL",
+        "category": "Promotional"
+      }
+    ]
+  }
+{% endschema %}

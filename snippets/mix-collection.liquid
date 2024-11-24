@@ -1,0 +1,189 @@
+{% assign product_url = product.metafields.c_f['[p][_t] 10a. Product URL'] %}
+
+<div 
+  class="ProductTile AnimateOnHover
+    {% if carousel %}CollectionCarousel__slide{% endif %}  
+    {% if carousel != true %} Animate Animate--slide-up{% endif %}" 
+  {% if carousel %}data-collection-carousel-slide{% endif %}
+  {% if shoppable %}data-slide{% endif %}
+  data-product-tile
+>
+    {%- assign product_badges  = 'best-seller, limited-edition, limited-quantities' | split: ', ' -%}
+    {%- for product_badge in product_badges -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: product_badge %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+      {%- if product.tags contains product_badge -%}
+      {%- assign product_tile_badge_image = product_badge | append: '.png' | prepend: 'https://cdn.shopify.com/s/files/1/0080/2547/3142/files/' -%}
+        <div class="ProductTile__badge">
+          <img loading="lazy" src="{{ product_tile_badge_image }}" alt="{{ product_badge | replace: 'product-tile-badge-', '' | replace: '-', ' ' }}">
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+
+  {% if product.featured_image != blank %}
+    <a class="ProductTile__image" href="{{ product.url | within: collection }}" data-product-tile-image>
+            {% for tag in product.tags %}
+        {% if tag contains 'coupon-' %}
+          <div class="product-label bogo-label">{{tag |replace:'coupon-',''}}</div>
+        {% endif %}
+
+                      <!-- {% if tag contains 'shortdated' %}
+          <div class="product-label bogo-label">SHORT DATED</div>
+        {% endif %} -->
+      {% endfor %}
+      <img 
+        loading="lazy"
+        src="{{ product.featured_image.src | img_url: '480x480' }}"
+        alt="{{ product.featured_image.alt }}"
+        class="AnimateOnHover--{{ section.settings.animation--hover }}"
+        onload="triggerResize();"
+      >
+      {% if settings.quickview_enabled %}
+        {%- unless shoppable -%}
+          <div class="QuickView__button Button Button--{{ settings.quickview_cta_style }}" data-quick-view-button>
+            {% if settings.quickview_icon != blank %}<i class="{{ settings.fa }} {{ settings.quickview_icon }}"></i>{% endif %}
+            {{ settings.quickview_cta }}
+          </div>
+        {%- endunless -%}
+      {% endif %}
+    </a>
+  {% endif %}
+  
+  <div class="ProductTile__content">
+    <div class="ProductTile__title" data-product-tile-title>
+      <a href="{{ product.url | within: collection }}">{{ product.title | replace:'#', '&num;'}}</a>
+      {%- include 'ProductOptions' -%}
+    </div>
+
+    {%- unless shoppable -%}
+      {%- include 'ProductStars' -%}  
+    {%- endunless -%}
+    <span 
+class="stamped-product-reviews-badge" 
+data-id="{{ product.id }}"
+data-product-sku="{{ product.handle }}" 
+data-product-type="{{product.type}}" 
+data-product-title="{{product.title}}" 
+style="display:block;">
+</span>
+    <p class="ProductTile__price" data-product-tile-price>
+      {%- include 'product-pricing-logic' -%}
+    </p>
+    
+    {% comment %} {%- if product.variants.size > 1 -%}
+      {%- if section.settings.cta != blank -%}
+        <a href="{{ product.url | within: collection }}" class="ProductTile__button Button Button--primary">
+          {%- if section.settings.icon != blank -%}<i class="{{ settings.fa }} {{ section.settings.icon }}"></i>{%- endif -%}
+          {{ section.settings.cta }}
+        </a>
+      {%- endif -%}
+    {%- endif -%} {% endcomment %}
+
+   {% assign inv_qty = section.settings.inventoryquantity12  %}
+
+      
+      {% if product.selected_or_first_available_variant.inventory_quantity <   settings.font_sizett  and product.type != "Merchandise" %}
+
+          <button 
+        type="submit" 
+        name="add" 
+        class="ProductTile__button Button Button--primary" 
+        data-add-to-cart 
+       disabled="disabled"
+     style="background-color: #aaa;
+    border-color: #aaa;" >
+        <span data-add-to-cart-text>
+          
+            {{ 'products.product.sold_out' | t }}
+         
+        </span>
+      </button>
+      {% else %}
+    
+       {% include "add-to-cart-btn" %}
+
+    {% endif %}
+  </div>
+</div>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": "{{ product.title }}",
+    "image": [
+      "{{ product.featured_image | img_url: '800x800' }}"
+    ],
+    "description": "{{ product.description | escape }}",
+    "sku": "{{ product.sku }}",
+    "brand": {
+      "@type": "Brand",
+      "name": "BioSteel"
+    },
+              {% if product.metafields.stamped.reviews_count and product.metafields.stamped.reviews_count != "0" %} 
+"aggregateRating": {
+ "@type": "AggregateRating",
+ "ratingValue": {{ product.metafields.stamped.reviews_average | round:2 }},
+ "reviewCount": {{product.metafields.stamped.reviews_count}}
+},
+{% endif %}
+    "offers": {
+      "@type": "Offer",
+      "url": "{{ product.url }}",
+      "priceCurrency": "USD",
+      "price": "{{ product.price | money_without_currency }}",
+      "availability": "http://schema.org/InStock",
+      "priceValidUntil": "{{ 'now' | date: '%s' | plus: days | date: '%Y-%m-%d' }}",
+      "shippingDetails": {
+        "@type": "OfferShippingDetails",
+        "shippingRate": {
+          "@type": "MonetaryAmount",
+          "value": "0",
+          "currency": "USD"
+        },
+        "deliveryTime": {
+          "@type": "ShippingDeliveryTime",
+          "transitTime": {
+            "@type": "QuantitativeValue",
+            "minValue": 3,
+            "maxValue": 6,
+            "unitCode": "DAY"
+          },
+          "handlingTime": {
+            "@type": "QuantitativeValue",
+            "minValue": 1,
+            "maxValue": 2,
+            "unitCode": "DAY"
+          }
+        },
+        "shippingDestination": {
+          "@type": "DefinedRegion",
+          "addressCountry": {
+            "@type": "Country",
+            "name": "US"
+          }
+        }
+      },
+      "hasMerchantReturnPolicy": {
+        "@type": "MerchantReturnPolicy",
+        "url": "{{ shop.url }}/pages/shipping-return-policy",
+        "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+        "merchantReturnDays": 6,
+        "applicableCountry": {
+          "@type": "Country",
+          "name": "US"
+        },
+        "returnMethod": "https://schema.org/ReturnByMail",
+        "returnFees": {
+          "@type": "MonetaryAmount",
+          "value": "0",
+          "currency": "USD"
+        }
+      }
+    }
+  }
+  </script>

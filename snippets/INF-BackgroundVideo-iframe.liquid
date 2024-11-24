@@ -1,0 +1,21 @@
+<div id="{{ prefix }}BackgroundVideo{{ unique_id }}" class="BackgroundVideo" 
+  data-background-video
+  data-aspect-ratio="{{ aspect_ratio }}" 
+  data-crop="{{ crop }}"
+  data-video-type="{{ video.type }}" 
+  data-video-id="{{ video.id }}"
+>
+
+{%- if poster_type == 'vimeo' -%}
+<script src="https://vimeo.com/api/v2/video/{{ video.id }}.json?callback=injectVimeoPoster" type="text/javascript"></script>
+{%- endif -%}
+
+  <div class="BackgroundVideo__poster" style="background-image: url('{{ poster }}');" data-poster-for="{{ video.id }}" data-video-poster="{{ poster_type }}"></div> 
+  {%- comment -%}
+  FYI: We have to put data-video-player="true" instead of just data-video-player
+  otherwise youtube wipes it out and we lose our JS binding. :(
+  {%- endcomment -%}
+  <div id="{{ prefix }}Player{{ unique_id }}" class="BackgroundVideo__player" data-video-player="true"></div>
+  
+  {%- include 'youtube-iframe-api' -%}
+</div>

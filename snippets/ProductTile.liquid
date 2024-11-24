@@ -1,0 +1,11 @@
+{% assign product_url = product.metafields.c_f['[p][_t] 10a. Product URL'] %}
+
+{% if request.path contains '/collections/merchandise'  %}
+
+     {% include "merchandise----collection" %}
+
+{% else  %}
+
+      {% include "mix-collection" %}
+ 
+{% endif %}

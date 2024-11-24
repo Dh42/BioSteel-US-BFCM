@@ -1,0 +1,26 @@
+{%- comment -%}This is just a recommended starting point...customize away!{%- endcomment -%}
+<style>
+.MobileMenu__list--tier1 .MobileMenu__list--tier2 {
+  background-image: url({{ 'BioSteel_MobileNav.jpg' | asset_img_url: 'master' }});
+}
+</style>
+<div class="MobileLogo NavOpen__logo">
+  <a href="/" itemprop="url" class="MobileLogo__{% if section.settings.logo == blank %}text{% else %}image{% endif %}">
+    {%- if section.settings.logo != blank -%}
+      {%- assign image_size = section.settings.mobile_logo_width | times: 3 | append: 'x' -%}
+      <img src="{{ section.settings.logo_alt | img_url: image_size }}" alt="{{ section.settings.logo.alt | default: shop.name }}" itemprop="logo">
+    {%- else -%}
+      {{ shop.name }}
+    {%- endif -%}
+  </a>
+</div>
+
+<div class="MobileMenu__item MobileLanguageMenu">
+  <div class="MobileMenu__item--container">
+    {%- include 'RegionSelector', extra_classes: 'RegionSelector--mobile' -%}
+    {%- if shop.currency == 'CAD' -%}
+      <span class="MobileLanguageMenu__item" data-language-menu-item data-language="en">English</span>
+      <span class="MobileLanguageMenu__item" data-language-menu-item data-language="fr-CA">Français</span>
+    {%- endif -%}
+  </div>
+</div>

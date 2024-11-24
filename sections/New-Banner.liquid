@@ -1,0 +1,78 @@
+<style>
+   @media only screen and (min-width: 641px) {
+.moblieView{
+  display:none;
+}
+
+     
+   }
+ @media only screen and (max-width: 641px) {
+  .PhoneView{
+ display:none;
+  }
+ }
+.img-container {
+  text-align: center;
+}
+</style>
+{% if section.settings.selected_image != blank %}
+<div class="img-container1" style="background-color: {{section.settings.background_stydl }};">
+{% if section.settings.image_link != blank %}
+<a href="{{ section.settings.image_link }}">
+{% endif %}
+  <img src="{{ section.settings.selected_image1 | img_url: "master" }}" class ="PhoneView">
+  <img src="{{ section.settings.selected_image | img_url: "master" }}" class ="moblieView">
+{% if section.settings.image_link != blank %}
+</a>
+{% endif %}
+</div>
+{% endif %}
+
+{% schema %}
+{
+"name": "New-Banner",
+"class": "image-for-homepage",
+"tag": "section",
+"settings": [
+  {
+   "type": "color",
+   "id": "background_stydl",
+   "label": "Background color",
+   "default": "#ffffff"
+},
+{
+"type": "header",
+"content": "Select Image"
+},
+  {
+"type": "image_picker",
+"label": "desktop Image",
+"id": "selected_image1"
+},
+{
+"type": "image_picker",
+"label": "Moblie Image",
+"id": "selected_image"
+},
+{
+"type": "text",
+"label": "Image Link",
+"id": "image_link"
+}
+
+],
+"presets": [
+{
+"name": "New-Banner",
+"category":"Image",
+"settings": {
+}
+}
+]
+
+}
+{% endschema %}
+
+
+{% javascript %}
+{% endjavascript %}

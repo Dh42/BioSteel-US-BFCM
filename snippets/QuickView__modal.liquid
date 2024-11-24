@@ -1,0 +1,13 @@
+<div id="QuickView" class="Modal {% if settings.preheader_enabled %}Modal--has-preheader{% endif %} QuickView__modal" data-modal>
+  <div class="Modal__close Modal__close--outside" data-close-modal>
+    {% include 'CloseIcon' %}
+  </div>
+  <div class="Modal__overlay" data-modal-overlay data-close-modal></div>
+  <div class="Modal__content" data-modal-content>
+    <div class="Modal__close Modal__close--inside" data-close-modal>
+      {% include 'CloseIcon' %}
+    </div>
+    <div class="QuickView__loader"><i class="{{ settings.fa }} fa-spinner fa-spin"></i></div>
+    <div class="QuickView__content" data-quick-view-content data-section-id="QuickView" data-section-type="product"></div>
+  </div>
+</div>

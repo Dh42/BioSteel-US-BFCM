@@ -1,0 +1,21 @@
+{% assign attr_split = content | split: 'data-rte-related-content="" ' | join: 'data-rte-related-content ' | split: 'data-rte-related-content ' %}
+{% for attr in attr_split %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: attr %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+  {% assign article_handles = attr | split: 'data-articles="' %}
+  {% assign article_handles = article_handles[1] | split: '"' | first %}
+
+  {% comment %} empty attributes may or may not have assigned blank value, depending on if content has been edited - we'll just handle  both cases {% endcomment %}
+  {% assign old_html_1 = '<div data-rte-related-content data-articles="' | append: article_handles | append: '">' | append: '</div>' %}
+  {% assign old_html_2 = '<div data-rte-related-content="" data-articles="' | append: article_handles | append: '">' | append: '</div>' %}  
+  {% capture new_html %}
+    {%- assign article_handles = article_handles | split: ', ' | join: ',' | split: ',' -%}
+    {%- include 'RelatedArticles', article_handles: article_handles -%}
+  {% endcapture %}
+  {% assign content = content | replace: old_html_1, new_html | replace: old_html_2, new_html %}
+{% endfor %}

@@ -1,0 +1,100 @@
+{%- section 'INF-AccountNav' -%}
+<!-- <br>
+<div id='socialannex_dashboard'></div>
+<script type = 'text/javascript'>
+var sa_uni = sa_uni || [];
+var jwt = sa_emailid = token = '';
+var shop_domain = '{{shop.domain}}';
+var shop_url = '{{shop.secure_url}}';
+var primary_key='customer_email';
+if(primary_key=='customer_id'){
+var primary_id = '{{customer.id}}';
+}
+else{
+var primary_id = '{{customer.email}}';
+}
+  var first_name = '{{customer.first_name}}';
+  var last_name = '{{customer.last_name}}';
+function getJWT(){
+var data = {'store_id':shop_domain, 'payload':primary_id,'first_name':first_name,'last_name':last_name};
+$.ajax({
+type: 'POST',
+url: shop_url+'/apps/loyalty/jwt_generator.php/',
+data: JSON.stringify(data),
+dataType: 'json',
+success: function(res) {
+if(res.errorcode == 0){
+jwt = res.data[0].jwt_token;
+var account_status = '{{shop.customer_accounts_enabled}}';
+if(account_status == 'true'){
+var cutsomer_status = '{{customer}}';
+if(cutsomer_status != ''){
+sa_emailid = primary_id;
+console.log(sa_emailid);
+ token = jwt;
+sa_uni.push(['sa_pg', '5']);
+(function (){
+function sa_async_load(){
+var sa = document.createElement('script');
+sa.type = 'text/javascript';
+sa.async = true;
+sa.src = 'https://cdn.socialannex.com/partner/37966021/universal.js';
+var sax = document.getElementsByTagName('script')[0];
+sax.parentNode.insertBefore(sa, sax);
+}
+sa_async_load();
+})();
+}
+else{
+var login_link = '{{shop.secure_url}}{{routes.account_login_url}}';
+window.location.replace(login_link);
+}
+}
+}
+}
+});
+}
+getJWT();
+setTimeout(function(){
+$('p').click(function(){
+alert('ok2');
+});
+$('#s15-dashboard-iframe').contents().find('p').click(function(){
+ alert('ok2');
+});
+},30000 );
+/*
+$(document).ready(function(){
+$.ajax({
+type: 'POST',
+ url: '/cart/clear',
+ data: { 
+ },
+ dataType: 'json', 
+ success: function() { 
+ },
+ });
+ });
+*/
+</script> -->
+{%- if shop.customer_accounts_enabled -%}
+  <a type="button" href="#" class="btn--link" onclick="avadaJoyTrigger();" style="line-height: 40px; cursor: pointer">
+     {%- if customer -%}
+        {%- assign aj_point = customer.metafields.avada_joy.point | split: '' -%}
+        {%- for digit in aj_point -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: digit %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+          {%- assign threeFromEnd = aj_point.size | minus: forloop.index | modulo: 3 -%}
+          {%- if threeFromEnd == 2 and forloop.index != 1 -%}{{ digit | prepend: ',' }}{%- else -%}{{ digit }}{%- endif -%}
+        {% endfor %}
+        {{ customer.metafields.avada_joy.point | pluralize: 'Point', 'Points' }}
+     {%- else -%}
+        Rewards
+      {%- endif -%}
+  </a>
+{%- endif -%}

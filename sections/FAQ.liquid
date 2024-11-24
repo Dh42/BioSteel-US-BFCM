@@ -1,0 +1,218 @@
+{%- comment -%}
+This file was auto-generated with the infinite cli.
+Be sure to review the section schema and change out placeholders like "FAQ" and "SomeBlockType"
+{%- endcomment -%}
+  
+<section 
+  id="section{{ section.id }}" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="FAQ" 
+  class="Section Section--{{ section.settings.width }} Section--{{ section.settings.width--mobile }}" 
+  style="{% if section.settings.use_background %}background: {{ section.settings.background }};{% endif %}"
+>
+  <div class="Section__container">
+    {%- if section.settings.heading != '' -%}<h3 class="Section__heading">{{ section.settings.heading }}</h3>{%- endif -%}
+    <div class="FAQ__nav">
+      <h4 class="FAQ__nav-heading" data-select-topic>Select A Topic <i class="chevron far fa-chevron-down"></i></h4>
+      <div class="FAQ__nav-container" data-faq-nav-container>
+        {%- for block in section.blocks -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: block %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+          {%- if block.type == 'Heading' -%}
+          <div class="FAQ__heading-block" data-heading-block>
+            <a href="#{{section.id | downcase }}{{ block.settings.heading | handleize }}" data-nav-item>{{ block.settings.heading }}</a>
+          </div>
+        {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+    <div class="FAQ">
+      {% if page.content != blank%}
+        <p class="FAQ__page-content">{{page.content}}</p>
+      {% endif %}
+      {% for block in section.blocks %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: block %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+        {% if block.type == 'Heading' %}
+          <div class="FAQ__heading-block" id="{{section.id | downcase }}{{ block.settings.heading | handleize }}">
+            <h2>{{block.settings.heading}}</h2>
+          </div>
+        {% elsif block.type == 'FAQ' %}
+          <div class="FAQ__qa-block" {{ block.shopify_attributes }} data-qa-block>
+            <div class="FAQ__question-container" data-quesiton-container>
+              <div class="FAQ__question" data-question>
+                <p>{{block.settings.question}}</p>
+              </div>
+              <i class="chevron far fa-chevron-down"></i>
+            </div>
+            <div class="FAQ__answer-container" data-answer-container>
+              <div class="FAQ__answer" data-answer>
+                <p>{{block.settings.answer}}</p>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+        
+      {% endfor %}
+    </div>
+  </div>
+
+  <style>
+    #section{{ section.id }} .Section__container {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+    @media only screen and (max-width: {{ settings.grid_mobile_max }}) {
+      #section{{ section.id }} .Section__container {
+        padding-top: {{ section.settings.padding_top--mobile }}px;
+        padding-bottom: {{ section.settings.padding_bottom--mobile }}px;
+      }      
+    }
+  </style>
+</section>
+
+{% schema %}
+  {
+    "name": "FAQ",
+    "max_blocks": 200,
+    "settings": [
+      {
+        "label": "Heading",
+        "id": "heading",
+        "type": "text"
+      },
+      {
+        "type": "checkbox",
+        "id": "use_background",
+        "label": "Use background color",
+        "default": false,
+        "info": "Check this to use a custom section background color."
+      },
+      {
+        "type": "color",
+        "id": "background",
+        "label": "Background color",
+        "default": "#fff"
+      },
+      {
+        "type": "header",
+        "content": "Desktop :: Settings"
+      },
+      {
+        "type": "select",
+        "id": "width",
+        "label": "Width",
+        "default": "fixed",
+        "options": [
+          {
+            "label": "Full (Edge-to-Edge)",
+            "value": "full"
+          },
+          {
+            "label": "Fixed",
+            "value": "fixed"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Top Padding",
+        "default": 30
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Bottom Padding",
+        "default": 30
+      },
+      {
+        "type": "header",
+        "content": "Mobile :: Settings"
+      },
+      {
+        "type": "select",
+        "id": "width--mobile",
+        "label": "Width",
+        "default": "mobile-full",
+        "options": [
+          {
+            "label": "Full (Edge-to-Edge)",
+            "value": "mobile-full"
+          },
+          {
+            "label": "Fixed",
+            "value": "mobile-fixed"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "padding_top--mobile",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Top Padding",
+        "default": 15
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom--mobile",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Bottom Padding",
+        "default": 15
+      }
+    ],
+    "blocks": [
+      {
+        "type": "Heading",
+        "name": "Heading",
+        "settings": [
+          {
+            "label": "Heading",
+            "id": "heading",
+            "type": "text"
+          }
+        ]
+      },
+      {
+        "type": "FAQ",
+        "name": "FAQ",
+        "settings": [
+          {
+            "label": "Question",
+            "id": "question",
+            "type": "html"
+          },
+          {
+            "label": "Answer",
+            "id": "answer",
+            "type": "html"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

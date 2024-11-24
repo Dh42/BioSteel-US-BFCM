@@ -1,0 +1,417 @@
+<section 
+  id="section{{ section.id }}" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="homepage_2-new" 
+  class="Section Section--{{ section.settings.width }}" 
+  style="background: {{ section.settings.background }};"
+>
+  
+  {% if section.id == '1649053552e8227633' and template contains 'index'  %}
+<style>
+    
+  
+  
+    @media only screen and (max-width: 640px) {
+     	.cmmobile {display:block !important;margin-left:-18px;}
+     	.cddesktop {display:none !important;}
+    
+      .slick-slide{margin:5px !important}
+   }
+   @media only screen and (min-width: 641px) {
+   		.cmmobile {display:none !important;}
+     	.cddesktop {display:block !important;}
+   } 
+
+  
+  
+  
+  @media only screen and (max-width: 640px) {
+     	.cmobile {display:block !important; }
+   
+     	.cdesktop {display:none !important;}
+     .ovaldesk{padding: 8px 40px; margin-left: 33% !important;border-radius: 19px;}
+    
+   }
+   @media only screen and (min-width: 641px) {
+     .CBtn{margin-top:3% !important;margin-bottom:2%;margin-left:45.5%;margin-right:30%;}
+     .h5{font-size:15px !important;}
+   		.cmobile {display:none !important;}
+     	.cdesktop {display:block !important;}
+       
+     .ovaldesk{padding: 8px 40px;   margin: 3% 0% !important;border-radius: 29px;}.cdesh01{margin-bottom:50px}
+     .cds12{height:260px;overflow:hidden;}.cdesk123{float:left !important;border: 4px solid white !important;}
+   } 
+  
+ @media screen and (max-width: 600px) {
+  .cdesk123 {
+      margin: 0 20px 20px 0!important;
+     
+    width: calc(70% - 3px)!important;
+  }}
+  
+  
+  
+@media only screen and (max-width: 767px){
+h3 {
+	font-size: 15px;
+}
+  #slicka{
+    display:flex;
+  }
+}
+  
+  
+  
+</style>
+{% endif %}
+    <style>
+    #section{{ section.id }} .Section__container {
+      padding-top: {{ section.settings.padding_top }}px ;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+      margin-top:20px;
+      margin-bottom:20px
+        
+    }
+       @media only screen and (min-width:641px){
+         .cdesk123{width:19% !important;margin:0px 0.5%;background-color:#FFFF}}
+      .test12{margin: 0px 4%}
+    @media only screen and (max-width: {{ settings.grid_mobile_max }}) {
+      #section{{ section.id }} .Section__container {
+        padding-top: {{ section.settings.padding_top--mobile }}px;
+        padding-bottom: {{ section.settings.padding_bottom--mobile }}px;
+      }
+      
+    }
+  </style>
+  
+  
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js" integrity="sha512-XtmMtDEcNz2j7ekrtHvOVR4iwwaD6o/FUJe6+Zq+HgcCsk3kj4uSQQR8weQ2QVj1o0Pk6PwYLohm206ZzNfubg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  
+  
+  <div class=" Section__container">
+<div class="featured-collection-slider page-width cdf12   "  >
+{% if section.settings.title != blank %}
+<div class="cdesh01 section-header text-center" >
+  <h2 style="color:{{ section.settings.h2_color}};font-size:{{ section.settings.font_size_subheading12}}px; " class="{{ section.settings.heading_size}}">{{ section.settings.title | escape }}</h2>
+</div>
+{% endif %}
+
+{%- assign collection = section.settings.block -%}
+
+  
+   <div class="cddesktop">
+    <div class="cdesk12" style="margin-left: 75px;display:flex !important;">
+      
+    {%- for block in section.blocks  limit: product_limit %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: block %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+        <div class="cdesk123 carousel-cell grid {% if section.settings.column_alignment == 'center' %} center{% endif %}" style="box-shadow:  0 4px 8px 0 rgba(0, 0, 0, 0.2);background-color:{{section.settings.example_shadow}}">
+         
+          <a   href="{%- if block.settings.linkimage != blank -%} {{block.settings.linkimage}} {%- else -%} #   {%- endif -%}">
+                   
+            <img class="img-explore" src="{{ block.settings.image | image_url: width: 550 }}" style="width:100%;">
+             {%- if block.settings.title != blank -%}
+                  <h5 style="text-align:center">{{ block.settings.title | escape }}</h5>
+                {%- endif -%}
+                 {%- if block.settings.text != blank -%}
+                  <div class="rte cmobile" style="text-align:center;padding : 0px 5px 5px 0px">{{ block.settings.text }}</div>
+                {%- endif -%}
+          </a>
+           
+      </div>  
+      
+      
+ 
+          
+    {% endfor %}
+    </div>
+  
+  </div>
+  
+    <div id="slicka" class="cmmobile" >
+		
+       {%- for block in section.blocks -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: block %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+           <div class="slide-item vss12"  style="background-color: {{section.settings.background_sty2}};padding:4px;float:left;width:150px;margin-left:8px;">
+                <div style="display:grid" >
+                
+                         <a   href="{%- if block.settings.linkimage != blank -%} {{block.settings.linkimage}} {%- else -%} #   {%- endif -%}">
+                         <img  loading="lazy" class="multicolumn-card__image " src="{{ block.settings.image | image_url: width: 200 }}" style="width:100%;">
+
+                  
+               {%- if block.settings.title != blank -%}
+                  <h3 class=" {{block.settings.h2_color}}" style="text-align:center">{{ block.settings.title | escape }}</h3>
+                {%- endif -%}
+            
+             </a>  
+         
+                
+            
+           
+          </div>
+             
+    </div>
+      
+      
+      
+      
+      
+		{% endfor %}
+	</div>
+    
+    </div>
+  <div class="center CBtn"  style="">
+      {%- if section.settings.button_label != blank -%}
+        <a style="font-weight:400;text-align:center; background:{{section.settings.primary_button_background}};color:{{section.settings.button_bg_color}};padding:{{section.settings.input_horizontal_padding}}px;" class=" ovaldesk  button button--primary "{% if section.settings.button_link == blank %} role="link" aria-disabled="true"{% else %} href="{{ section.settings.button_link }}"{% endif %}>
+          {{ section.settings.button_label | escape }}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+<style>
+.featured-collection-slider{
+  padding-left: 55px;
+  padding-right: 55px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.featured-collection-slider .carousel-cell{
+  width:22% !important;
+  padding: 5px 15px;
+  display: block;
+  border: 2px solid white;
+}
+
+@media screen and (max-width: 920px){
+  .featured-collection-slider{
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .featured-collection-slider .carousel-cell{
+    width:50%;
+  }
+}
+@media screen and (max-width: 767px){
+  .featured-collection-slider .carousel-cell{
+    width:75%;
+  }
+  .cddesktop{display:none !important;}
+   .ovaldesk{border-radius: 19px !important;margin-bottom:20px !important;padding:8px 25px;}
+   .CBtn{display: flex;
+  align-items: center;
+  justify-content: center;}
+}
+  @media screen and (min-width: 768px){
+    
+    .cdesk12{display:block !important;}
+    .cmmobile{display:none !important;}
+    .CBtn{display: flex;
+  align-items: center;
+  justify-content: center;}
+    .ovaldesk{ border-radius: 29px !important;
+                padding: 8px 25px !important;
+	              margin-top: 30px !important ;}
+  }
+</style>
+
+
+
+<script>
+$('#slicka').slick({
+		rows: 2,
+		dots: false,
+		arrows: true,
+		infinite: true,
+		speed: 300,
+		slidesToShow: 2,
+		slidesToScroll: 2
+});
+$('#slickb').slick({
+		rows: 1,
+		dots: false,
+		arrows: true,
+		infinite: true,
+		speed: 300,
+		slidesToShow: 6,
+		slidesToScroll: 6
+});
+</script>
+
+
+
+{% schema %}
+{
+  "name": "FOR-ANY-ACTIVITY",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Featured Collection"
+    },
+ {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        
+{
+          "value": "h2",
+          "label": "h1"
+        },       
+
+{
+          "value": "h1",
+          "label": "h2"
+        }
+        ,
+        {
+          "value": "h4",
+          "label": "h3"
+        },
+        {
+          "value": "h3",
+          "label": "h4"
+        },
+        {
+          "value": "h5",
+          "label": "h5"
+        }
+      ],
+      "default": "h1",
+      "label": "Heading Tag"
+    }
+
+
+,
+{
+    "type": "range",
+    "id": "font_size_subheading12",
+    "min":  15,
+    "max":  100,
+    
+    "unit": "px" ,
+    "label": "Font size for  heading",
+    "default":  15
+    }
+
+
+,{
+        "type": "color",
+        "id": "h2_color",
+        "label": "heading color",
+        "default": "#fff"
+      },
+    
+ {
+        "type": "checkbox",
+        "id": "enable_section",
+        "label": "Enable shadow?",
+        "default": true
+      },
+{
+      "type": "color",
+      "id": "example_shadow",
+      "label": "Shadow Color",
+      "default": "#000000"
+    },
+   {
+        "type": "color",
+        "id": "background",
+        "label": "Background color for section",
+        "default": "#fff"
+      }
+   ,
+   {
+      "type": "text",
+      "id": "button_label",
+      "default": "Button label",
+      "label": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button_link"
+    },{
+        "type": "color",
+        "id": "primary_button_background",
+        "label": "Background color",
+        "default": "#000"
+      },
+{
+            "type": "color",
+            "id": "button_bg_color",
+            "label": "Btn text color",
+            "default": "#ffffff"
+           }
+ 
+      
+  ],
+ "blocks": [
+     
+     {
+      "type": "column",
+      "name": "image block",
+      "settings": [
+
+
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "image"
+        },
+           {
+          "type": "url",
+          "id": "linkimage",
+          "label": "image_link "
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "default": "Column",
+          "label": "title"
+        },
+ {
+          "type": "richtext",
+          "id": "text",
+          "default": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+          "label": "sub title"
+        }
+ 
+
+      ]
+    }
+    ],
+  "presets": [
+    {
+      "category": "Collection",
+      "name": "FOR-ANY-ACTIVITY",
+      "settings": {},
+      "blocks": [
+        {
+          "type": "column"
+        },
+        {
+          "type": "column"
+        },
+        {
+          "type": "column"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

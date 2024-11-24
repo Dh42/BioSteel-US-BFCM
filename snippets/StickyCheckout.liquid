@@ -1,0 +1,21 @@
+<div class="StickyCheckout__subtotal">
+ {%- if section.settings.external_close -%}
+  <div class="Modal__close SliderCart__close-button {% if settings.preheader_enabled %}SliderCart__close-button--has-preheader{% endif %}" data-close-modal>
+    {% include 'CloseIcon' %}
+  </div>
+  {%- endif -%}
+  {%- include 'PromoBar' -%}
+  <div class="StickyCheckout__label">
+    <p class="StickyCheckout__items StickyCheckout__items--desktop"><span class="YourCart">Your Cart</span><span data-cart-count> {{ cart.item_count }} item{% if cart.item_count != 1 %}s{% endif %}</span></p>
+  </div>
+  <div class="StickyCheckout__value">
+    <p class="StickyCheckout__items StickyCheckout__items--mobile"><span class="YourCart">Your Cart</span><span class="Items" data-cart-count>{{ cart.item_count }} item{% if cart.item_count != 1 %}s{% endif %}</span></p>
+    <div class="StickyCheckout__total">
+      <span data-cart-total>{{ cart.total_price | money }}</span>{% if settings.show_currency %} <span class="StickyCheckout__currency">{{ shop.currency }}</span>{% endif %}
+    </div>
+  </div>
+  <input type="submit" name="checkout" class="StickyCheckout__button StickyCheckout__button--mobile StickyCheckout__button--has-items Button" value="Checkout">
+  <div class="StickyCheckout__button StickyCheckout__button--mobile StickyCheckout__button--empty Button Button--secondary" data-cart-toggle>Continue Shopping</div>
+</div>
+<input type="submit" name="checkout" class="StickyCheckout__button StickyCheckout__button--desktop StickyCheckout__button--has-items Button" value="Proceed to Checkout">
+<div class="StickyCheckout__button StickyCheckout__button--desktop StickyCheckout__button--empty Button Button--secondary" data-cart-toggle>Continue Shopping</div>

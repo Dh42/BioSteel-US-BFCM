@@ -1,0 +1,44 @@
+{%- assign custom_fields = false -%}
+{%- assign odd_field = false -%}
+{%- if section.blocks.size > 0 -%}
+  {%- assign loop_start = 0 -%}
+  {% assign mod = section.blocks.size | modulo: 2 %}
+  {%- if mod == 1 -%}
+    {%- assign loop_start = 1 -%}
+    {%- capture odd_field -%}
+      {%- for block in section.blocks limit: 1 -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: block %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+        {% include 'INF-RegisterFormInput' %}
+      {%- endfor -%}
+    {%- endcapture -%}
+  {%- endif -%}
+
+  {%- capture custom_fields -%}
+    {%- assign is_odd = true -%}
+    {%- for block in section.blocks offset: loop_start -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: block %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+      {%- if is_odd -%}
+        {%- assign is_odd = false -%}
+          <div class="Form__input-group">
+            {% include 'INF-RegisterFormInput' %}
+      {%- else -%}
+            {% include 'INF-RegisterFormInput' %}
+          </div>
+        {%- assign is_odd = true -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+
+{%- endif -%}

@@ -1,0 +1,22 @@
+  <div class="ProductStars">
+    {% comment %}
+    <span class="shopify-product-reviews-badge" data-id="{{ product.id }}">
+      {%- if product.metafields.spr.reviews == blank-%}  
+        <span class="spr-badge" data-rating="0.0">
+          <span class="spr-starrating spr-badge-starrating">
+            <i class="spr-icon spr-icon-star-empty"></i>
+            <i class="spr-icon spr-icon-star-empty"></i>
+            <i class="spr-icon spr-icon-star-empty"></i>
+            <i class="spr-icon spr-icon-star-empty"></i>
+            <i class="spr-icon spr-icon-star-empty"></i>
+          </span>
+          <span class="spr-badge-caption">No reviews</span>
+        </span>
+      {%- else -%}
+        {{product.metafields.spr.reviews}}
+      {%- endif -%}
+      
+    </span>
+    {% endcomment %}   
+    
+  </div>

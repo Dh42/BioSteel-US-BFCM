@@ -1,0 +1,39 @@
+<div class="NavList__menu Section Section--{{ section.settings.width }}" data-nav-menu>
+  <div class="Section__container" data-nav-container>
+  {%- for child_link in link.links -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: child_link %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+    {%- assign child_link_title = child_link.title | replace: '[[ ', icon_start | replace: '[[', icon_start | replace: ' ]]', icon_end | replace: ']]', icon_end -%}
+    <ul class="NavList__column">
+      <li class="NavList__subheading">
+        <a href="{{ child_link.url }}">{{ child_link_title }}</a>
+        {%- if child_link.levels > 0 -%}
+          <ul class="NavList__sublist">
+          {%- for grand_child_link in child_link.links -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: grand_child_link %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+            {%- assign grand_child_link_title = grand_child_link.title | replace: '[[ ', icon_start | replace: '[[', icon_start | replace: ' ]]', icon_end | replace: ']]', icon_end -%}
+            <li class="NavList__item">
+              <a href="{{ grand_child_link.url }}">
+                {%- if section.settings.nav_tier3_bullets -%}<i class="{{ settings.fa }} {{ section.settings.nav_tier3_bullets }}"></i> &nbsp;{%- endif -%}
+                {{ grand_child_link_title }}
+              </a>
+            </li>
+          {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </li>
+    </ul>
+  {%- endfor -%}
+  </div>
+</div>

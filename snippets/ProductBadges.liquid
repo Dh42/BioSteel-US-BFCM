@@ -1,0 +1,35 @@
+<div class="ProductBadges">
+{%- assign badges = 'icon-zero-sugar, icon-sugar-free, icon-great-tasting-hydration, icon-5-essential-electrolytes, icon-no-artificial-flavours-Preservatives, icon-sweetened-with-stevia, icon-essential-electrolytes, icon-fermented-amino-acid, icon-100-percent-vegan, icon-gluten-free, icon-grass-fed, icon-natural-colour-and-flavour, icon-natural-colors-and-flavors, icon-natural-source-caffeine, icon-non-gmo, icon-probiotics, icon-raw-and-sprouted-sources, icon-hydrolyzed-collagen, icon-hormone-free, icon-no-filler, icon-soy-free, icon-stevia, icon-vegan, icon-vegetarian, icon-vitamin-b-blend, icon-no-artificial-colours-or-flavours, icon-no-preservatives, icon-rgbh-hormone-free' | split: ', ' -%}
+{%- assign badge_index = 0 -%}
+{%- for badge in badges  -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: badge %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+    {% if product.tags contains badge and badge_index < 3 %}
+    {% assign badge_index = badge_index | plus: 1 %}
+    {%- assign badge_image = badge | append: '.png' | prepend: 'https://cdn.shopify.com/s/files/1/0080/2547/3142/files/' -%}
+        <div class="ProductBadge__block">
+            <img src="{{ badge_image }}" class = "imgClassMAin" alt="{{ badge | replace: 'icon-', '' | replace: '-', ' ' }}" style="">
+            <div class="ProductBadge__content">
+                <h4>{{ badge | replace: 'icon-', '' | replace: '-', ' ' }}</h4>
+            </div>
+        </div>
+    {%- endif -%}
+{%- endfor -%}
+</div>
+
+<style>
+    @media only screen and (min-width: 641px) {
+   .imgClassMAin{
+width: {{section.settings.padding_topImage }}px!important;
+      margin-left: 0px;margin-right: 0px;
+    }
+    }
+  .ProductBadge__block{
+    gap: 5px;
+  }
+</style>

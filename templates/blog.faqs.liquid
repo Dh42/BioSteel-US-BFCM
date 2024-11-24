@@ -1,0 +1,21 @@
+{%- section 'PageBanner' -%}
+  <div class="Section--fixed Section--mobile-fixed">
+    <div class="Faq Section__container">
+      {% for article in blogs['faqs-page'].articles %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: article %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+        <div class="Faq__post" data-faq>
+          <h3>{{ article.title }}
+            <i class="far fa-chevron-down"></i>
+          </h3>
+          <p>{{ article.content }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{%- section 'newsletter' -%}

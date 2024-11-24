@@ -1,0 +1,95 @@
+{% assign product_url = product.metafields.c_f['[p][_t] 10a. Product URL'] %}
+<div class="ProductInfo__add-to-cart">
+  {% comment %} 
+  <span class="ProductInfo__quantity-buttons">
+    <span class="ProductInfo__quantity-button">-</span>
+    <input class="ProductInfo__quantity-input" id="Quantity" name="quantity" type="number" min="1" step="1" value="1" readonly>
+    <span class="ProductInfo__quantity-button">+</span>
+  </span> 
+  {% endcomment %}
+  
+  {% if settings.bundle_script_enabled == true and product.tags contains "BUNDLE_PRODUCT" and product.metafields.bundle and product.metafields.bundle.variants %}
+     <button 
+        type="submit" 
+        name="add" 
+        class="ProductTile__button Button Button--primary" 
+        data-add-to-cart 
+        disabled="disabled"
+      >
+        <span data-add-to-cart-text>
+         
+            {{ 'products.product.sold_out' | t }}
+         
+        </span>
+      </button>
+  {% else %}
+  
+   
+      <button 
+        type="submit" 
+        name="add" 
+        class="ProductTile__button Button Button--primary" 
+        data-add-to-cart 
+        disabled="disabled"
+      >
+        <span data-add-to-cart-text>
+         
+            {{ 'products.product.sold_out' | t }}
+         
+        </span>
+      </button>
+  
+  {% endif %}
+  
+  <a class="klaviyo-bis-trigger Button" href="#">Notify Me When Available</a>
+ 
+</div>
+
+{% if settings.bundle_script_enabled == true %}
+<script type="text/javascript">
+  var variantIds = ("{{product.metafields.bundle.variants}}").split(",");
+  if(variantIds.length > 0){
+    $(".bundle_add_cart").click(function(){
+      var btnthis = this;
+      $(btnthis).html("ADDING...");
+      
+      var items = [];
+      for(var key in variantIds){
+        items.push({
+          quantity:1,
+          id:parseInt(variantIds[key])
+        });
+      }
+
+      $.ajax({
+        type: 'POST', 
+        url: '/cart/add.js',
+        data: {items:items},
+        success: function(res){
+          window.location.href = "/cart";
+        },
+        error: function(err){
+          $(btnthis).html("ADD TO CART");
+            if(err.responseText.indexOf('"items":') !== -1){
+              window.location.href = "/cart";
+            }
+            else if(err && err.responseText){
+            if(err.responseText.indexOf("description") !== -1){
+              var responseObj = JSON.parse(err.responseText);
+              if(responseObj.description){
+                alert(responseObj.description);
+              }
+              else{
+                alert(err.responseText);
+              }
+            }
+            else{
+              alert(err.responseText);
+            }
+          }
+        }
+     });
+    });
+  }
+</script>
+{% endif %}

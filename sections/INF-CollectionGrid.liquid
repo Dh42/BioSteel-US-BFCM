@@ -1,0 +1,362 @@
+{%- if template.name == 'index' and section.settings.collection != blank -%}
+  {%- assign collection = collections[section.settings.collection] -%}
+{%- endif -%}
+
+<section
+  id="section{{ section.id }}" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="INF-CollectionGrid" 
+  class="Section Section--{{ section.settings.width }} Section--{{ section.settings.width--mobile }} {% if template.name == 'index' and section.settings.section_animation and section.settings.section_animation != 'none' %} Animate Animate--{{ section.settings.section_animation }}{% endif %}"
+  style="{% if section.settings.use_background %}background: {{ section.settings.background }};{% endif %}"
+  > 
+  <div class="Section__container">
+    {% if template.name == 'index' and section.settings.heading != blank %}<h3 class="Section__heading {{ section.settings.heading_class }}">{{ section.settings.heading }}</h3>{% endif %}
+    {% if template.name == 'index' and section.settings.description != blank %}<p class="Section__description">{{ section.settings.description }}</p>{% endif %}
+    {%- if collection -%}
+      {% paginate collection.products by section.settings.limit %}
+        {% include 'CollectionGrid' %}
+      {% endpaginate %}
+    {%- endif -%}
+  </div>
+</section>
+
+<style>
+  #section{{ section.id }} .Section__container {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+  @media only screen and (max-width: {{ settings.grid_mobile_max }}) {
+    #section{{ section.id }} .Section__container {
+      padding-top: {{ section.settings.padding_top--mobile }}px;
+      padding-bottom: {{ section.settings.padding_bottom--mobile }}px;
+    }      
+  }
+</style>
+
+{% schema %}
+  {
+    "name": "Collection Grid",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "use_background",
+        "label": "Use background color",
+        "default": false,
+        "info": "Check this to use a custom section background color."
+      },
+      {
+        "type": "color",
+        "id": "background",
+        "label": "Background color",
+        "default": "#fff"
+      },
+      {
+        "type": "select",
+        "id": "animation",
+        "label": "Intro animation",
+        "default": "slide-up",
+        "options": [
+          {
+            "value": "fade-in",
+            "label": "Fade in"
+          },
+          {
+            "value": "slide-up",
+            "label": "Fade in & slide up"
+          },
+          {
+            "value": "slide-down",
+            "label": "Fade in & slide down"
+          },          
+          {
+            "value": "slide-left",
+            "label": "Fade in & slide left"
+          },
+          {
+            "value": "slide-right",
+            "label": "Fade in & slide right"
+          },
+          {
+            "value": "zoom-fade-in",
+            "label": "Fade in & zoom out"
+          },
+                    {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "animation--hover",
+        "label": "Hover animation",
+        "default": "zoom",
+        "options": [
+          {
+            "value": "zoom",
+            "label": "Zoom"
+          },
+          {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Buttons"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_button",
+        "label": "Show cart/detail button",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "cta",
+        "label": "CTA",
+        "default": "View Details",
+        "info": "The button copy shown if a product has variants. Products without variants will have 'add to cart' buttons."
+      },
+      {
+        "type": "text",
+        "id": "icon",
+        "label": "Icon",
+        "default": "fa-arrow-right",
+        "info": "Font Awesome icon class (fa-icon-name)"
+      },
+      {
+        "type": "header",
+        "content": "Homepage"
+      },
+      {
+        "type": "paragraph",
+        "content": "These settings are only relevant on the homepage."
+      },
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading"
+      },
+      {
+        "type": "select",
+        "id": "heading_class",
+        "label": "Heading Style",
+        "default": "h3",
+        "options": [
+          {
+            "value": "h1",
+            "label": "H1"
+          },
+          {
+            "value": "h2",
+            "label": "H2"
+          },
+          {
+            "value": "h3",
+            "label": "H3"
+          },
+          {
+            "value": "h4",
+            "label": "H4"
+          },
+          {
+            "value": "h5",
+            "label": "H5"
+          },
+          {
+            "value": "h6",
+            "label": "H6"
+          },
+          {
+            "value": "h7",
+            "label": "H7"
+          },
+          {
+            "value": "h8",
+            "label": "H8"
+          },
+          {
+            "value": "p",
+            "label": "Paragraph"
+          },
+          {
+            "value": "pbold",
+            "label": "Paragraph (Bold)"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "description",
+        "label": "Description"
+      },
+      {
+        "type": "select",
+        "id": "section_animation",
+        "label": "Section animation",
+        "default": "slide-up",
+        "options": [
+          {
+            "value": "fade-in",
+            "label": "Fade in"
+          },
+          {
+            "value": "slide-up",
+            "label": "Fade in & slide up"
+          },
+          {
+            "value": "slide-down",
+            "label": "Fade in & slide down"
+          },          
+          {
+            "value": "slide-left",
+            "label": "Fade in & slide left"
+          },
+          {
+            "value": "slide-right",
+            "label": "Fade in & slide right"
+          },
+          {
+            "value": "zoom-fade-in",
+            "label": "Fade in & zoom out"
+          },
+                    {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      },
+      {
+        "type": "collection",
+        "id": "collection",
+        "label": "Collection"
+      },
+      {
+        "type": "header",
+        "content": "Pagination"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_pagination",
+        "label": "Enable pagination",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "limit",
+        "min": 2,
+        "max": 50,
+        "step": 1,
+        "label": "Products per page",
+        "default": 20
+      },
+      {
+        "type": "header",
+        "content": "Desktop :: Settings"
+      },
+      {
+        "type": "select",
+        "id": "width",
+        "label": "Width",
+        "default": "fixed",
+        "options": [
+          {
+            "label": "Full (Edge-to-Edge)",
+            "value": "full"
+          },
+          {
+            "label": "Fixed",
+            "value": "fixed"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "columns",
+        "min": 2,
+        "max": 6,
+        "step": 1,
+        "label": "Products per row",
+        "default": 4
+      },      
+      {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Top Padding",
+        "default": 30
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Bottom Padding",
+        "default": 30
+      },
+      {
+        "type": "header",
+        "content": "Mobile :: Settings"
+      },
+      {
+        "type": "select",
+        "id": "width--mobile",
+        "label": "Width",
+        "default": "mobile-fixed",
+        "options": [
+          {
+            "label": "Full (Edge-to-Edge)",
+            "value": "mobile-full"
+          },
+          {
+            "label": "Fixed",
+            "value": "mobile-fixed"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "columns--mobile",
+        "options": [
+          { "value": "1", "label": "1" },
+          { "value": "2", "label": "2" }
+        ],
+        "label": "Products per row",
+        "default": "2"
+      },
+      {
+        "type": "range",
+        "id": "padding_top--mobile",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Top Padding",
+        "default": 15
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom--mobile",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Bottom Padding",
+        "default": 40
+      }     
+    ],
+    "presets": [
+      {
+        "name": "Collection Grid",
+        "category": "Collection"
+      }
+    ]
+  }
+{% endschema %}

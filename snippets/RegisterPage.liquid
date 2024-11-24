@@ -1,0 +1,119 @@
+<div class="RegisterPage">
+  {%- include 'INF-RegisterForm-logic' -%}
+  
+  <div id="form_msg"></div>
+  <div class="errors" id="errors" style="color:red;"></div>
+  <h2 class="success" id="success" style="color:green;"></h2>
+  <div class="reg_form_cont">
+
+  {% form 'create_customer', class: "Form RegisterForm" %}
+    {% unless section.settings.heading == blank %}<h3 class="Section__heading Register__heading">{{ section.settings.heading }}</h3>{% endunless %}
+    {% unless section.settings.details == blank %}<div class="RegisterPage__details">{{ section.settings.details }}</div>{% endunless %}
+
+    {{ form.errors | default_errors }}
+  
+    <div class="errors dob_error" style="display:none;">
+      <ul>
+        <li>Invaid date format for Date of Birth field, format should be: mm/dd/yyyy.</li>
+      </ul>
+    </div>
+
+    {%- include 'RegisterForm-fields' -%}
+
+    <!--<div class="Form__input-group">
+      <div class="Form__input-item">
+        <input type="hidden" name="customer[accepts_marketing]" value="" />
+        <input type="checkbox" name="customer[accepts_marketing]"{% if shop.currency == 'USD' %} checked="checked"{% endif %}/>
+        {% assign newsletter_default = 'shopify.checkout.marketing.accept_marketing_checkbox_label' | t %}
+        <span class="RegisterForm__newsletter">{{ section.settings.newsletter_text | default: newsletter_default }}</span>
+      </div>
+    </div>-->
+  
+    <div class="Form__input-group no-margin chlabmain" style="margin-bottom:0px;height:30px">
+      <div class="Form__input-item chlab">
+        
+        <input type="hidden" value="loyal" id="customer_tags" name="customer[tags]" />
+        
+        <input style="transform: scale(1.5);" type="checkbox"  checked id="join_teambiosteel" {% comment %}name="customer[accepts_marketing]"{% endcomment %} />
+        
+        
+        <!--<input style="transform: scale(1.5);" type="checkbox" value="loyal" id="join_teambiosteel" name="customer[tags]" />-->
+        {% assign show_text = '<strong>Sign me up for #TeamBioSteel Rewards.</strong>  Earn 15 points for joining!' %}
+        
+        <label style="display: inline-block;position: relative;top: -14px;" for="join_teambiosteel" class="RegisterForm__newsletter Form__label chlab12">{{ show_text }}</label>
+        
+      </div>
+    </div>
+
+    
+          <div class="Form__input-group no-margin">
+      <div class="Form__input-item chlab" >
+        <input type="hidden" value="loyal" id="customer_tagsnext" name="customer_tagsnext[tagsnext]" />
+        
+        <input style="transform: scale(1.5);" type="checkbox"  checked  id="join_teambiosteel12" {% comment %}name="customer[accepts_marketing]"{% endcomment %} />
+        
+        <!--<input style="transform: scale(1.5);" type="checkbox" value="loyal" id="join_teambiosteel" name="customer[tags]" />-->
+        {% assign show_text = '<strong>Sign me up for emails.</strong>  Earn 20 points and get bonus points for Athlete Achievements!' %}
+        
+        <label style="display: inline-block;position: relative;top: -14px;" for="join_teambiosteel12" class="RegisterForm__newsletter  Form__label  chlab12">{{ show_text }}</label>
+        
+      </div>
+    </div>
+    
+    <div class="Form__submit-group Form__submit-group--centered">
+      
+      
+      
+      {% unless section.settings.required_fields_message == blank %}
+        <div class="RegisterForm__required-fields-message Form__required-fields-message">
+          <span class="Form__required"></span>{{ section.settings.required_fields_message }}
+        </div> 
+      {% endunless %}
+      <input type="submit" value="{{ 'Create Account' }}" class="RegisterForm__button Button Button--{{ section.settings.button_style }}">
+      {% unless section.settings.closing_info == blank %}
+        <div class="Form__closing-info">
+          {{ section.settings.closing_info }}
+        </div> 
+      {% endunless %}
+    </div>
+  {% endform %}
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#create_customer').on('submit',function(){
+      var dob = $("#dob").val();
+      if(dob && dob != ""){
+        var pattern =/^([0-9]{2})\/([0-9]{2})\/([0-9]{4})$/;
+        if(pattern.test(dob)){
+          $(".dob_error").hide();
+          return true;
+        }
+        else{
+          $(".dob_error").show();
+        }
+      }
+      else{
+        $(".dob_error").hide();
+        return true;
+      }
+      return false;
+    });
+  });
+</script>
+   <style>
+ 
+    @media only screen and (max-width: 640px) {
+     .chlab{
+      
+      display:flex;
+     }
+      .chlab12{
+       top:-5px !important;
+        
+      }
+      .chlabmain{height:48px !important;}
+  }
+  
+</style>

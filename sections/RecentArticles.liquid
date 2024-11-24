@@ -1,0 +1,231 @@
+<section 
+  id="Section{{ section.id }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="RecentArticles"
+  class="RecentArticle Section Section--{{ section.settings.width }} Section--{{ section.settings.width--mobile }} Animate Animate--slide-up" 
+  style="{% if section.settings.use_background %}background: {{ section.settings.background }};{% endif %}"
+>
+  <div class="Section__container {% if section.settings.animation != 'none' %}Animate Animate--{{ section.settings.animation }}{% endif %}">
+    
+    {%- if section.settings.heading != '' -%}<h2 class="Section__heading">{{ section.settings.heading }}</h2>{%- endif -%}
+        {%- assign blog = blogs[section.settings.blog] -%}
+    <div
+      id="RecentArticles{{ section.id }}" 
+      class="RecentArticles"
+    >
+
+      {% for article in blog.articles limit: section.settings.limit %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: article %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+        {%- include 'ArticleTile-thumb-logic', columns: 3, aspect_ratio: 1.33 -%}
+        <div class="RecentArticles__post">
+          <div class="RecentArticles__image" data-article-tile-image>
+            <a class="RecentArticles__link" href="{{ article.url }}"></a>
+            <img 
+              src="{{ article.image | img_url: img_size, crop: 'center' }}" 
+              alt="{{ article.title }}" 
+              class="AnimateOnHover--{{ animation_hover }}"
+              width="{{ img_width }}"
+              height="{{ img_height }}"
+              onload="elementLoaded(this);"
+            >
+              <div class="content">
+                <h3 data-article-tile-title>{{ article.title }}</h3>
+                <a href="{{ article.url }}" class="Button Button--on-image" aria-label="{{ 'blogs.article.read_more_title' | t: title: article.title }}">{{ 'blogs.article.read_more' | t }}</a>
+              </div>
+            <div class="overlay"></div>
+          </div>
+
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+
+  <style>
+    /* DESKTOP */
+    @media only screen and (min-width: {{ settings.grid_tablet_min }}) {
+
+      #Section{{ section.id }} .Section__container {
+        padding-top: {{ section.settings.padding_top }}px;
+        padding-bottom: {{ section.settings.padding_bottom }}px;
+      }
+
+    }
+
+    /* MOBILE */
+    @media only screen and (max-width: {{ settings.grid_mobile_max }}) {
+
+      #Section{{ section.id }} .Section__container {
+        padding-top: {{ section.settings.padding_top--mobile }}px;
+        padding-bottom: {{ section.settings.padding_bottom--mobile }}px;
+      }
+
+    }      
+  </style>
+</section>
+{% schema %}
+  {
+    "name": "Recent Articles",
+    "settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading",
+        "default": "Heading"
+      },
+      {
+        "type": "blog",
+        "id": "blog",
+        "label": "Blog"
+      },
+      {
+        "type": "range",
+        "id": "limit",
+        "min": 3,
+        "max": 12,
+        "step": 3,
+        "label": "Limit",
+        "default": 3,
+        "info": "Limits the number of products shown in the carousel."
+      },
+      {
+        "type": "checkbox",
+        "id": "use_background",
+        "label": "Use background color",
+        "default": false,
+        "info": "Check this to use a custom section background color."
+      },
+      {
+        "type": "color",
+        "id": "background",
+        "label": "Background color",
+        "default": "#fff"
+      },
+      {
+        "type": "select",
+        "id": "animation",
+        "label": "Animation",
+        "default": "slide-up",
+        "options": [
+          {
+            "value": "fade-in",
+            "label": "Fade in"
+          },
+          {
+            "value": "slide-up",
+            "label": "Fade in & slide up"
+          },
+          {
+            "value": "slide-down",
+            "label": "Fade in & slide down"
+          },          
+          {
+            "value": "slide-left",
+            "label": "Fade in & slide left"
+          },
+          {
+            "value": "slide-right",
+            "label": "Fade in & slide right"
+          },
+          {
+            "value": "zoom-fade-in",
+            "label": "Fade in & zoom out"
+          },
+                    {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Desktop :: Settings"
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Top padding",
+        "default": 30
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Bottom padding",
+        "default": 30
+      },
+      {
+        "type": "select",
+        "id": "width",
+        "label": "Width",
+        "default": "full",
+        "options": [
+          {
+            "label": "Full (Edge-to-Edge)",
+            "value": "full"
+          },
+          {
+            "label": "Fixed",
+            "value": "fixed"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Mobile :: Settings"
+      },
+      {
+        "type": "range",
+        "id": "padding_top--mobile",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Top padding",
+        "default": 20
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom--mobile",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Bottom padding",
+        "default": 20
+      },
+      {
+        "type": "select",
+        "id": "width--mobile",
+        "label": "Width",
+        "default": "full",
+        "options": [
+          {
+            "label": "Full (Edge-to-Edge)",
+            "value": "full"
+          },
+          {
+            "label": "Fixed",
+            "value": "fixed"
+          }
+        ]
+      }
+    ],
+    "presets": [{
+      "name": "Recent Articles",
+      "category": "Blog"
+    }]
+  }
+{% endschema %}

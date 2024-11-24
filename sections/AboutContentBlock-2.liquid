@@ -1,0 +1,236 @@
+{% if section.settings.enable_section %}
+<section id="section{{ section.id }}" class="Biosteelway Section Section--full">
+  <div class="Animate Animate--slide-up hide--desktop">
+    <div class="Biosteelway__content">
+      <h3>{{ section.settings.heading }}</h3>
+      <p>{{ section.settings.description }}</p>
+    </div>
+    <div class="Animate Animate--slide-up Biosteelway__background"></div>
+  </div>
+  <div class="Section Section--fixed hide--mobile">
+    <div class="Section__container">
+      <div class="Biosteelway__background">
+        <div class="Biosteelway__content--{{ section.settings.alignment }} Animate Animate--slide-right">
+          <h3>{{ section.settings.heading }}</h3>
+          <p>{{ section.settings.description }}</p>
+        </div>
+      </div>
+      </div>
+  </div>
+</section>
+<style>
+  @media only screen and (max-width: {{ settings.grid_mobile_max }}) {
+     section#section{{ section.id }} {
+      padding-top: {{ section.settings.padding_top--mobile }}px;
+      padding-bottom: {{ section.settings.padding_bottom--mobile }}px;
+     }
+
+    section#section{{ section.id }} h3 {
+      font-size: {{ section.settings.heading_size_mobile }}px;
+    }
+
+    section#section{{ section.id }} p {
+      font-size: {{ section.settings.description_size_mobile }}px;
+    }
+
+    section#section{{ section.id }} .Biosteelway__content {
+      color:{{ section.settings.content_color_mobile }};
+      background-color: {{ section.settings.content_background_color }};
+    }
+
+    .Biosteelway__background {
+      background-image: url('{{ section.settings.background_image_mobile | img_url: '1200x'}}');
+      background-position: 50% 50%;
+    }
+  }
+  @media only screen and (min-width: {{ settings.grid_tablet_min }}) {
+    section#section{{ section.id }} {
+      background-image: url('{{ section.settings.background_image | img_url: '2048x'}}');
+      background-size: cover;
+      background-position: 50% 50%;
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+    section#section{{ section.id }} .Biosteelway__content {
+      color:{{ section.settings.content_color }};
+
+    }
+    section#section{{ section.id }} .Section__container h3 {
+      font-size: {{ section.settings.heading_size }}px;
+    }
+
+    section#section{{ section.id }} .Section__container p {
+      font-size: {{ section.settings.description_size }}px;
+    }
+    
+    section#section{{ section.id }} .Section__container div > div {
+      color:{{ section.settings.content_color }};
+      background-color: {{ section.settings.content_background_color }};
+    }
+  }
+</style>
+{% endif %}
+{% schema %}
+  {
+    "name": "Content Block 2",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_section",
+        "label": "Enable Section ?",
+        "default": true
+      },
+      {
+        "type": "image_picker",
+        "id": "background_image",
+        "label": "Background Image for Desktop",
+        "info": "For best results, upload a retina background image"
+      },
+      {
+        "type": "image_picker",
+        "id": "background_image_mobile",
+        "label": "Background Image for Mobile",
+        "info": "For best results, upload a retina background image"
+      },
+      {
+        "type": "html",
+        "id": "heading",
+        "label": "Content Block Heading",
+        "default": "Content Block Heading"
+      },
+      {
+        "type": "html",
+        "id": "description",
+        "label": "Content Block Description",
+        "default": "Content Block Description"
+      },
+      {
+        "type": "header",
+        "content": "Desktop :: Settings"
+      },
+      {
+        "type": "color",
+        "id": "content_color",
+        "label": "Content Color",
+        "default": "#000"
+      },
+      {
+        "type": "color",
+        "id": "content_background_color",
+        "label": "Content Background Color",
+        "default": "#fff"
+      },
+      {
+        "label": "Content Alignment",
+        "id": "alignment",
+        "type": "select",
+        "default": "left",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ],
+        "default": "center"
+      },
+      {
+        "type": "range",
+        "id": "heading_size",
+        "min": 10,
+        "max": 50,
+        "step": 5,
+        "unit": "px",
+        "label": "Content Heading font size",
+        "default": 20
+      },
+      {
+        "type": "range",
+        "id": "description_size",
+        "min": 10,
+        "max": 28,
+        "step": 1,
+        "unit": "px",
+        "label": "Content Description font size",
+        "default": 17
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Top Padding",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Bottom Padding",
+        "default": 0
+      },
+      {
+        "type": "header",
+        "content": "Mobile :: Settings"
+      },
+      {
+        "type": "color",
+        "id": "content_color_mobile",
+        "label": "Content Color",
+        "default": "#000"
+      },
+      {
+        "type": "range",
+        "id": "heading_size_mobile",
+        "min": 10,
+        "max": 50,
+        "step": 5,
+        "unit": "px", 
+        "label": "Content Heading font size for mobile",
+        "default": 20
+      },
+      {
+        "type": "range",
+        "id": "description_size_mobile",
+        "min": 10,
+        "max": 28,
+        "step": 1,
+        "unit": "px",
+        "label": "Content Description font size for mobile",
+        "default": 17
+      },
+      {
+        "type": "range",
+        "id": "padding_top--mobile",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Top Padding",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom--mobile",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Bottom Padding",
+        "default": 0
+      }
+    ]
+  }
+{% endschema %}

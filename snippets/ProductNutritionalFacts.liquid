@@ -1,0 +1,27 @@
+{%- assign nutritional_facts = product.metafields.c_f['[p][_t] 2b. Nutritional Fact'] -%}
+<div id="modal_video_{{ article.id }}" class="Modal" data-modal>
+  <div class="Modal__close Modal__close--outside" data-close-modal>
+    {% include 'INF-CloseIcon' %}
+  </div>
+  <div class="Modal__overlay" data-modal-overlay data-close-modal></div>
+  <div class="Modal__content" data-modal-content>
+    <div class="Modal__close Modal__close--inside" data-close-modal>
+      {% include 'INF-CloseIcon' %}
+    </div>
+  {%- assign video_link = article.metafields.c_f.video_link -%}
+      {{ video_link }}
+  </div>
+</div>
+<div id="nutritional_facts" class="Modal" data-modal>
+  <div class="Modal__close Modal__close--outside" data-close-modal>
+    {% include 'INF-CloseIcon' %}
+  </div>
+  <div class="Modal__overlay" data-modal-overlay data-close-modal></div>
+  <div class="Modal__content" data-modal-content>
+    <div class="Modal__close Modal__close--inside" data-close-modal>
+      {% include 'INF-CloseIcon' %}
+    </div>
+      <h3 class="Modal__heading">Nutritional Facts</h3>
+      <p> {{ nutritional_facts }} </p>
+  </div>
+</div>

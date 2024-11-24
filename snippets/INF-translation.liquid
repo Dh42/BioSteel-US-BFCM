@@ -1,0 +1,8 @@
+{%- capture INF_translation -%}
+  {{ translate | t: val_1: val_1, val_2: val_2, val_3: val_3, count: count }}
+{%- endcapture -%}
+{%- assign INF_translation = INF_translation | strip_newlines -%}
+{%- if INF_translation == '' or INF_translation contains 'translation missing' -%}
+  {%- assign INF_translation = default -%}
+{%- endif -%}
+{{ INF_translation }}

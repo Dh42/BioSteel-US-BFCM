@@ -1,0 +1,195 @@
+    <script type="text/javascript">
+      var staffCouponCode = "VEX8DY98S30T";
+      var staffEmailDomain = ["canopygrowth.com","tweed.com","tokyosmoke.com","bodystream.ca","cbrands.com"];
+      var staffDiscountFound = false;
+      var otherDiscountFound = false;
+      var checkCouponTimer;
+      var emailDomain = '';
+      var cemail = '{{ checkout.email }}';
+      if(cemail && cemail != "" && cemail != null){
+        var email_arr = cemail.split("@");
+        if(email_arr && email_arr[1]){
+          emailDomain = email_arr[1];
+        }
+      }
+      
+      function checkStaffCoupon(){
+        $('.reduction-code').each(function(i,obj){
+          var couponCode = ($(this).find(".reduction-code__text").text()).trim();
+          if(couponCode == staffCouponCode){
+            if(staffEmailDomain.includes(emailDomain)){
+              staffDiscountFound = true;
+              clearInterval(checkCouponTimer);
+            }
+            else{
+              $(this).parent().parent().find(".tag__button").click();
+            }
+          }
+          else if(couponCode && couponCode != "" && couponCode != null){
+            otherDiscountFound = true;
+          }
+        });
+        if(staffEmailDomain.includes(emailDomain) && staffDiscountFound == false && otherDiscountFound == false){  
+          $("#checkout_reduction_code").val(staffCouponCode);
+          $("#checkout_reduction_code").parent().parent().find(".field__input-btn").removeAttr("disabled");
+          $("#checkout_reduction_code").parent().parent().find(".field__input-btn").click();
+        }
+      }
+      $(document).ready(function(){
+          if(emailDomain != ""){
+            checkCouponTimer = setInterval(checkStaffCoupon,1000);
+          }
+      });
+      
+      
+      
+      
+      //2nd staff coupon
+      
+      var staffCouponCode2 = "XT3PY4E9EEZ3";
+      var staffEmailDomain2 = ["anytimefitness.com"];
+      var staffDiscountFound2 = false;
+      var otherDiscountFound2 = false;
+      var checkCouponTimer2;
+      var emailDomain2 = '';
+      var cemail2 = '{{ checkout.email }}';
+      if(cemail2 && cemail2 != "" && cemail2 != null){
+        var email_arr2 = cemail2.split("@");
+        if(email_arr2 && email_arr2[1]){
+          emailDomain2 = email_arr2[1];
+        }
+      }
+      
+      function checkStaffCoupon2(){
+        $('.reduction-code').each(function(i,obj){
+          var couponCode2 = ($(this).find(".reduction-code__text").text()).trim();
+          if(couponCode2 == staffCouponCode2){
+            if(staffEmailDomain2.includes(emailDomain2)){
+              staffDiscountFound2 = true;
+              clearInterval(checkCouponTimer2);
+            }
+            else{
+              $(this).parent().parent().find(".tag__button").click();
+            }
+          }
+          else if(couponCode2 && couponCode2 != "" && couponCode2 != null){
+            otherDiscountFound2 = true;
+          }
+        });
+        if(staffEmailDomain2.includes(emailDomain2) && staffDiscountFound2 == false && otherDiscountFound2 == false){  
+          $("#checkout_reduction_code").val(staffCouponCode2);
+          $("#checkout_reduction_code").parent().parent().find(".field__input-btn").removeAttr("disabled");
+          $("#checkout_reduction_code").parent().parent().find(".field__input-btn").click();
+        }
+      }
+      
+      $(document).ready(function(){
+        if(emailDomain2 != ""){
+          checkCouponTimer2 = setInterval(checkStaffCoupon2,1000);
+        }
+      });
+      
+      
+      
+      
+      
+      //3rd staff coupon
+      
+      var staffCouponCode3 = "RH3D1JVK6VS";
+      var staffEmailDomain3 = ["reyesholdings.com","coldhausdistribution.ca"];
+      var staffDiscountFound3 = false;
+      var otherDiscountFound3 = false;
+      var checkCouponTimer3;
+      var emailDomain3 = '';
+      var cemail3 = '{{ checkout.email }}';
+      if(cemail3 && cemail3 != "" && cemail3 != null){
+        var email_arr3 = cemail3.split("@");
+        if(email_arr3 && email_arr3[1]){
+          emailDomain3 = email_arr3[1];
+        }
+      }
+      
+      function checkStaffCoupon3(){
+        $('.reduction-code').each(function(i,obj){
+          var couponCode3 = ($(this).find(".reduction-code__text").text()).trim();
+          if(couponCode3 == staffCouponCode3){
+            if(staffEmailDomain3.includes(emailDomain3)){
+              staffDiscountFound3 = true;
+              clearInterval(checkCouponTimer3);
+            }
+            else{
+              $(this).parent().parent().find(".tag__button").click();
+            }
+          }
+          else if(couponCode3 && couponCode3 != "" && couponCode3 != null){
+            otherDiscountFound3 = true;
+          }
+        });
+        if(staffEmailDomain3.includes(emailDomain3) && staffDiscountFound3 == false && otherDiscountFound3 == false){  
+          $("#checkout_reduction_code").val(staffCouponCode3);
+          $("#checkout_reduction_code").parent().parent().find(".field__input-btn").removeAttr("disabled");
+          $("#checkout_reduction_code").parent().parent().find(".field__input-btn").click();
+        }
+      }
+      
+      $(document).ready(function(){
+        if(emailDomain3 != ""){
+          checkCouponTimer3 = setInterval(checkStaffCoupon3,1000);
+        }
+      });
+      
+      
+      
+      
+      
+      
+      
+      //4th staff coupon
+      
+      var staffCouponCode4 = "EPP720BS3412";
+      var staffEmailDomain4 = ["biosteel.com"];
+      var staffDiscountFound4 = false;
+      var otherDiscountFound4 = false;
+      var checkCouponTimer4;
+      var emailDomain4 = '';
+      var cemail4 = '{{ checkout.email }}';
+      if(cemail4 && cemail4 != "" && cemail4 != null){
+        var email_arr4 = cemail4.split("@");
+        if(email_arr4 && email_arr4[1]){
+          emailDomain4 = email_arr4[1];
+        }
+      }
+      
+      function checkStaffCoupon4(){
+        $('.reduction-code').each(function(i,obj){
+          var couponCode4 = ($(this).find(".reduction-code__text").text()).trim();
+          if(couponCode4 == staffCouponCode4){
+            if(staffEmailDomain4.includes(emailDomain4)){
+              staffDiscountFound4 = true;
+              clearInterval(checkCouponTimer4);
+            }
+            else{
+              $(this).parent().parent().find(".tag__button").click();
+            }
+          }
+          else if(couponCode4 && couponCode4 != "" && couponCode4 != null){
+            otherDiscountFound4 = true;
+          }
+        });
+        if(staffEmailDomain4.includes(emailDomain4) && staffDiscountFound4 == false && otherDiscountFound4 == false){  
+          $("#checkout_reduction_code").val(staffCouponCode4);
+          $("#checkout_reduction_code").parent().parent().find(".field__input-btn").removeAttr("disabled");
+          $("#checkout_reduction_code").parent().parent().find(".field__input-btn").click();
+        }
+      }
+      
+      $(document).ready(function(){
+        if(emailDomain4 != ""){
+          checkCouponTimer4 = setInterval(checkStaffCoupon4,1000);
+        }
+      });
+      
+      
+      
+      
+    </script>

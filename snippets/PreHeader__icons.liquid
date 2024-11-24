@@ -1,0 +1,10 @@
+{%- comment -%}This is just a recommended starting point...customize away!{%- endcomment -%}
+<div class="PreHeader__icons">
+{%- if shop.customer_accounts_enabled -%}
+  {%- if customer -%}
+  <a class="PreHeader__icon" href="/account">My Account</a>
+  {% else %}
+    <a class="PreHeader__icon" href="/account">Login</a>
+{% endif %}  
+{% endif %}
+</div>

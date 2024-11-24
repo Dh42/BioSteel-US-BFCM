@@ -1,0 +1,17 @@
+<div class="Pod__content Overlay__content {{ extra_classes }}">
+  {% if block.settings.heading %}<h3 class="Pod__heading {{ block.settings.heading_class }}">{{ block.settings.heading }}</h3>{% endif %}
+  {% if block.settings.sub-heading %}<p class="Pod__sub-heading {{ block.settings.subheading_class }}">{{ block.settings.sub-heading }}</p>{% endif %}
+  {% if block.settings.cta != '' %}
+    {%- comment -%} Backwards compatability...option used to be 'button' {%- endcomment -%}
+    {%- assign cta_style = block.settings.cta_style -%}
+    {%- if cta_style == 'button' -%}
+      {%- assign cta_style = 'on-image' -%}
+    {%- endif -%}
+
+    {% unless cta_style == 'text' %}
+      <div class="Pod__button Button Button--{{ cta_style }}">{{ block.settings.cta }}</div>
+    {% else %}
+      <p class="Pod__cta">{{ block.settings.cta }}</p>
+    {% endunless %}
+  {% endif %}   
+</div>

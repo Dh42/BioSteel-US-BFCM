@@ -1,0 +1,178 @@
+{% if section.settings.enable_section %}
+<section 
+  id="section{{ section.id }}" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="INF-FeaturedColumns" 
+  class="Section Section--fixed Section--fixed" 
+  style=""
+>
+  <div class="Section__container FeaturedColumns-inner">
+    {% if section.settings.title != blank %}
+      <div class="section-header text-center">
+        <h2 class="Section__heading heading-FeaturedColumns">{{ section.settings.title | escape }}</h2>        
+      </div>
+    {% endif %}
+    
+    <div class="grid {% unless section.blocks.size == 5 %}grid--uniform{% endunless %} grid--flush-bottom">
+      {%- assign grid_item_width = 'medium-up--one-third' -%}
+      {%- assign max_height = 345 -%}
+      {% case section.blocks.size %}
+        {% when 1 %}
+          {%- assign grid_item_width = 'medium-up--one-whole' -%}
+          {%- assign max_height = 530 -%}
+        {% when 2 %}
+          {%- assign grid_item_width = 'medium-up--one-half' -%}
+          {%- assign max_height = 530 -%}
+        {% when 4 %}
+          {%- assign grid_item_width = 'medium-up--one-half' -%}
+          {%- assign max_height = 530 -%}
+        {% when 6 %}
+          {%- assign grid_item_width = 'medium-up--one-sixth' -%}
+          {%- assign max_height = 530 -%}
+      {% endcase %}
+      
+      {% for block in section.blocks %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: block %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+        {% if section.blocks.size == 5 and forloop.index < 3 %}
+          {%- assign column_width = 'medium-up--one-half' -%}
+          {%- assign max_height = 530 -%}
+        {% else %}
+          {%- assign column_width = grid_item_width -%}
+        {% endif %}
+        <div class="grid__item {{ column_width }} text-{{ section.settings.align_text }}" {{ block.shopify_attributes }}>
+          {% if block.settings.enable_image %}
+            {% if block.settings.image != blank %}
+              {% capture img_id %}TextColumnImage-{{ block.id }}{% endcapture %}
+              {% capture wrapper_id %}TextColumnImageWrapper-{{ block.id }}{% endcapture %}
+              {%- assign img_url = block.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+              <div id="{{ wrapper_id }}" class="feature-row__image-wrapper js">
+                <div style="padding-top:{{ 1 | divided_by: block.settings.image.aspect_ratio | times: 100}}%;">
+                  <img id="{{ img_id }}"
+                       class="feature-row__image lazyload"
+                       src="{{ block.settings.image | img_url: '300x300' }}"
+                       data-src="{{ img_url }}"
+                       alt="{{ block.settings.image.alt | escape }}">
+                </div>
+              </div>
+            {% else %}
+              <p>
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              </p>
+            {% endif %}
+          {% endif %}
+          {% if block.settings.title != blank %}
+            <h2 class="h2">{{ block.settings.title | escape }}</h2>
+          {% endif %}
+          {% if block.settings.text != blank %}
+            <div class="rte-setting">{{ block.settings.text }}</div>
+          {% endif %}
+          {% if block.settings.button_label != blank and block.settings.button_link != blank %}
+            <a href="{{ block.settings.button_link }}" class="Button Button--primary">
+              {{ block.settings.button_label | escape }}
+            </a>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+    
+  </div>
+</section>
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Custom Html",
+    "class": "index-section",
+    "settings": [
+	  {
+        "type": "checkbox",
+        "id": "enable_section",
+        "label": "Enable Section ?",
+        "default": true
+      },
+      {
+        "type": "html",
+        "id": "title",
+        "label": "Heading"
+      },
+      {
+        "type": "select",
+        "id": "align_text",
+        "label": "Text alignment",
+        "default": "left",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Centered"
+          }
+        ]
+      }
+    ],
+    "blocks": [
+      {
+        "type": "text_block",
+        "name": "Column",
+        "settings": [
+          {
+            "type": "checkbox",
+            "id": "enable_image",
+            "label": "Show image",
+            "default": true
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading"
+          },
+          {
+            "type": "html",
+            "id": "text",
+            "label": "HTML"
+          },
+          {
+            "type": "text",
+            "id": "button_label",
+            "label": "Button label"
+          },
+          {
+            "type": "url",
+            "id": "button_link",
+            "label": "Button link"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Custom HTML",
+        "category": "Text",
+        "blocks": [
+          {
+            "type": "text_block"
+          },
+          {
+            "type": "text_block"
+          },
+          {
+            "type": "text_block"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

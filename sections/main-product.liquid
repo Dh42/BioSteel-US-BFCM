@@ -1,0 +1,999 @@
+{%- comment -%} Wholesale_Club_Product_Visibility_Resource_Page Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility" %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% render "wc_page_replacement" %}
+{%- else -%}
+
+{% comment %} Wholesale_Club_Product_Prices Start {% endcomment %}
+{% assign base_product = product %}
+{% assign base_variant = product.selected_or_first_available_variant %}
+
+{% if shop.metafields.sawholesale['base_price'] == blank %}
+  {% assign base_price = 'compare_at_price' %}
+{% else %}
+  {% assign base_price = shop.metafields.sawholesale['base_price'] %}
+{% endif %}
+
+{% assign saw_discount = 0 %}{% assign saw_has_discount = false %}
+
+{% if customer.tags != blank %}
+  {% for mf in base_product.metafields.sawholesale %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: mf %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+    {% capture product_customer_tag %}{{ mf | first | replace: 'discount_', '' }}{% endcapture %}
+    {% if customer.tags contains product_customer_tag %}
+      {% assign saw_has_discount = true %}
+      {% assign discount_key = product_customer_tag | prepend: 'discount_' %}
+      {% assign price_key = product_customer_tag | prepend: 'price_' %}
+      {% assign saw_discount = base_product.metafields.sawholesale[discount_key] | divided_by: 100.0 %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% assign saw_discount = 1 | minus: saw_discount %}
+
+{% if base_price == 'price' or base_variant.compare_at_price == blank  or base_variant.compare_at_price == 0 or base_variant.compare_at_price < base_variant.price %}
+  {% assign saw_variant_compare_at_price = base_variant.price %}
+{% else %}
+  {% assign saw_variant_compare_at_price = base_variant.compare_at_price %}
+{% endif %}
+
+{% assign cpe = shop.metafields.sawholesale['cpe'] | default: "true" %}
+{% if base_variant.metafields.sawholesale[price_key] != blank and cpe == "true" %}
+  {% assign saw_variant_price = base_variant.metafields.sawholesale[price_key] %}
+{% else %}
+  {% assign saw_variant_price = saw_variant_compare_at_price | times: saw_discount %}
+{% endif %}
+
+{% if saw_has_discount == false or saw_variant_price >= saw_variant_compare_at_price %}
+  {% assign WCProduct_Price = base_product.price %}
+  {% assign WCProduct_ComparePrice = base_product.compare_at_price %}
+  {% assign WCProduct_PriceMin = base_product.price_min %}
+  {% assign WCProduct_ComparePriceMin = base_product.compare_at_price_min %}
+  {% assign WCProduct_PriceMax = base_product.price_max %}
+  {% assign WCProduct_ComparePriceMax = base_product.compare_at_price_max %}
+  {% assign WCProduct_VariantPrice = base_variant.price %}
+  {% assign WCProduct_VariantComparePrice = base_variant.compare_at_price %}
+{% else %}   
+  {% assign WCProduct_Price = saw_variant_price %}
+  {% assign WCProduct_PriceMin = base_product.price_min | times: saw_discount %}
+  {% assign WCProduct_PriceMax = base_product.price_max | times: saw_discount %}
+  {% assign WCProduct_ComparePrice = saw_variant_compare_at_price %}
+  {% if base_product.compare_at_price_min != 0 %}{% assign WCProduct_ComparePriceMin = base_product.compare_at_price_min %}{% else %}{% assign WCProduct_ComparePriceMin = base_product.price_min %}{% endif %}
+  {% if base_product.compare_at_price_max != 0 %}{% assign WCProduct_ComparePriceMax = base_product.compare_at_price_max %}{% else %}{% assign WCProduct_ComparePriceMax = base_product.price_max %}{% endif %}
+  {% assign WCProduct_VariantPrice = saw_variant_price %}
+  {% assign WCProduct_VariantComparePrice = saw_variant_compare_at_price %}
+{% endif %}
+{% comment %} Wholesale_Club_Product_Prices End {% endcomment %}
+{%- include 'ProductFlavors' -%}
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+<section 
+  id="Section{{ section.id }}"
+  data-section-id="{{ section.id }}" 
+  data-section-type="product" 
+  data-enable-history-state="true"
+  class="Section Section--{{ section.settings.width }} Section--{{ section.settings.width--mobile }}" 
+  style="{% if section.settings.use_background %}background: {{ section.settings.background }};{% endif %}"
+>
+  <div class="Section__container main_product_page">
+    {%- include 'ProductOverview' -%}
+  </div>
+
+
+  {% unless product == empty %}
+    <script type="application/json" data-product-json>
+      {%- render 'wc_product_json', product: product -%}
+    </script>
+  {% endunless %}
+
+  <style>
+    /* DESKTOP */
+    @media only screen and (min-width: {{ settings.grid_tablet_min }}) {
+      #Section{{ section.id }} .Section__container {
+        padding-top: {{ section.settings.padding_top }}px;
+        padding-bottom: {{ section.settings.padding_bottom }}px;
+      }
+      #Section{{ section.id }} .flickity-prev-next-button {
+        {%- assign arrow_bg_opacity = section.settings.arrow_bg_opacity | divided_by: 100.0 -%}
+        background: {{ section.settings.arrow_bg_color | hex_to_rgba: arrow_bg_opacity }};
+      }
+      #Section{{ section.id }} .flickity-prev-next-button .arrow {
+        fill: {{ section.settings.arrow_color }};
+        opacity: {{ section.settings.arrow_opacity | divided_by: 100.0 }};
+      }
+      #Section{{ section.id }} .flickity-page-dots {
+        bottom: {{ section.settings.dot_location }};
+      }
+      #Section{{ section.id }} .flickity-page-dots .dot {
+        background: {{ section.settings.dot_color }};
+        opacity: {{ section.settings.dot_opacity | divided_by: 100.0 }};
+      }
+      #Section{{ section.id }} .flickity-page-dots .dot.is-selected {
+        background: {{ section.settings.dot_color_active }};
+        opacity: {{ section.settings.dot_opacity_active | divided_by: 100.0 }};
+      }
+      {% if section.settings.dot_location == '-35px' and section.settings.pageDots %}
+        #Section{{ section.id }} .ProductImages__dots-placeholder {
+          display: block;
+        }
+      {% endif %}
+
+      {% if section.settings.transition == 'fade' %}
+        #Section{{ section.id }} .flickity-slider {
+          transform: none !important;
+        }
+        #Section{{ section.id }} .ProductImages__slide {
+          left: 0 !important;
+          opacity: 0;
+          transition: opacity 0.3s ease-in-out;
+        }
+        #Section{{ section.id }} .ProductImages__slide.is-selected {
+          opacity: 1;
+        }
+      {% endif %}
+    }
+
+    /* MOBILE */
+    @media only screen and (max-width: {{ settings.grid_mobile_max }}) {
+      #Section{{ section.id }} .Section__container {
+        padding-top: {{ section.settings.padding_top--mobile }}px;
+        padding-bottom: {{ section.settings.padding_bottom--mobile }}px;
+      }
+      #Section{{ section.id }} .flickity-prev-next-button {
+        {%- assign arrow_bg_opacity = section.settings.arrow_bg_opacity--mobile | divided_by: 100.0 -%}
+        background: {{ section.settings.arrow_bg_color--mobile | hex_to_rgba: arrow_bg_opacity--mobile }};
+      }
+      #Section{{ section.id }} .flickity-prev-next-button .arrow {
+        fill: {{ section.settings.arrow_color--mobile }};
+        opacity: {{ section.settings.arrow_opacity--mobile | divided_by: 100.0 }};
+      }
+      #Section{{ section.id }} .flickity-page-dots {
+        bottom: {{ section.settings.dot_location--mobile }};
+      }
+      #Section{{ section.id }} .flickity-page-dots .dot {
+        background: {{ section.settings.dot_color--mobile }};
+        opacity: {{ section.settings.dot_opacity--mobile | divided_by: 100.0 }};
+      }
+      #Section{{ section.id }} .flickity-page-dots .dot.is-selected {
+        background: {{ section.settings.dot_color_active--mobile }};
+        opacity: {{ section.settings.dot_opacity_active--mobile | divided_by: 100.0 }};
+      }
+      {% if section.settings.dot_location--mobile == '-35px' and section.settings.pageDots--mobile %}
+        #Section{{ section.id }} .ProductImages__dots-placeholder {
+          display: block;
+        }
+      {% endif %}
+
+      {% if section.settings.transition--mobile == 'fade' %}
+        #Section{{ section.id }} .flickity-slider {
+          transform: none !important;
+        }
+        #Section{{ section.id }} .ProductImages__slide {
+          left: 0 !important;
+          opacity: 0;
+          transition: opacity 0.3s ease-in-out;
+        }
+        #Section{{ section.id }} .ProductImages__slide.is-selected {
+          opacity: 1;
+        }
+      {% endif %}
+    }
+  </style>
+</section>
+
+
+<script>
+  $(document).ready(function(){
+    var leftHeight = 0;
+    setTimeout(function(){
+      $(".ProductImages__thumb-container img").each(function(){
+        $(this).removeAttr("data-fancybox");
+      });
+      
+      let isMobile = window.matchMedia("only screen and (max-width: 767px)").matches;
+let isdesk = window.matchMedia("only screen and (max-width: 1600px)").matches;
+
+      if(isMobile){
+        $.fancybox.destroy();
+      }
+      if(isdesk){
+     leftHeight = parseInt($(".ProductOverview__left .ProductImages").css("height").replace("px",""));
+      var rightHeight = parseInt($(".ProductOverview__right").css("height").replace("px",""));
+      var diff = (rightHeight - leftHeight) + 100;
+     diff = rightHeight + 100;
+     $(".ProductOverview__left").append('<div class="extra_height" style="height:'+diff+'px;"></div>');
+      }
+      },1000);   
+  });
+</script>
+
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org/",
+  "@type": "Product",
+  "name": "{{ product.title | escape }}",
+  "url": "{{ shop.url }}{{ product.url }}",
+  {% if product.featured_image %}
+    {% assign image_size = product.featured_image.width | append: 'x' %}
+    "image": [
+      "https:{{ product.featured_image.src | img_url: image_size }}"
+    ],
+  {% endif %}
+  "description": "{{ product.description | strip_html | escape }}",
+  {% if current_variant.sku != blank %}
+    "sku": "{{ current_variant.sku }}",
+  {% endif %}
+  {% if product.metafields.yotpo.reviews_count and product.metafields.yotpo.reviews_count != "0" %}
+    "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "{{ product.metafields.yotpo.reviews_average }}",
+        "reviewCount": "{{ product.metafields.yotpo.reviews_count }}"
+    },
+    {% endif %}
+  "brand": {
+    "@type": "Thing",
+    "name": "{{ product.vendor | escape }}"
+  },
+  {% if product.variants %}
+    "offers": [
+      {% for variant in product.variants %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: variant %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+{% comment %} Wholesale_Club_Product_Prices Start {% endcomment %}
+{% assign base_product = product %}
+{% assign base_variant = variant %}
+
+{% if shop.metafields.sawholesale['base_price'] == blank %}
+  {% assign base_price = 'compare_at_price' %}
+{% else %}
+  {% assign base_price = shop.metafields.sawholesale['base_price'] %}
+{% endif %}
+
+{% assign saw_discount = 0 %}{% assign saw_has_discount = false %}
+
+{% if customer.tags != blank %}
+  {% for mf in base_product.metafields.sawholesale %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: mf %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+    {% capture product_customer_tag %}{{ mf | first | replace: 'discount_', '' }}{% endcapture %}
+    {% if customer.tags contains product_customer_tag %}
+      {% assign saw_has_discount = true %}
+      {% assign discount_key = product_customer_tag | prepend: 'discount_' %}
+      {% assign price_key = product_customer_tag | prepend: 'price_' %}
+      {% assign saw_discount = base_product.metafields.sawholesale[discount_key] | divided_by: 100.0 %}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% assign saw_discount = 1 | minus: saw_discount %}
+
+{% if base_price == 'price' or base_variant.compare_at_price == blank  or base_variant.compare_at_price == 0 or base_variant.compare_at_price < base_variant.price %}
+  {% assign saw_variant_compare_at_price = base_variant.price %}
+{% else %}
+  {% assign saw_variant_compare_at_price = base_variant.compare_at_price %}
+{% endif %}
+
+{% assign cpe = shop.metafields.sawholesale['cpe'] | default: "true" %}
+{% if base_variant.metafields.sawholesale[price_key] != blank and cpe == "true" %}
+  {% assign saw_variant_price = base_variant.metafields.sawholesale[price_key] %}
+{% else %}
+  {% assign saw_variant_price = saw_variant_compare_at_price | times: saw_discount %}
+{% endif %}
+
+{% if saw_has_discount == false or saw_variant_price >= saw_variant_compare_at_price %}
+  {% assign WCProduct_Price = base_product.price %}
+  {% assign WCProduct_ComparePrice = base_product.compare_at_price %}
+  {% assign WCProduct_PriceMin = base_product.price_min %}
+  {% assign WCProduct_ComparePriceMin = base_product.compare_at_price_min %}
+  {% assign WCProduct_PriceMax = base_product.price_max %}
+  {% assign WCProduct_ComparePriceMax = base_product.compare_at_price_max %}
+  {% assign WCProduct_VariantPrice = base_variant.price %}
+  {% assign WCProduct_VariantComparePrice = base_variant.compare_at_price %}
+{% else %}   
+  {% assign WCProduct_Price = saw_variant_price %}
+  {% assign WCProduct_PriceMin = base_product.price_min | times: saw_discount %}
+  {% assign WCProduct_PriceMax = base_product.price_max | times: saw_discount %}
+  {% assign WCProduct_ComparePrice = saw_variant_compare_at_price %}
+  {% if base_product.compare_at_price_min != 0 %}{% assign WCProduct_ComparePriceMin = base_product.compare_at_price_min %}{% else %}{% assign WCProduct_ComparePriceMin = base_product.price_min %}{% endif %}
+  {% if base_product.compare_at_price_max != 0 %}{% assign WCProduct_ComparePriceMax = base_product.compare_at_price_max %}{% else %}{% assign WCProduct_ComparePriceMax = base_product.price_max %}{% endif %}
+  {% assign WCProduct_VariantPrice = saw_variant_price %}
+  {% assign WCProduct_VariantComparePrice = saw_variant_compare_at_price %}
+{% endif %}
+{% comment %} Wholesale_Club_Product_Prices End {% endcomment %}
+
+        {
+          "@type" : "Offer",
+          "availability" : "http://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}",
+          "price" : "{{ WCProduct_VariantPrice | divided_by: 100.00 }}",
+          "priceCurrency" : "{{ shop.currency }}",
+          "url" : "{{ shop.url }}{{ variant.url }}",
+          "itemOffered" :
+          {
+              "@type" : "Product",
+              {% if variant.image %}
+                {% assign variant_image_size = variant.image.width | append: 'x' %}
+                "image": "http:{{ variant.image.src | img_url: variant_image_size }}",
+              {% endif %}
+              {% if variant.title != blank %}
+                "name" : "{{ variant.title | escape }}",
+              {% endif %}
+              {% if variant.sku != blank %}
+                "sku": "{{ variant.sku }}",
+              {% endif %}
+              {% if variant.weight != blank %}
+                "weight": {
+                  "@type": "QuantitativeValue",
+                  {% if variant.weight_unit != blank %}
+                    "unitCode": "{{ variant.weight_unit }}",
+                  {% endif %}
+                  "value": "{{ variant.weight | weight_with_unit: variant.weight_unit }}"
+                },
+              {% endif %}
+              "url": "{{ shop.url }}{{ variant.url }}"
+          }
+        }{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    ]
+  {% endif %}
+}
+</script>
+<div class="yotpo yotpo-main-widget" data-product-id="{{ product.id }}" data-name="{{ product.title | escape }}" data-url="{{ shop.url }}{{ product.url }}" data-image-url="{{ product.featured_image | product_img_url: "large" |replace: '?', '%3F' | replace: '&','%26'}}" data-description="{{ product.description | escape }}">
+
+{%- assign yotpo_offload_content = shop.metafields.yotpo.yotpo_offload_content %}
+  {%- assign time_now = 'now' | date: '%s' %}
+  {%- assign yotpo_live_time = shop.metafields.yotpo.yotpo_live | date: '%s' %}
+  {%- assign diff_seconds_from_live = time_now | minus: yotpo_live_time %}
+  {%- assign yotpo_main_widget_last_updated = product.metafields.yotpo.main_widget_update_time | date: '%s' %}
+  {%- assign diff_seconds_from_last_main_widget_update = time_now | minus: yotpo_main_widget_last_updated %}
+  {%- if yotpo_live_time and diff_seconds_from_live < 86400 or yotpo_main_widget_last_updated and diff_seconds_from_last_main_widget_update < 86400 -%}
+    {%- assign yotpo_main_widget_obsolete = false %}
+  {%- else %}
+    {%- assign yotpo_main_widget_obsolete = true %}
+  {%- endif %}
+  {%- if yotpo_offload_content == 'yes' and yotpo_main_widget_obsolete != true -%}
+    {%- for field in product.metafields.yotpo_reviews -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: field %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+      {{ field | last }}
+    {%- endfor -%}
+  {%- endif %}</div>
+<script text="text/javascript">
+  var _learnq = _learnq || [];
+
+  var item = {
+    Name: {{ product.title|json }},
+    ProductID: {{ product.id|json }},
+    Categories: {{ product.collections|map:'title'|json }},
+    ImageURL: "https:{{ product.featured_image.src|img_url:'grande' }}",
+    URL: "{{ shop.secure_url }}{{ product.url }}",
+    Brand: {{ product.vendor|json }},
+    Price: {{ product.price|money|json }},
+    CompareAtPrice: {{ product.compare_at_price_max|money|json }}
+  };
+
+  _learnq.push(['track', 'Viewed Product', item]);
+  _learnq.push(['trackViewedItem', {
+    Title: item.Name,
+    ItemId: item.ProductID,
+    Categories: item.Categories,
+    ImageUrl: item.ImageURL,
+    Url: item.URL,
+    Metadata: {
+      Brand: item.Brand,
+      Price: item.Price,
+      CompareAtPrice: item.CompareAtPrice
+    }
+  }]);
+</script>
+
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_Resource_Page End {%- endcomment -%}
+{% schema %}
+  {
+    "name": "Product Overview",
+    "settings": [
+      {
+        "type": "range",
+        "id": "padding_topImage",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "px",
+        "label": "Icon Size",
+        "default": 48
+      },
+       {
+        "type": "header",
+        "content": "SERVINGS"
+      },
+       {
+            "label": "SERVING FOR 12",
+            "id": "title1",
+            "type": "text"
+            
+          },
+       
+       {
+            "label": "SERVING FOR 20",
+            "id": "title123",
+            "type": "text"
+            
+          },
+       {
+            "label": "SERVING FOR 24",
+            "id": "title12Test",
+            "type": "text"
+            
+          },
+      {
+            "label": "SERVING FOR 45",
+            "id": "title1234",
+            "type": "text"
+            
+          },
+      {
+            "label": "SERVING FOR 100",
+            "id": "title12345",
+            "type": "text"
+            
+          },
+      {
+            "label": "THEIR SERVING ",
+            "id": "title123456",
+            "type": "text"
+            
+          },
+      {
+        "type": "checkbox",
+        "id": "use_background",
+        "label": "Use background color",
+        "default": false,
+        "info": "Check this to use a custom section background color."
+      },
+      {
+        "type": "color",
+        "id": "background",
+        "label": "Background color",
+        "default": "#fff"
+      },
+      {
+        "type": "header",
+        "content": "Image Carousel"
+      },
+      {
+        "type": "paragraph",
+        "content": "A carousel will only be displayed if more than one image is present."
+      },
+      {
+        "type": "select",
+        "id": "carousel_type",
+        "label": "Carousel type",
+        "default": "all",
+        "options": [
+          {
+            "value": "all",
+            "label": "All images in one carousel"
+          },
+          {
+            "value": "option1",
+            "label": "Unique carousel per primary option"
+          },
+          {
+            "value": "variant",
+            "label": "Unique carousel per variant"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "carousel_animation",
+        "label": "Animation",
+        "default": "slide-right",
+        "options": [
+          {
+            "value": "fade-in",
+            "label": "Fade in"
+          },
+          {
+            "value": "slide-up",
+            "label": "Fade in & slide up"
+          },
+          {
+            "value": "slide-down",
+            "label": "Fade in & slide down"
+          },          
+          {
+            "value": "slide-left",
+            "label": "Fade in & slide left"
+          },
+          {
+            "value": "slide-right",
+            "label": "Fade in & slide right"
+          },
+          {
+            "value": "zoom-fade-in",
+            "label": "Fade in & zoom out"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Product Info"
+      },
+      {
+        "type": "radio",
+        "id": "option_type",
+        "label": "Product option selector",
+        "default": "list",
+        "options": [
+           {
+            "value": "list",
+            "label": "Inline list (pills/buttons)"
+          },
+           {
+            "value": "select",
+            "label": "Dropdown menu"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "show_share_buttons",
+        "label": "Show social sharing buttons",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "info_animation",
+        "label": "Animation",
+        "default": "slide-left",
+        "options": [
+          {
+            "value": "fade-in",
+            "label": "Fade in"
+          },
+          {
+            "value": "slide-up",
+            "label": "Fade in & slide up"
+          },
+          {
+            "value": "slide-down",
+            "label": "Fade in & slide down"
+          },          
+          {
+            "value": "slide-left",
+            "label": "Fade in & slide left"
+          },
+          {
+            "value": "slide-right",
+            "label": "Fade in & slide right"
+          },
+          {
+            "value": "zoom-fade-in",
+            "label": "Fade in & zoom out"
+          },
+          {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Short Description"
+      },
+      {
+        "type": "checkbox",
+        "id": "short_description_enabled",
+        "label": "Show on desktop",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "short_description_enabled--mobile",
+        "label": "Show on mobile",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "use_truncated_description",
+        "label": "Fall back to main description",
+        "default": true,
+        "info": "If a short description isn't provided, use the first 100 words of the main product description."
+      },
+      {
+        "type": "text",
+        "id": "short_description_namespace",
+        "label": "Metafield namespace",
+        "default": "c_f"
+      },
+      {
+        "type": "text",
+        "id": "short_description_key",
+        "label": "Metafield key",
+        "default": "short_description"
+      },
+      {
+        "type": "header",
+        "content": "Desktop :: Section Settings"
+      },
+      {
+        "type": "select",
+        "id": "width",
+        "label": "Width",
+        "default": "fixed",
+        "options": [
+          {
+            "label": "Full (Edge-to-Edge)",
+            "value": "full"
+          },
+          {
+            "label": "Fixed",
+            "value": "fixed"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Top Padding",
+        "default": 30
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Bottom Padding",
+        "default": 30
+      },
+      {
+        "type": "header",
+        "content": "Desktop :: Carousel Settings"
+      },
+      {
+        "type": "select",
+        "id": "transition",
+        "label": "Transition type",
+        "default": "slide",
+        "options": [
+          {
+            "label": "Slide",
+            "value": "slide"
+          },
+          {
+            "label": "Fade",
+            "value": "fade"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "draggable",
+        "label": "Allow dragging & flicking",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "wrapAround",
+        "label": "Wrap-around in an infinite loop",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "filmstrip",
+        "label": "Enable filmstrip thumbnails",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Desktop :: Carousel Arrows"
+      },
+      {
+        "type": "checkbox",
+        "id": "prevNextButtons",
+        "label": "Show previous & next buttons",
+        "default": true
+      },
+      {
+        "type": "color",
+        "id": "arrow_color",
+        "label": "Arrow color",
+        "default": "#333"
+      },
+      {
+        "type": "range",
+        "id": "arrow_opacity",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "%",
+        "label": "Arrow opacity",
+        "default": 100
+      },
+      {
+        "type": "color",
+        "id": "arrow_bg_color",
+        "label": "Arrow background color",
+        "default": "#fff"
+      },
+      {
+        "type": "range",
+        "id": "arrow_bg_opacity",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "%",
+        "label": "Arrow background opacity",
+        "default": 75
+      },
+      {
+        "type": "header",
+        "content": "Desktop :: Carousel Dots"
+      },
+      {
+        "type": "checkbox",
+        "id": "pageDots",
+        "label": "Show page dots",
+        "default": false
+      },
+      {
+        "type": "select",
+        "id": "dot_location",
+        "label": "Page dot location",
+        "default": "-35px",
+        "options": [
+          {
+            "label": "Inside",
+            "value": "20px"
+          },
+          {
+            "label": "Outside",
+            "value": "-35px"
+          }
+        ]
+      },
+      {
+        "type": "color",
+        "id": "dot_color_active",
+        "label": "Active page dot color",
+        "default": "#333",
+        "info": "The color of the active slide's dot."
+      },
+      {
+        "type": "range",
+        "id": "dot_opacity_active",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "%",
+        "label": "Active page dot opacity",
+        "default": 100
+      },
+      {
+        "type": "color",
+        "id": "dot_color",
+        "label": "Inactive page dot color",
+        "default": "#333",
+        "info": "The color of all other dots."
+      },
+      {
+        "type": "range",
+        "id": "dot_opacity",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "%",
+        "label": "Inactive page dot opacity",
+        "default": 25
+      },
+      {
+        "type": "header",
+        "content": "Mobile :: Section Settings"
+      },
+      {
+        "type": "select",
+        "id": "width--mobile",
+        "label": "Width",
+        "default": "mobile-full",
+        "options": [
+          {
+            "label": "Full (Edge-to-Edge)",
+            "value": "mobile-full"
+          },
+          {
+            "label": "Fixed",
+            "value": "mobile-fixed"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "padding_top--mobile",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Top Padding",
+        "default": 15
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom--mobile",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "px",
+        "label": "Bottom Padding",
+        "default": 15
+      },
+      {
+        "type": "header",
+        "content": "Mobile :: Carousel Settings"
+      },
+      {
+        "type": "select",
+        "id": "transition--mobile",
+        "label": "Transition type",
+        "default": "slide",
+        "options": [
+          {
+            "label": "Slide",
+            "value": "slide"
+          },
+          {
+            "label": "Fade",
+            "value": "fade"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "draggable--mobile",
+        "label": "Allow dragging & flicking",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "wrapAround--mobile",
+        "label": "Wrap-around in an infinite loop",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "filmstrip--mobile",
+        "label": "Enable filmstrip thumbnails",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Mobile :: Carousel Arrows"
+      },
+      {
+        "type": "checkbox",
+        "id": "prevNextButtons--mobile",
+        "label": "Show previous & next buttons",
+        "default": true
+      },
+      {
+        "type": "color",
+        "id": "arrow_color--mobile",
+        "label": "Arrow color",
+        "default": "#333"
+      },
+      {
+        "type": "range",
+        "id": "arrow_opacity--mobile",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "%",
+        "label": "Arrow opacity",
+        "default": 100
+      },
+      {
+        "type": "color",
+        "id": "arrow_bg_color--mobile",
+        "label": "Arrow background color",
+        "default": "#fff"
+      },
+      {
+        "type": "range",
+        "id": "arrow_bg_opacity--mobile",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "%",
+        "label": "Arrow background opacity",
+        "default": 75
+      },
+      {
+        "type": "header",
+        "content": "Mobile:: Carousel Dots"
+      },
+      {
+        "type": "checkbox",
+        "id": "pageDots--mobile",
+        "label": "Show page dots",
+        "default": false
+      },
+      {
+        "type": "select",
+        "id": "dot_location--mobile",
+        "label": "Page dot location",
+        "default": "-35px",
+        "options": [
+          {
+            "label": "Inside",
+            "value": "20px"
+          },
+          {
+            "label": "Outside",
+            "value": "-35px"
+          }
+        ]
+      },
+      {
+        "type": "color",
+        "id": "dot_color_active--mobile",
+        "label": "Active page dot color",
+        "default": "#333",
+        "info": "The color of the active slide's dot."
+      },
+      {
+        "type": "range",
+        "id": "dot_opacity_active--mobile",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "%",
+        "label": "Active page dot opacity",
+        "default": 100
+      },
+      {
+        "type": "color",
+        "id": "dot_color--mobile",
+        "label": "Inactive page dot color",
+        "default": "#333",
+        "info": "The color of all other dots."
+      },
+      {
+        "type": "range",
+        "id": "dot_opacity--mobile",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "%",
+        "label": "Inactive page dot opacity",
+        "default": 25
+      }    
+    ]
+  }
+{% endschema %}

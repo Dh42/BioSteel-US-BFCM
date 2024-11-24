@@ -1,0 +1,33 @@
+{%- for tag in product.tags -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: tag %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+  {%- if tag contains 'flavor:' -%}
+    {%- assign flavor = tag | replace:'flavor:', '' | downcase -%}
+    {% break %}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- assign ingredient_image = flavor | append: '.jpg' | prepend: 'Desktop_WhatsInIt_' | file_img_url: 'master' -%} 
+{%- assign ingredient_image_mobile = flavor | append: '.jpg' | prepend: 'M_WhatsInIt_' | file_img_url: '1024x'-%}
+
+{% unless flavor == blank %}
+  <style>
+    .ProductWhatsInIt {
+      background-image: url( {{ingredient_image_mobile | replace: '%20', '-' }} );
+      background-size: unset;
+      background-position: top center;
+      background-repeat: no-repeat;
+    }
+
+    @media only screen and (min-width: {{settings.grid_tablet_min}} ) {
+      .ProductWhatsInIt {
+        background-image: url( {{ingredient_image | replace: '%20', '-' }} );
+      }
+    }
+  </style>  
+{% endunless %}

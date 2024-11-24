@@ -1,0 +1,14 @@
+<div class="RegisterFormInput Form__input-item">
+  {% unless block.settings.label == blank %}
+    <label {% unless block.settings.name == blank %}for="customer[note][{{ block.settings.name }}]"{% endunless %} class="Form__label{% if block.settings.required %} Form__required{% endif%}{% unless section.settings.show_labels %} label-hidden{% endunless %}">
+      {{ block.settings.label }}
+    </label>
+  {% endunless %}
+  <div class="Form__input-wrapper">
+    <input type="text"
+      {% unless block.settings.name == blank %}name="customer[note][{{ block.settings.name }}]"{% endunless %}
+      class="Form__input"
+      {% unless block.settings.name == blank %}id="CustomField-{{ block.settings.name }}"{% endunless %}
+      {% unless block.settings.placeholder == blank %}placeholder="{{ block.settings.placeholder }}"{% endunless %}>
+  </div>
+</div>

@@ -1,0 +1,74 @@
+{% assign staggered_split = content | split: 'data-rte-staggered-article=""' | join: 'data-rte-staggered-article' | split: 'data-rte-staggered-article' %}
+{% for attr in staggered_split %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: attr %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+  {% assign staggered_article_handle = attr | split: 'data-article="' %}
+  {% assign staggered_article_handle = staggered_article_handle[1] | split: '"' | first %}
+  {% assign end_of_staggered_article_handle = staggered_article_handle | append: '" ' %}
+  {% assign ratio =  attr | split: end_of_staggered_article_handle | last | split: 'data-ratio="' %}
+  {% assign ratio = ratio[1] | split: '"' | first %}
+  {% assign end_of_ratio = 'data-ratio="' | append: ratio | append: '" ' %}
+  {% assign position =  attr | split: end_of_ratio | last | split: 'data-position="' %}
+  {% assign position = position[1] | split: '"' | first | plus: 0 %}
+  {% assign end_of_position = 'data-position="' | append: position | append: '" ' %}
+  {% assign article_total = attr | split: end_of_position %}
+  {% assign article_total = article_total[1] | split: 'data-total="' %}
+  {% assign article_total = article_total[1] | split: '"' | first | plus: 0 %}
+  {% assign end_of_article_total = 'data-total="' | append: article_total | append: '">' %}
+  {% assign staggered_contents =  attr | split: end_of_article_total %}
+  {% assign staggered_contents =  staggered_contents[1] | split: '</div>' | first %}
+
+    {% comment %} empty attributes may or may not have assigned blank value, depending on if content has been edited - we'll just handle  both cases {% endcomment %}
+  {% assign old_html_1 = '<div data-rte-staggered-article data-article="' | append: staggered_article_handle | append: '" ' | append: 'data-ratio="' | append: ratio | append: '" ' | append: 'data-position="' | append: position | append: '" ' | append: 'data-total="' | append: article_total | append: '">' | append: staggered_contents | append: '</div>' %}
+  {% assign old_html_2 = '<div data-rte-staggered-article="" data-article="' | append: staggered_article_handle | append: '" ' | append: 'data-ratio="' | append: ratio | append: '" ' | append: 'data-position="' | append: position | append: '" ' | append: 'data-total="' | append: article_total | append: '">' | append: staggered_contents | append: '</div>' %}
+  {% capture new_html %}
+    {%- unless staggered_article_handle contains '/' -%}
+      {% if blog %}
+        {% assign blog_handle = blog.handle %}
+      {% else %}
+        {% assign blog_handle = 'truetothis' %}
+      {% endif %}
+      {% assign staggered_article_handle = blog_handle | append: '/' | append: staggered_article_handle %}
+    {%- endunless -%}
+    {% assign staggered_article = articles[staggered_article_handle] %}
+    {% unless staggered_article == blank  %}
+      {% include 'get-staggered-img-size', ratio: ratio, position: position, article_total: article_total %}
+      {%- capture img_src -%}
+        {% if img_size == 'master' %}
+          {{ staggered_article.image.src | img_url: img_size }}
+        {% else %}
+          {{ staggered_article.image.src | img_url: img_size, crop: 'center' }}
+        {% endif %}
+      {%- endcapture -%}
+      {% assign img_src = img_src | strip_newlines %}
+      <div data-rte-staggered-article-output class="ArticleThumb RteStaggeredArticle {% if article_total == 1 %} RteStaggeredArticle--featured ArticleThumb--featured{% endif %}">
+        {%- include 'get-article-tag', article: staggered_article -%}
+        <div class="RteStaggeredArticle__tag-container">
+          <div class="RteStaggeredArticle__tag" data-tag>
+            {{ article_tag_display }}
+          </div>
+        </div>
+        <a aria-label="{{ staggered_article.title }}" href="{{ staggered_article.url }}" class="ArticleThumb__display">
+          <div class="ArticleThumb__image-container">
+            <img src="{{ img_src }}" alt="{{ staggered_article.title }}" class="ArticleThumb__image">
+          </div>
+          <div class="ArticleThumb__content-container">
+            <div class="ArticleThumb__title-clip">
+              <h3 class="ArticleThumb__title">{{ staggered_article.title }}</h3>
+            </div>
+            <div class="ArticleThumb__SizingContent SizingContent" aria-hidden="true" data-prevent-tab>
+              <img src="{{ img_src }}" alt="{{ staggered_article.title }}">
+            </div>
+          </div>
+        </a>
+        <div data-excerpt class="RteStaggeredArticle__excerpt">{{ staggered_article.excerpt | default: staggered_article.title }}</div>
+      </div>
+    {% endunless %}
+  {% endcapture %}
+  {% assign content = content | replace: old_html_1, new_html | replace: old_html_2, new_html %}
+{% endfor %}

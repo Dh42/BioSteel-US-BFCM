@@ -1,0 +1,66 @@
+<section 
+  id="section{{ section.id }}" 
+  class="Section Section--{{ section.settings.width }}" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="INF-Instagram" 
+  {%- if section.settings.use_background -%}
+    style="background: {{ section.settings.background }};"
+  {%- endif -%}
+>
+
+  <style>
+    #section{{ section.id }} .Section__container {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+    @media only screen and (max-width: {{ settings.grid_mobile_max }}) {
+      #section{{ section.id }} .Section__container {
+        padding-top: {{ section.settings.mobile_padding_top }}px;
+        padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+        display: inline-block;
+        /*addresses overflow problem*/
+      }      
+    }
+    {% if type == 'Feed' %}
+      #section{{ section.id }} .Instapost {
+        padding-top: {{ section.settings.vertical_spacing }}px;
+        padding-bottom: {{ section.settings.vertical_spacing }}px;
+      }
+      @media only screen and (max-width: {{ settings.grid_mobile_max }}) {
+        #section{{ section.id }} .Instapost {
+          padding-top: {{ section.settings.mobile_vertical_spacing }}px;
+          padding-bottom: {{ section.settings.mobile_vertical_spacing }}px;
+        }
+      }
+    {% else %}
+      @media only screen and (max-width: {{ settings.grid_mobile_max }}) {
+        #section{{ section.id }} .Instapost:nth-child(n+{{ section.settings.mobile_limit | plus: 1 }}) {
+          display: none;
+        }
+      }
+    {% endif %}
+  </style>
+
+  <div class="Section__container">
+    <div class="Instagram{{ type }} Instagram{{ type }}--{{ section.settings.size }}">
+      {%- if type == 'Feed' and section.settings.heading -%}
+        <h3 class="{{ section.settings.heading_class}}">{{ section.settings.heading }}</h3>
+      {%- else -%}
+        <div class="InstagramMosaic__heading-container" style="background: {{ section.settings.heading_background }};">
+          <table><tr><td>
+            <h3 class="InstagramMosaic__heading {{ section.settings.heading_class}}" style="color: {{ section.settings.heading_color }};">{{ section.settings.heading }}</h3>
+          </td></tr></table>
+        </div>
+      {%- endif -%}
+
+      <div class="Instafeed Instafeed--mobile-{{ mobile_size }}" id="Instafeed{{ section.id }}"
+        data-type="{{ type }}"
+        data-user-id="{{ section.settings.user_id }}"
+        data-access-token="{{ section.settings.access_token }}"
+        data-limit="{{ limit }}"
+        data-template='<div class="Instapost {% if type == 'Feed' %}Animate Animate--slide-up{% endif %}"><a href="@@link%%"><img src="@@image%%" /></a></div>'>
+      </div>
+    </div>
+  </div>
+  
+</section>

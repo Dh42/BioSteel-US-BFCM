@@ -1,0 +1,32 @@
+{%- capture icon_start -%}<i class="{{ settings.fa }} {%- endcapture -%}
+{%- capture icon_end -%}"></i> {%- endcapture -%}
+
+<ul class="MobileMenu__list MobileMenu__list--tier{{ tier }}" data-mobile-menu-list data-hi>
+{%- for link in linklist.links -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: link %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+  {%- if tier > 1 -%}
+    {%- capture icon -%}mobile_menu_tier{{ tier }}_bullets{%- endcapture -%}
+    {%- capture bullet -%}<i class="MobileMenu__icon-left {{ settings.fa }} {{ section.settings[icon] }}"></i>{%- endcapture -%}
+  {%- endif -%}
+
+  {%- assign link_title = link.title | replace: '[[ ', icon_start | replace: '[[', icon_start | replace: ' ]]', icon_end | replace: ']]', icon_end -%}
+
+  <li class="MobileMenu__item {% if link.levels > 0 %}MobileMenu__item--has-children{% endif %}" {% if link.levels > 0 %}data-mobile-menu-expands{% endif %}>
+    {%- if link.levels > 0 -%}
+      <span class="MobileMenu__link MobileMenu__link--nested" data-mobile-menu-title><a href="{{ link.url }}">{{ bullet }}{{ link_title }}</a> <i class="MobileMenu__icon-right {{ settings.fa }} fa-chevron-down" data-mobile-menu-expand-collapse></i></span>
+      
+      {%- assign new_tier = tier | plus: 1 -%}
+      {%- include 'INF-MobileMenu__list', linklist: link, tier: new_tier -%}
+    {%- else -%}
+      <a class="MobileMenu__link" href="{{ link.url }}" data-mobile-menu-link>{{ bullet }}{{ link_title }}</a>
+    {%- endif -%}
+  </li>
+
+{%- endfor -%}
+</ul>

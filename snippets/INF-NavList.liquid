@@ -1,0 +1,23 @@
+{%- capture icon_start -%}<i class="{{ settings.fa }} {%- endcapture -%}
+{%- capture icon_end -%}"></i> {%- endcapture -%}
+
+<ul class="NavList">
+{%- for link in linklists[linklist].links -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: link %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+  {%- assign link_title = link.title | replace: '[[ ', icon_start | replace: '[[', icon_start | replace: ' ]]', icon_end | replace: ']]', icon_end -%}
+  <li class="NavList__heading {% if link.levels == 1 %}NavList__heading--has-dropdown{% elsif link.levels > 1 %}NavList__heading--has-menu{% endif %}" {% if link.levels == 1 %}data-nav-dropdown-hover{% elsif link.levels > 1 %}data-nav-menu-hover{% endif %}>
+    <a href="{{ link.url }}">{{ link_title }}</a>
+    {%- if link.levels == 1 -%}
+      {% include 'INF-NavList__dropdown' %}
+    {%- elsif link.levels > 1 -%}
+      {% include 'INF-NavList__menu' %}
+    {%- endif -%}
+  </li>
+{%- endfor -%}
+</ul>

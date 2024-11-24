@@ -1,0 +1,44 @@
+<style>
+  {{ section.settings.preheader_font | font_face }}
+
+  .PreHeader {
+    color: {{ section.settings.preheader_link_color }};
+    background: {{ section.settings.preheader_background_color }};
+    font-family: {{ section.settings.preheader_font.family }}, {{ section.settings.preheader_font.fallback_families }};
+    font-size: {{ section.settings.preheader_font_size }}px;
+    font-weight: {{ section.settings.preheader_font.weight }};
+    font-style: {{ section.settings.preheader_font.style }};
+    text-transform: {{ section.settings.preheader_text_capitalization }};
+  }
+  
+  .PreHeader a,
+  .PreHeader a:visited,
+  .PreHeader a:active {
+    color: {{ section.settings.preheader_link_color }};
+  }
+  .PreHeader a:hover {
+    color: {{ section.settings.preheader_link_color_hover }};
+  }
+
+  @media only screen and (max-width: {{ settings.grid_tablet_max }}) {
+    .PreHeader {
+      background: {{ section.settings.preheader_background_color--mobile }};
+    }
+  }
+</style>
+
+<div class="PreHeader {% unless settings.preheader_enabled %}PreHeader--hide-desktop{% endunless %} {% unless settings.preheader_enabled--mobile %}PreHeader--hide-mobile{% endunless %} Section Section--relative Section--{{ section.settings.preheader_width }}" data-pre-header>
+  <div class="Section__container">
+    
+    {% include 'PreHeader__menu' %}
+    
+    
+    {%- if section.blocks.size > 0 -%}
+      <div id="PreHeader__announcements" class="PreHeader__announcements">
+        {% include 'INF-Announcements' %}
+      </div>
+    {%- endif -%}
+
+    {% include 'PreHeader__icons' %}
+  </div>
+</div>

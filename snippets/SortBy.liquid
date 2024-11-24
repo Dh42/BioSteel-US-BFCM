@@ -1,0 +1,149 @@
+{% include 'get-parameter-sort-by' %}
+
+{% assign sizes = collection.metafields['filter']['size']
+  | replace: ", ", ","
+  | strip_newlines
+  | split: "," %}
+{% assign flavors = collection.metafields['filter']['flavor']
+  | replace: ", ", ","
+  | strip_newlines
+  | split: "," %}
+{% assign prices = collection.metafields['filter']['price']
+  | replace: ", ", ","
+  | strip_newlines
+  | split: "," %}
+{% assign product_types = collection.metafields['filter']['product-type']
+  | replace: ", ", ","
+  | strip_newlines
+  | split: "," %}
+
+{% assign types = collection.metafields['filter']['product-type']
+  | replace: ", ", ","
+  | strip_newlines
+  | split: "," %}
+<!-- {% assign product_types = collection.metafields['filter']['type']
+  | replace: ", ", ","
+  | strip_newlines
+  | split: "," %} -->
+
+<div class="SortBy">
+  <select id="sort-by" data-collection-sort name="sort">
+    <option disabled selected>Sort By</>
+    {%- assign option_value = 'best-selling' -%}
+    <option {% if sort_by == option_value %}selected {% endif %}value="{{option_value}}">Best Sellers</option>
+    {%- assign option_value = 'created-descending' -%}
+    <option {% if sort_by == option_value %}selected {% endif %}value="{{option_value}}">Newest</option>
+    {%- assign option_value = 'price-ascending' -%}  
+    <option {% if sort_by == option_value %}selected {% endif %}value="{{option_value}}">Low / High</option>
+    {%- assign option_value = 'price-descending' -%}
+    <option {% if sort_by == option_value %}selected {% endif %}value="{{option_value}}">High / Low</option>
+  </select>
+
+  <div class="CollectionFilter" data-collection-filters>
+    <div class="CollectionFilter__filters-dropdown">
+      <div class="CollectionFilter__dropdown-heading" data-dropdown-heading>Filter By</div>
+      <div class="CollectionFilter__close-dropdown" data-close-dropdown></div>
+      <div class="content-container" data-dropdown-container>
+        {% if sizes.size > 0 %}
+          <div class="column" data-filter-set>
+            <h4>Size</h4>
+            <ul data-filters-container>
+              {% comment %} <li>{% include 'FilterCheckbox', label: "all", value: "", filter_type: "size" %}</li> {% endcomment %}
+              {% for size in sizes %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: size %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+                <li>{% include 'FilterCheckbox', label: size, filter_type: "size" %}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+
+        {% if flavors.size > 0 %}
+          <div class="column" data-filter-set>
+            <h4>Flavor</h4>
+            <ul data-filters-container>
+              {% comment %} <li>{% include 'FilterCheckbox', label: "all", value: "", filter_type: "flavor" %}</li> {% endcomment %}
+              {% for flavor in flavors %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: flavor %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+                <li>{% include 'FilterCheckbox', label: flavor, filter_type: "flavor" %}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+
+        {% if prices.size > 0 %}
+          <div class="column" data-filter-set>
+            <h4>Price</h4>
+            <ul data-filters-container>
+              {% comment %} <li>{% include 'FilterCheckbox', label: "all", value: "", filter_type: "price_all" %}</li> {% endcomment %}
+              {% for price in prices %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: price %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+                <li>{% include 'FilterCheckbox', label: price, filter_type: "price" %}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+ {% if types.size > 0 %}
+          <div class="column" data-filter-set>
+            <h4>Product-Type</h4>
+            <ul data-filters-container>
+              {% comment %} <li>{% include 'FilterCheckbox', label: "all", value: "", filter_type: "price_all" %}</li> {% endcomment %}
+             {% for product_type in types %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: product_type %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+              <li>{% include 'FilterCheckbox', label: product_type, filter_type: "product-type" %}</li>
+            {% endfor %}
+            </ul>
+          </div>
+          {% endif %}
+
+        
+      </div>
+    </div>
+    {% if product_types.size > 0 %}
+    <div class="CollectionFilter__filters-dropdown">
+      <div class="CollectionFilter__dropdown-heading" data-dropdown-heading>Product Type</div>
+      <div class="CollectionFilter__close-dropdown" data-close-dropdown></div>
+      <div class="content-container" data-dropdown-container>
+        <div class="column" data-filter-set>
+          <ul data-filters-container>
+            {% comment %} <li>{% include 'FilterCheckbox', label: "all", value: "", filter_type: "product_type" %}</li> {% endcomment %}
+            {% for product_type in product_types %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: product_type %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+              <li>{% include 'FilterCheckbox', label: product_type, filter_type: "product-type" %}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>

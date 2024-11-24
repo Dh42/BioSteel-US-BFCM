@@ -1,0 +1,102 @@
+{%- section 'PageBanner' -%}
+{%- section 'INF-TestRegisterPage' -%}
+
+
+<script type="text/javascript">
+  
+  function validateEmail(emailField){
+    var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+    if(reg.test(emailField.value) == false){
+      return false;
+    }
+    return true;
+  }
+  
+  $(document).ready(function(){
+    $(".RegisterForm__button").click(function(e){
+      e.preventDefault();
+      $(".errors").html("");
+      $(".RegisterForm__button").val("Creating....");
+      var firstName = $("#FirstName").val();
+      var lastName = $("#LastName").val();
+      var email = $("#Email").val();
+      var password = $("#CreatePassword").val();
+      var confirmPassword = $("#ConfirmPassword").val();
+      var accepts_marketing = $('#accepts_marketing:checkbox:checked').length > 0;
+      
+      var dob = $("#dob").val();
+      
+      var tags = "";
+      
+      var errorMsg = "";
+      
+      if(!firstName || firstName.length <= 0){
+        errorMsg = errorMsg + "First Name is required.<br>";
+      }
+      
+      if(!lastName || lastName.length <= 0){
+        errorMsg = errorMsg + "Last Name is required.<br>";
+      }
+      
+      if(!email || email.length <= 0){
+        errorMsg = errorMsg + "Email is required.<br>";
+      }
+      else{
+        var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+        if(reg.test(email) == false){
+          errorMsg = errorMsg + "Email is not valid.<br>";
+        }
+      }
+      
+      if(!password || password.length <= 0){
+        errorMsg = errorMsg + "Password is required.<br>";
+      }
+      else if(!confirmPassword || confirmPassword.length <= 0){
+        errorMsg = errorMsg + "Confirm Password is required.<br>";
+      }
+      else if(confirmPassword != password){
+        errorMsg = errorMsg + "Password and Confirm Password should be same.<br>";
+      }
+      
+      if(errorMsg && errorMsg.length > 0){
+        $(".errors").html(errorMsg);
+        $(".RegisterForm__button").val("CREATE");
+        
+        $('html, body').animate({scrollTop: $("#form_msg").offset().top-110},2000);
+        return false;
+      }
+      
+      var data = {dob:dob,first_name:firstName,last_name:lastName,email:email,password:password,confirm_password:confirmPassword,accepts_marketing:accepts_marketing}
+      $.ajax({
+        type: 'POST',
+        headers:{
+          Accept: "application/json",         
+        }, 
+        url: "https://whitewaterapps.com/biosteel-tags/register-ca.php",
+        data: data,
+        dataType: "text",
+        success: function(response){
+          response = JSON.parse(response);
+          $(".RegisterForm__button").val("CREATE");
+          console.log(response);
+          if(response && response.status == "success"){
+            $(".reg_form_cont").hide();
+            $(".success").html("your account has been created successfully.");
+            if(response.login_token && response.login_token != ""){
+              window.location.href = "/account/login/multipass/"+response.login_token;
+            }
+          }
+          else{
+            $(".errors").html(response.msg);
+          }
+          $('html, body').animate({scrollTop: $("#form_msg").offset().top-110},2000);
+        },
+        error: function(response){
+          console.log("error");
+          console.log(response);
+          $(".RegisterForm__button").val("CREATE");
+        }
+      });
+    });
+  });
+</script>

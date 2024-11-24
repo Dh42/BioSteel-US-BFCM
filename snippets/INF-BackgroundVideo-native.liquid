@@ -1,0 +1,11 @@
+<div id="{{ prefix }}BackgroundVideo{{ block.id }}" class="BackgroundVideo" 
+  data-background-video
+  data-aspect-ratio="{{ aspect_ratio }}" 
+  data-crop="{{ crop }}"
+  data-video-type="native" 
+>
+  <div class="BackgroundVideo__poster" style="background-image: url('{{ poster }}');" data-video-poster></div>
+  <video id="{{ prefix }}Player{{ unique_id }}" class="BackgroundVideo__player" data-video-player="true" loop muted playsinline>
+    <source src="{{ video }}">
+  </video>
+</div>

@@ -1,0 +1,14 @@
+<div class="IconToggle {% if direction %}IconToggle--{{ direction }}{% endif %}" data-icon-toggle {% if data %}{{ data }}{% endif %}>
+  <div class="IconToggle__placeholder">
+    <i class="{{ settings.fa }} {{ icon }}"></i>
+  </div>
+  <div class="IconToggle__closed">
+    <i class="{{ settings.fa }} {{ icon }}"></i>
+    {%- if data == 'data-cart-toggle' and settings.cart_show_item_count -%}
+      <span class="IconToggle__count {% if icon contains 'cart' %}IconToggle__count--cart{% endif %}" data-cart-count="{{ cart.item_count }}">{{ cart.item_count }}</span>
+    {%- endif -%}
+  </div>
+  <div class="IconToggle__open">
+    {% include 'CloseIcon' %}
+  </div>
+</div>

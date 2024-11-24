@@ -1,0 +1,79 @@
+<style>
+
+  @media only screen and (min-width: 640px){
+   .centerDiv{
+
+       width: 50%;
+    } 
+    .ImageDiv{
+
+         width: {{ section.settings.ImageSiZe }}%;
+    } 
+  }
+ @media only screen and (max-width: 640px){
+    .centerDiv{
+
+      width: 100%;
+    }
+   .ImageDiv{
+
+         width: {{ section.settings.ImageSiZePhone }}%;
+    }
+  }
+  
+.mainheading{
+font-size: {{ section.settings.font_size436sv}}px!important;;
+/*       font-size: 20px; */
+}
+  
+</style>
+<div class ="mainfooter" style="
+    background:{{ section.settings.heading_coldd546}};
+">
+
+  <div class = "centerDiv" style="
+   
+    
+    
+    padding-bottom: 45px;
+    margin: auto;
+    " >   
+      <{{ section.settings.heading_kk}}  class ="mainheading" style="text-align: center; color: white; ">{{ section.settings.section_titfff}}</{{ section.settings.heading_kk}}> 
+      <div class="ImageDiv"  style ="margin: auto;
+    display: flex;gap: 12px;max-width: 326px;">
+        <a href="{{ section.settings.section_titfff1}}"><img loading="lazy" src="{{ section.settings.second_imageF1 | img_url: '100x'  |  format: 'pjpg'  }}" class="img_div" /></a>
+        <a href="{{ section.settings.section_titfff2}}"><img loading="lazy" src="{{ section.settings.second_imageF2 | img_url: '100x'  |  format: 'pjpg'  }}" class="img_div" /></a>
+        <a href="{{ section.settings.section_titfff3}}"><img  loading="lazy" src="{{ section.settings.second_imageF3 | img_url: '100x'  |  format: 'pjpg'  }}" class="img_div" /></a>
+      </div>
+      <h1 style="
+        color: white;
+        text-transform: inherit;
+        font-family: 'Oswald';
+        text-align: center;
+        font-size: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+     " >{{ section.settings.sectioffdefff}}</h1>
+      <h1 style="
+        color: white;
+        text-transform: inherit;
+        font-family: 'Oswald';
+        text-align: center;
+        font-size: 10px;
+        padding-right: 5px;
+        padding-left: 5px;
+     ">{{ section.settings.sectidftfff}}</h1>
+      <h1 style="
+        color: white;
+        text-transform: inherit;
+        font-family: 'Oswald';
+        text-align: center;
+        font-size: 10px;
+        padding-right: 0px;
+        padding-left: 0px;
+     ">{{ section.settings.sectifsftfff}}</h1>
+  </div>
+  
+
+  
+</div>

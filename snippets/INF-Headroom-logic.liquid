@@ -1,0 +1,24 @@
+{%- if settings.preheader_enabled and section.settings.preheader_headroom -%}
+  {%- assign preheader_headroom = true -%}
+{%- endif -%}
+{%- if settings.preheader_enabled--mobile and section.settings.preheader_headroom--mobile -%}
+  {%- assign preheader_headroom--mobile = true -%}
+{%- endif -%}
+
+{%- assign headroom = 'disabled' -%}
+{%- if preheader_headroom and section.settings.header_headroom -%}
+  {%- assign headroom = 'both' -%}
+{%- elsif preheader_headroom -%}
+  {%- assign headroom = 'preheader' -%}
+{%- elsif section.settings.header_headroom -%}
+  {%- assign headroom = 'header' -%}
+{%- endif -%}
+
+{%- assign headroom--mobile = 'disabled' -%}
+{%- if preheader_headroom--mobile and section.settings.header_headroom--mobile -%}
+  {%- assign headroom--mobile = 'both' -%}
+{%- elsif preheader_headroom--mobile -%}
+  {%- assign headroom--mobile = 'preheader' -%}
+{%- elsif section.settings.header_headroom--mobile -%}
+  {%- assign headroom--mobile = 'header' -%}
+{%- endif -%}

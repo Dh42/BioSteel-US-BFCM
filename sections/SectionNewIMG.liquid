@@ -1,0 +1,125 @@
+<style>
+ @media only screen and (min-width: 640px) {
+   .second_div {
+     width: 50%;    
+
+  }
+
+.one_divjj{
+
+  width: 100%;
+}
+
+   
+.one_diyy{
+     width: 732px;
+}
+  .one_diyylj{
+width: 100%;
+    
+  } 
+       
+  .one_div{
+       
+   width: 100%; 
+  }
+.main_div{
+
+   border-width: 5px;
+      width: 100%;
+  display: flex;
+}
+.frist_div{
+    width: 50%;
+}
+.second_div{
+   
+
+  
+}
+.one_div{
+
+}
+   .second_div{
+      }
+   }
+  @media only screen and (max-width: 640px){
+   .second_div {
+
+   }
+  
+  .one_div{
+
+  }}
+
+  .one_div:hover {
+
+}
+ 
+    .one_diyy:hover {
+
+}
+
+
+  background-color: black;
+</style>
+
+
+
+<div class="main_div" style ="background-color:{{section.settings.heading_coddlor546fhd}};">
+  
+  <div class="frist_div"> <a href="{{section.settings.product_order.url}}">
+    <img  loading="lazy" src="{{ section.settings.frist_image | img_url: '1200x' }}"  class="one_divjj" style="
+    float: right;
+"/>
+ </a> </div>
+  <div class="second_div">
+    <a href="{{section.settings.product_ordersecond.url}}">
+    <img  loading="lazy" src="{{ section.settings.second_image | img_url: '1200x' }}" class="one_diyylj"  />
+    </a>
+  </div>
+</div>
+
+
+
+
+{% schema %}
+  {
+    "name": "NewSection_gg",
+    "settings": [
+        {
+        "type": "color",
+        "id": "heading_coddlor546fhd",
+        "label": "Heading Color",
+        "default": "#fff"
+      },
+      {
+        "type": "image_picker",
+        "label": "Frist Image Desktop",
+        "id": "frist_image"
+      },
+      {
+     "type": "collection",
+     "id": "product_order",
+     "label": "collection to link frist"
+   },
+      {
+        "type": "image_picker",
+        "label": "Second Image Desktop",
+        "id": "second_image"
+      },
+      {
+     "type": "collection",
+     "id": "product_ordersecond",
+     "label": "collection to link Second"
+   }
+      
+    ],
+    "presets": [
+      {
+        "name": "NewSection_gg",
+        "category": "Promotional"
+      }
+    ]
+  }
+{% endschema %}

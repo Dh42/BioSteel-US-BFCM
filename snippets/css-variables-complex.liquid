@@ -1,0 +1,55 @@
+{%- assign p_font_bold = settings.p_font | font_modify: 'weight', 'bolder' -%}
+{%- assign p_font_bold_italic = p_font_bold | font_modify: 'style', 'italic' -%}
+
+{%- assign primary_button_background = settings.primary_button_background -%}
+{%- if settings.primary_button_transparent -%}
+  {%- assign primary_button_background = 'transparent' -%}
+{%- endif -%}
+
+{%- assign primary_button_background_hover = settings.primary_button_background_hover -%}
+{%- if settings.primary_button_transparent_hover -%}
+  {%- assign primary_button_background_hover = 'transparent' -%}
+{%- endif -%}
+
+{%- assign secondary_button_background = settings.secondary_button_background -%}
+{%- if settings.secondary_button_transparent -%}
+  {%- assign secondary_button_background = 'transparent' -%}
+{%- endif -%}
+
+{%- assign secondary_button_background_hover = settings.secondary_button_background_hover -%}
+{%- if settings.secondary_button_transparent_hover -%}
+  {%- assign secondary_button_background_hover = 'transparent' -%}
+{%- endif -%}
+
+{%- assign image_button_background = settings.image_button_background -%}
+{%- if settings.image_button_transparent -%}
+  {%- assign image_button_background = 'transparent' -%}
+{%- endif -%}
+
+{%- assign image_button_background_hover = settings.image_button_background_hover -%}
+{%- if settings.image_button_transparent_hover -%}
+  {%- assign image_button_background_hover = 'transparent' -%}
+{%- endif -%}
+
+{%- assign opacity_overlay_solid = settings.opacity_overlay_solid | divided_by: 100.0 -%}
+{%- assign opacity_overlay_gradient = settings.opacity_overlay_gradient | divided_by: 100.0 -%}
+{%- assign dark_overlay_solid = '#000' | color_modify: 'alpha', opacity_overlay_solid -%}
+{%- assign light_overlay_solid = '#fff' | color_modify: 'alpha', opacity_overlay_solid -%}
+{%- assign branded_overlay_solid = settings.color_overlay_bg | color_modify: 'alpha', opacity_overlay_solid -%}
+
+{%- assign dark_overlay_top = 'linear-gradient(to top, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, ' | append: opacity_overlay_gradient | append: ') 100%)' -%}
+{%- assign dark_overlay_bottom = dark_overlay_top | replace: 'top', 'bottom' -%}
+{%- assign light_overlay_top = 'linear-gradient(to top, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, ' | append: opacity_overlay_gradient | append: ') 100%)' -%}
+{%- assign light_overlay_bottom = light_overlay_top | replace: 'top', 'bottom' -%}
+
+{%- assign branded_overlay_gradient = settings.color_overlay_bg | color_modify: 'alpha', opacity_overlay_gradient -%}
+{%- assign branded_overlay_top = 'linear-gradient(to top, rgba(0, 0, 0, 0) 30%, ' | append: branded_overlay_gradient | append: ' 100%)' -%}
+{%- assign branded_overlay_bottom = branded_overlay_top | replace: 'top', 'bottom' -%}
+
+{%- assign site_overlay_opacity = settings.site_overlay_opacity | divided_by: 100.0 -%}
+{%- assign site_overlay_background = settings.site_overlay_bg | color_modify: 'alpha', site_overlay_opacity -%}
+
+{%- assign modal_close_opacity = settings.modal_close_opacity | divided_by: 100.0 -%}
+{%- assign modal_close_background = settings.modal_close_bg | color_modify: 'alpha', modal_close_opacity -%}
+{%- assign modal_close_opacity--hover = settings.modal_close_opacity--hover | divided_by: 100.0 -%}
+{%- assign modal_close_background--hover = settings.modal_close_bg--hover | color_modify: 'alpha', modal_close_opacity--hover -%}

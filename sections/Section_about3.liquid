@@ -1,0 +1,107 @@
+<style>
+ @media only screen and (min-width: 640px) {
+   .second_div {
+           height: 361px;
+
+  }
+.one_diyy{
+     width: 100%; 
+}
+   
+       
+  .one_div{
+       
+   position: absolute;
+    left: 40px;
+    float: right;
+    position: initial;
+  }
+.main_div{
+       position: relative;
+   border-width: 5px;
+      width: 100%;
+  display: flex;
+}
+.frist_div{
+    width: 50%;
+}
+.second_div{
+   
+
+  
+}
+.one_div{
+  margin-left: 240px;
+}
+   .second_div{
+      }
+   }
+  @media only screen and (max-width: 640px){
+   .second_div {
+
+   }
+  
+  .one_div{
+
+  }}
+
+  .one_div:hover {
+
+}
+ 
+    .one_diyy:hover {
+
+}
+</style>
+
+
+
+<div class="main_div">
+  
+  <div class="frist_div"> <a href="{{section.settings.product_order.url}}">
+    <img  loading="lazy" src="{{ section.settings.frist_image | img_url: '540x' }}"  class="one_div"/>
+ </a> </div>
+  <div class="second_div">
+    <a href="{{section.settings.product_ordersecond.url}}">
+    <img  loading="lazy" src="{{ section.settings.second_image | img_url: '540x' }}" class="one_diyy"  />
+    </a>
+  </div>
+</div>
+
+
+
+
+{% schema %}
+  {
+    "name": "NewSection_4",
+    "settings": [
+      {
+        "type": "image_picker",
+        "label": "Frist Image Desktop",
+        "id": "frist_image"
+      },
+      {
+     "type": "collection",
+     "id": "product_order",
+     "label": "collection to link frist"
+   },
+      {
+        "type": "image_picker",
+        "label": "Second Image Desktop",
+        "id": "second_image"
+      },
+      {
+     "type": "collection",
+     "id": "product_ordersecond",
+     "label": "collection to link Second"
+   }
+      
+    ],
+    "presets": [
+      {
+        "name": "NewSection_4",
+        "category": "Promotional"
+      }
+    ]
+  }
+{% endschema %}

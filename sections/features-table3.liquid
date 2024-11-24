@@ -1,0 +1,296 @@
+{% if section.settings.enable_section %}
+<section 
+  id="section{{ section.id }}" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="INF-FeaturedColumns" 
+  class="Section Section--fixed Section--fixed" 
+  style=""
+>
+  <div class="Section__container FeaturedColumns-inner">
+    {% if section.settings.title != blank %}
+    <div class="section-header text-center">
+      <h2 {% if section.settings.font_size != blank %}style="font-size:{{section.settings.font_size}}px;"{% endif %} class="Section__heading heading-FeaturedColumns">{{ section.settings.title }}</h2>
+    </div>
+    {% endif %}
+    <div class="desktop_table">
+    
+    <div class="grid grid--flush-bottom features_table_grid">
+      <div class="grid__item medium-up--one-quarter feature_column1" {{ block.shopify_attributes }}>
+        {% if section.settings.column1_heading != blank %}
+        <h4 class="heading-FeaturedColumns">{{ section.settings.column1_heading }}</h4>
+        {% else %}
+        <div><p>&nbsp;</p></div>
+        {% endif %}
+      </div>
+      
+      <div class="grid__item medium-up--one-quarter feature_column2" {{ block.shopify_attributes }}>
+        {% if section.settings.column2_heading != blank %}
+        <h4 class="heading-FeaturedColumns text-center">{{ section.settings.column2_heading }}</h4>
+        {% else %}
+        <div><p>&nbsp;</p></div>
+        {% endif %}
+      </div>
+      
+      <div class="grid__item medium-up--one-quarter feature_column3" {{ block.shopify_attributes }}>
+        {% if section.settings.column3_heading != blank %}
+        <h4 class="heading-FeaturedColumns text-center">{{ section.settings.column3_heading }}</h4>
+        {% else %}
+        <div><p>&nbsp;</p></div>
+        {% endif %}
+      </div>
+      
+      <div class="grid__item medium-up--one-quarter feature_column4" {{ block.shopify_attributes }}>
+        {% if section.settings.column4_heading != blank %}
+        <h4 class="heading-FeaturedColumns text-center">{{ section.settings.column4_heading }}</h4>
+        {% else %}
+        <div><p>&nbsp;</p></div>
+        {% endif %}
+      </div>
+    </div>
+    
+    
+    {% for block in section.blocks %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: block %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+    <div class="grid grid--flush-bottom features_table_grid">
+      
+      <div class="grid__item medium-up--one-quarter row_column row_feature_column1">
+        {% if block.settings.column1_text != blank %}
+        <div class="heading-FeaturedColumns">{{ block.settings.column1_text  }}</div>
+        {% else %}
+        <div><p>&nbsp;</p></div>
+        {% endif %}
+      </div>
+      
+      <div class="grid__item medium-up--one-quarter text-center row_column row_feature_column2">
+        {% if block.settings.column2_text != blank %}
+        <div class="heading-FeaturedColumns">{{ block.settings.column2_text  }}</div>
+        {% else %}
+        <div><p>&nbsp;</p></div>
+        {% endif %}
+      </div>
+      
+      <div class="grid__item medium-up--one-quarter text-center row_column row_feature_column3">
+        {% if block.settings.column3_text != blank %}
+        <div class="heading-FeaturedColumns">{{ block.settings.column3_text  }}</div>
+        {% else %}
+        <div><p>&nbsp;</p></div>
+        {% endif %}
+      </div>
+      
+      <div class="grid__item medium-up--one-quarter text-center row_column row_feature_column4">
+        {% if block.settings.column4_text != blank %}
+        <div class="heading-FeaturedColumns">{{ block.settings.column4_text  }}</div>
+        {% else %}
+        <div><p>&nbsp;</p></div>
+        {% endif %}
+      </div>
+      
+    </div>
+    {% endfor %}
+    </div>
+    
+    <div class="mobile_table">
+      
+      {% if section.settings.column2_heading != blank %}
+      <div class="columns_container">
+      <div class="grid grid--flush-bottom features_table_grid">
+        <div class="grid__item one-whole feature_column2">
+          <h4 class="heading-FeaturedColumns">{{ section.settings.column2_heading }}</h4>
+        </div>
+      </div>
+      
+      {% for block in section.blocks %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: block %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+      <div class="grid grid--flush-bottom features_table_grid">
+        <div class="grid__item one-half row_column row_feature_column1">
+          {% if block.settings.column1_text != blank %}
+          <div class="heading-FeaturedColumns">{{ block.settings.column1_text  }}</div>
+          {% else %}
+          <div><p>&nbsp;</p></div>
+          {% endif %}
+        </div>
+        <div class="grid__item one-half row_column row_feature_column2">
+          {% if block.settings.column2_text != blank %}
+          <div class="heading-FeaturedColumns">{{ block.settings.column2_text  }}</div>
+          {% else %}
+          <div><p>&nbsp;</p></div>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+      </div>
+      <br><br>
+      {% endif %}
+      
+      
+      {% if section.settings.column3_heading != blank %}
+      <div class="columns_container">
+      <div class="grid grid--flush-bottom features_table_grid">
+        <div class="grid__item one-whole feature_column2">
+          <h4 class="heading-FeaturedColumns">{{ section.settings.column3_heading }}</h4>
+        </div>
+      </div>
+      
+      {% for block in section.blocks %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: block %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+      <div class="grid grid--flush-bottom features_table_grid">
+        <div class="grid__item one-half row_column row_feature_column1">
+          {% if block.settings.column1_text != blank %}
+          <div class="heading-FeaturedColumns">{{ block.settings.column1_text  }}</div>
+          {% else %}
+          <div><p>&nbsp;</p></div>
+          {% endif %}
+        </div>
+        <div class="grid__item one-half row_column row_feature_column3">
+          {% if block.settings.column3_text != blank %}
+          <div class="heading-FeaturedColumns">{{ block.settings.column3_text  }}</div>
+          {% else %}
+          <div><p>&nbsp;</p></div>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+      </div>
+      <br><br>
+      {% endif %}
+      
+      
+      {% if section.settings.column4_heading != blank %}
+      <div class="columns_container">
+      <div class="grid grid--flush-bottom features_table_grid">
+        <div class="grid__item one-whole feature_column2">
+          <h4 class="heading-FeaturedColumns">{{ section.settings.column4_heading }}</h4>
+        </div>
+      </div>
+      
+      {% for block in section.blocks %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: block %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+      <div class="grid grid--flush-bottom features_table_grid">
+        <div class="grid__item one-half row_column row_feature_column1">
+          {% if block.settings.column1_text != blank %}
+          <div class="heading-FeaturedColumns">{{ block.settings.column1_text  }}</div>
+          {% else %}
+          <div><p>&nbsp;</p></div>
+          {% endif %}
+        </div>
+        <div class="grid__item one-half row_column row_feature_column4">
+          {% if block.settings.column4_text != blank %}
+          <div class="heading-FeaturedColumns">{{ block.settings.column4_text  }}</div>
+          {% else %}
+          <div><p>&nbsp;</p></div>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+      </div>
+      <br><br>
+      {% endif %}
+      
+    </div>
+    
+  </div>
+</section>
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Features Table",
+    "class": "index-section",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_section",
+        "label": "Enable Section ?",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading"
+      },
+      {
+        "type": "number",
+        "id": "font_size",
+        "label": "Heading Size"
+      },
+      {
+        "type": "text",
+        "id": "column1_heading",
+        "label": "Column 1 Heading"
+      },
+      {
+        "type": "text",
+        "id": "column2_heading",
+        "label": "Column 2 Heading"
+      },
+      {
+        "type": "text",
+        "id": "column3_heading",
+        "label": "Column 3 Heading"
+      },
+      {
+        "type": "text",
+        "id": "column4_heading",
+        "label": "Column 4 Heading"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "text_block",
+        "name": "Row",
+        "settings": [
+          {
+            "type": "richtext",
+            "id": "column1_text",
+            "label": "Column 1 Text"
+          },
+          {
+            "type": "richtext",
+            "id": "column2_text",
+            "label": "Column 2 Text"
+          },
+          {
+            "type": "richtext",
+            "id": "column3_text",
+            "label": "Column 3 Text"
+          },
+          {
+            "type": "richtext",
+            "id": "column4_text",
+            "label": "Column 4 Text"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Features Table",
+        "category": "Text"
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,10 @@
+{%- if unmute or pause -%}
+  <div class="BackgroundControls" data-video-controls>
+  {%- if unmute and mobile_type != 'vimeo' -%}
+    <div class="BackgroundControls__icon" data-video-muted="true"><i class="{{ settings.fa }} fa-volume-off"></i></div>
+  {%- endif -%}
+  {%- if pause -%}
+    <div class="BackgroundControls__icon" data-video-paused="false"><i class="{{ settings.fa }} fa-pause"></i></div>
+  {%- endif -%}                
+  </div>
+{%- endif -%}

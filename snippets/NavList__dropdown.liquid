@@ -1,0 +1,31 @@
+<div class="NavList__dropdown" data-nav-dropdown style="max-height: 0px;">
+  <ul class="NavList__sublist NavList__sublist--in-dropdown" id="sublist{% increment sublist_number %}" data-nav-sublist>
+  {%- for child_link in link.links -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: child_link %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+    {%- assign child_link_title = child_link.title | replace: '[[ ', icon_start | replace: '[[', icon_start | replace: ' ]]', icon_end | replace: ']]', icon_end -%} 
+    <li class="NavList__item">
+      <a class="AnimateOnHover" href="{{ child_link.url }}">
+        <div class="image">
+          {% if child_link.type == 'collection_link' %}
+          {% assign collection_handle = child_link.title | handleize %}
+          {%- assign collection = collections[collection_handle] -%}
+            {% if collection.handle == '' %}
+            <img class="AnimateOnHover--zoom" src="https://biosteel.com/cdn/shop/collections/25_1048x.jpg?v=1720100554">
+            {% else  %}
+            <img class="AnimateOnHover--zoom" src="{{ collection.image.src | img_url: '1048x' }}" alt="{{ child_link.title | handleize }}">
+
+            {% endif %}
+          {% endif %}
+        </div>
+        {{ child_link_title }}
+      </a>
+    </li>
+  {%- endfor -%} 
+  </ul>
+</div>

@@ -1,0 +1,17 @@
+{%- if layout == 'theme' -%}
+<script type="text/javascript" src="{{ 'vendors@layout.theme.js' | asset_url }}"></script>
+{%- else -%}
+<script href="{{ 'vendors@layout.theme.js' | asset_url }}"></script>
+{%- endif -%} {%- if layout == 'theme' -%}
+<script type="text/javascript" src="{{ 'layout.theme.js' | asset_url }}"></script>
+{%- else -%}
+<script href="{{ 'layout.theme.js' | asset_url }}"></script>
+{%- endif -%} {%- if template.name == 'gift_card' -%}
+<script type="text/javascript" src="{{ 'template.gift_card.js' | asset_url }}"></script>
+{%- else -%}
+<script href="{{ 'template.gift_card.js' | asset_url }}"></script>
+{%- endif -%} {%- if template.name == 'addresses' -%}
+<script type="text/javascript" src="{{ 'template.addresses.js' | asset_url }}"></script>
+{%- else -%}
+<script href="{{ 'template.addresses.js' | asset_url }}"></script>
+{%- endif -%}

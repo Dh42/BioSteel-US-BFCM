@@ -1,0 +1,37 @@
+{%- unless section.settings.create_account_heading == blank -%}
+  <h2 class="CreateAccountPanel__heading">{{ section.settings.create_account_heading }}</h2>
+{%- endunless %}
+
+{%- unless section.settings.create_account_details == blank -%}
+  <div class="CreateAccountPanel__details">{{ section.settings.create_account_details }}</div>
+{%- endunless -%}
+
+{%- unless section.blocks.size == 0 -%}
+  <div class="CreateAccountPanel__benefits">
+    {%- for block in section.blocks -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: block %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+      {%- assign benefit_icon = section.settings.benefits_icon_default | default: false -%}
+      {%- unless block.settings.icon == blank -%}
+        {%- assign benefit_icon = block.settings.icon -%}
+      {%- endunless -%}
+      {%- unless block.settings.text == blank -%}
+        <div class="CreateAccountPanel__benefit" {{ block.shopify_attributes }}>
+          {%- if benefit_icon -%}
+            <i class="{{ settings.fa }} {{ benefit_icon }} CreateAccountPanel__benefit-icon"></i>
+          {%- endif -%}
+          <span class="CreateAccountPanel__benefit-text">{{ block.settings.text }}</span>
+        </div>
+      {%- endunless -%}
+    {%- endfor -%}
+  </div>
+{%- endunless -%}
+
+<a class="CreateAccountPanel__button Button Button--{{ section.settings.create_account_button_style }}" href="/account/register">
+  {{ 'layout.customer.create_account' | t }}
+</a>

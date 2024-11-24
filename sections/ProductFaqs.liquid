@@ -1,0 +1,75 @@
+{% assign faq_image_url_mobile = product.metafields.c_f['[p][_t] 7c. FAQ Image Mobile'] %}
+{% assign faq_image_url = product.metafields.c_f['[p][_t] 7b. FAQ Image Url'] %}
+
+
+{% if faq_image_url.value contains "Mahomes" or faq_image_url contains "Luka" %}
+  {% assign faq_image_url = "https://cdn.shopify.com/s/files/1/2922/3274/files/BioSteel-FAQ-Desktop.jpg?v=1710960751" %}
+  {% endif %}
+
+
+{% assign faq_article_handle = product.metafields.c_f['[p][_t] 7a. FAQ Article Handle'] %}
+{% assign product_article = 'frequently-asked-questions/' | append: faq_article_handle %}
+{% assign faq = articles[product_article] %}
+<style>
+  
+  
+  
+  
+  .ProductFaq {
+    background-image: url({{ 'M_BioSteel_FAQ-Banner.jpg' | asset_img_url: '800x' }});
+
+    {%- if faq_image_url_mobile != blank -%}
+      background-image: url('{{ faq_image_url_mobile }}');
+    {%- endif -%}
+  }
+
+
+@media only screen and (min-width: {{settings.grid_tablet_min}}) {
+  .ProductFaq {
+      background-image: url({{ 'BioSteel_FAQ-Banner.jpg' | asset_img_url: '1920x' }});
+    {%- if faq_image_url != blank -%}
+      background-image: url('{{ faq_image_url }}');
+    {%- endif -%}
+  }
+}
+ 
+
+</style>
+{%- if faq_article_handle -%}
+<div class="ProductArticle ProductFaq">
+  <div class="ProductFaq__title">
+    <h3 class="FaqTitle">Frequently Asked Questions</h3>
+  </div>
+  <div class="ProductArticle__container">
+    {%- assign faqs = faq.content | split: '<h4>' -%}
+    {%- for question in faqs -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: question %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+      
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+      {%- if forloop.first -%}
+        {%- continue -%}
+      {%- endif -%}
+      
+      <div class="ProductArticle__faq" data-faq><h4>{{ question}}</div>
+    {%- endfor -%}
+  </div>
+</div>
+{%- endif -%}
+
+{% schema %}
+  {
+    "name": "FAQs",
+    "settings": []
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

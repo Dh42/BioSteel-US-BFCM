@@ -1,0 +1,24 @@
+<script>
+var sa_page = '12';
+</script>
+<div id='socialannex1'></div>
+<script>
+if(!document.getElementById('acUniversal')){
+var sa_uni = sa_uni || [];
+sa_uni.push(['sa_pg', sa_page]);
+(function () { function sa_async_load() {
+var sa = document.createElement('script');
+sa.type = 'text/javascript'; 
+sa.id = 'acUniversal';
+ sa.async = true;
+sa.src = '//cdn.socialannex.com/partner/37966021/universal.js';
+var sax = document.getElementsByTagName('script')[0];
+sax.parentNode.insertBefore(sa, sax);
+} if (window.attachEvent) {
+window.attachEvent('onload', sa_async_load);
+} else {
+window.addEventListener('load', sa_async_load, false);
+}
+})();
+}
+</script>

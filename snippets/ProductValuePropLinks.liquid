@@ -1,0 +1,41 @@
+{%- assign value_prop_left = product.metafields.c_f['[p][_t] 2a. Value Prop'] -%}
+{%- assign value_prop_right = product.metafields.c_f['[p][_t] 2a1. Value Prop'] -%}
+{%- assign nutritional_facts = product.metafields.c_f['[p][_t] 2b. Nutritional Fact'] -%}
+{%- assign recommended_use = product.metafields.c_f['[p][_t] 2c. Recommended Use'] -%}
+
+{%- if value_prop_left or value_prop_right  -%}
+<div class="ProductValueProp ProductValueProp__links QuickView--hide">
+  <div class="ProductValueProp__content">
+    <div class="NutritionalRecommended__info">
+      <div>
+        {%- if nutritional_facts -%}
+          <a data-open-modal="#nutritional_facts">Nutritional Facts</a>
+        {%- endif -%}
+        {%- if recommended_use -%}
+          <a data-open-modal="#recommended_use">Recommended Use</a>
+        {%- endif -%}
+      </div> 
+    </div>
+  </div>
+</div>
+
+{% comment %} Only Show on Quickview {% endcomment %}
+<div class="ProductValueProp ProductValueProp__links QuickView--show">
+  <div class="ProductValueProp__content"> 
+    <div class="NutritionalRecommended__info">
+      <div>
+        <a href="{{product.url}}" data-quickview-ignore>View Details</a>
+      </div> 
+    </div>
+  </div>
+</div>
+
+  {% comment %} {%- if nutritional_facts -%}
+    {%- include 'ProductNutritionalFacts' -%}
+  {%- endif -%}
+
+  {%- if recommended_use -%}
+    {%- include 'ProductRecommendedUse' -%}
+  {%- endif -%} {% endcomment %}
+
+{%- endif -%}

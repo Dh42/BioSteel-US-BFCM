@@ -1,0 +1,14 @@
+<div class="SearchDrawer Section Section--{{ width }} Section--relative" data-search-drawer>
+  <div class="Section__container">
+    <form action="/search" method="get" role="search" >
+      <button type="submit" class="SearchDrawer__submit">
+        <i class="{{ settings.fa }} fa-search"></i>
+        <span class="icon-fallback-text">{{ 'general.search.submit' | t }}</span>
+      </button>
+      <label class="label-hidden">{{ 'general.search.placeholder' | t }}</label>
+      <input class="SearchDrawer__input" type="search" name="q" value="{{ search.terms | escape }}" placeholder="what are you looking for?">
+      <input type="hidden" name="type" value="product">
+      <input type="hidden" name="view" value="product">
+    </form>
+  </div>
+</div>

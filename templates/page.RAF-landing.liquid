@@ -1,0 +1,32 @@
+<script>
+var sa_emailid='{{ customer.email }}';
+var sa_firstname='{{ customer.first_name }}';
+var sa_lastname='{{ customer.last_name }}';
+var sa_page = '11';
+</script>
+<div id='sa_refer_friend'></div>
+<script>
+if(!document.getElementById('acUniversal')){
+var sa_uni = sa_uni || [];
+sa_uni.push(['sa_pg', sa_page]);
+(function () { function sa_async_load() {
+var sa = document.createElement('script');
+sa.type = 'text/javascript'; 
+sa.id = 'acUniversal';
+ sa.async = true;
+sa.src = '//cdn.socialannex.com/partner/37966021/universal.js';
+var sax = document.getElementsByTagName('script')[0];
+sax.parentNode.insertBefore(sa, sax);
+} if (window.attachEvent) {
+window.attachEvent('onload', sa_async_load);
+} else {
+window.addEventListener('load', sa_async_load, false);
+}
+})();
+}
+</script>
+ {% if customer %} 
+ <input type='hidden' id='sa_cust_email' value='{{ customer.id }}' > 
+ <input type='hidden' id='sa_cust_fname' value='{{ customer.first_name }}' > 
+ <input type='hidden' id='sa_cust_lname' value='{{ customer.last_name }}' > 
+ {% endif %}

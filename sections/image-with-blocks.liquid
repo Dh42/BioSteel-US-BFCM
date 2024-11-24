@@ -1,0 +1,207 @@
+{% if section.settings.enable_section %}
+<section 
+  id="section{{ section.id }}" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="INF-ImageWithText" 
+  class="Section Section--fixed Section--fixed section_image_blocks" 
+  style="background:#FFF;"
+>
+  {% capture image_layout %}
+    {%- assign img_url = section.settings.image | img_url: 'master' -%}
+    <div class="feature-row__item feature-row__text feature-row__text--{{ section.settings.layout }}" style="flex: 1 1 45%;background:url({{img_url}});">
+      <div style="visibility:hidden;">
+        {% if section.settings.title != blank %}
+          <h2 class="h2" style="text-align:center;margin:0px;{% if section.settings.font_size != blank %}font-size:{{section.settings.font_size}}px;{% else %}font-size:2.2rem;{% endif %}">{{ section.settings.title | escape }}</h2>
+        {% endif %}
+        {% if section.settings.text != blank %}
+          <div class="rte-setting featured-row__subtext">{{ section.settings.text }}</div>
+        {% endif %}
+        {% if section.settings.button_label != blank and section.settings.button_link != blank %}
+          <a href="{{ section.settings.button_link }}" class="btn">
+            {{ section.settings.button_label | escape }}
+          </a>
+        {% endif %}
+
+        <div class="feature-row-blocks">
+        {% for block in section.blocks %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: block %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+          <div class="feature-row-block">
+            {% if block.settings.block_image %}
+            {%- assign img_url = block.settings.block_image | img_url: 'master' -%}
+            <div class="fr_block_image">
+              <img src="{{img_url}}">
+            </div>
+            {% endif %}
+            {% if block.settings.block_heading %}
+            <h4 class="fr_block_title">
+              {{block.settings.block_heading}}
+            </h4>
+            {% endif %}
+            {% if block.settings.block_text %}
+            <p class="fr_block_text">
+              {{block.settings.block_text}}
+            </p>
+            {% endif %}
+          </div>
+        {% endfor %}
+        </div>
+      </div>
+      
+    </div>
+  {% endcapture %}
+  
+  <div class="Section__container feature-row image_blocks" style="background-color:#f1f1f1;">
+    {% if section.settings.layout == 'left' %}
+      {{ image_layout }}
+    {% endif %}
+
+    <div style="text-align:center;flex: 1 1 55%;" class="feature-row__item feature-row__text feature-row__text--{{ section.settings.layout }}">
+      {% if section.settings.title != blank %}
+        <h2 class="h2" style="text-align:center;margin:0px;{% if section.settings.font_size != blank %}font-size:{{section.settings.font_size}}px;{% else %}font-size:2.2rem;{% endif %}">{{ section.settings.title | escape }}</h2>
+      {% endif %}
+      {% if section.settings.text != blank %}
+        <div class="rte-setting featured-row__subtext">{{ section.settings.text }}</div>
+      {% endif %}
+      {% if section.settings.button_label != blank and section.settings.button_link != blank %}
+        <a href="{{ section.settings.button_link }}" class="btn">
+          {{ section.settings.button_label | escape }}
+        </a>
+      {% endif %}
+      
+      <div class="feature-row-blocks">
+      {% for block in section.blocks %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: block %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+        <div class="feature-row-block">
+          {% if block.settings.block_image %}
+          {%- assign img_url = block.settings.block_image | img_url: 'master' -%}
+          <div class="fr_block_image">
+            <img src="{{img_url}}">
+          </div>
+          {% endif %}
+          {% if block.settings.block_heading %}
+          <h4 class="fr_block_title">
+            {{block.settings.block_heading}}
+          </h4>
+          {% endif %}
+          {% if block.settings.block_text %}
+          <p class="fr_block_text">
+            {{block.settings.block_text}}
+          </p>
+          {% endif %}
+        </div>
+      {% endfor %}
+      </div>
+    </div>
+
+    {% if section.settings.layout == 'right' %}
+      {{ image_layout }}
+    {% endif %}
+    <div class="clearfix"></div>
+  </div>
+</section>
+{% endif %}
+
+
+{% schema %}
+  {
+    "name": "Image with Blocks",
+    "class": "index-section",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_section",
+        "label": "Enable Section ?",
+        "default": true
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "select",
+        "id": "layout",
+        "label": "Image alignment",
+        "default": "left",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Image with text"
+      },
+      {
+        "type": "number",
+        "id": "font_size",
+        "label": "Heading Size"
+      },
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "Text",
+        "default": "<p>Pair large text with an image to give focus to your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>"
+      },
+      {
+        "type": "text",
+        "id": "button_label",
+        "label": "Button label"
+      },
+      {
+        "type": "url",
+        "id": "button_link",
+        "label": "Button link"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "Section",
+        "name": "Section",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "block_image",
+            "label": "Image"
+          },
+          {
+            "label": "Heading",
+            "id": "block_heading",
+            "type": "text"
+          },
+          {
+            "label": "Text",
+            "id": "block_text",
+            "type": "html"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Image with Blocks",
+        "category": "Image"
+      }
+    ]
+  }
+{% endschema %}

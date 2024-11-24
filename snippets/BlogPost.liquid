@@ -1,0 +1,85 @@
+{% for article in blog.articles limit: section.settings.post_limit %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: article %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+  <li class="BlogPost__item" data-blog-carousel-slide>
+    {%- comment -%}
+      Due to accessibility requirements, we are regrouping all logical elements into the <a> element.
+      If a screen reader user is tabbing through the page, or browsing by links on the page with duplicated links,
+      they will appear identical which may lead to a confusing user experience.
+    {%- endcomment -%}
+    <a href="{{ article.url }}">
+      <img src="{{ article.image.src | img_url: 'master' }}">
+      {% comment %} <h3>{{ article.title }}</h3> {% endcomment %}
+    </a>
+
+    <div>
+      {% if section.settings.blog_show_author %}
+        <span>{{ 'blogs.article.by_author' | t: author: article.author }}</span>
+      {% endif %}
+
+      {% if section.settings.blog_show_date %}
+        <p>
+          {{ article.published_at | time_tag: format: 'month_day_year' }}
+        </p>
+      {% endif %}
+
+        {% comment %} <div>
+          {% if article.excerpt.size > 0 %}
+            {{ article.excerpt }}
+          {% else %}
+            {{ article.content | strip_html | truncate: 50 }}
+          {% endif %}
+        </div> {% endcomment %}
+
+      {% if article.tags.size > 0 %}
+        {%- comment -%}
+          The Tag link list functions as a list of content items.
+          Non-visual users will expect lists of content to appear
+          in a list structure, allowing for easier understanding and navigation of list items.
+        {%- endcomment -%}
+        <ul aria-label="{{ 'blogs.article.tags' | t }}">
+          {% for tag in article.tags %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: tag %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+            <li><a href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a></li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      <a href="{{ article.url }}" aria-label="{{ 'blogs.article.read_more_title' | t: title: article.title }}">{{ 'blogs.article.read_more' | t }}</a>
+    </div>
+  </li>
+{% else %}
+  {% for i in (1..section.settings.post_limit) %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: i %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+    <li class="blog-post__item">
+      <h3>
+        <a href="#">{{ 'homepage.onboarding.blog_title' | t }}</a>
+      </h3>
+
+      {% if section.settings.blog_show_author %}
+        <span>{{ 'homepage.onboarding.blog_author' | t }}</span>
+      {% endif %}
+
+      <div>{{ 'homepage.onboarding.blog_excerpt' | t }}</div>
+
+      <a href="#">{{ 'blogs.article.read_more' | t }}</a>
+    </li>
+  {% endfor %}
+{% endfor %}

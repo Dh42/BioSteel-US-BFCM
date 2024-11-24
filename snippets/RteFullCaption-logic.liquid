@@ -1,0 +1,31 @@
+{% assign caption_split = content | split: 'data-rte-full-caption="" ' | join: 'data-rte-full-caption ' | split: 'data-rte-full-caption ' %}
+{% for attr in caption_split %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: attr %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+  {% assign img = attr | split: 'data-img-src="' %}
+  {% assign img = img[1] | split: '"' | first %}
+  {% assign end_of_img = img | append: '">' %}
+  {% assign caption =  attr | split: end_of_img  | last | split: '</div>' | first %}
+
+  {% comment %} empty attributes may or may not have assigned blank value, depending on if content has been edited - we'll just handle  both cases {% endcomment %}
+  {% assign old_html_1 = '<div data-rte-full-caption data-img-src="' | append: img | append: '">' | append: caption | append: '</div>' %}
+  {% assign old_html_2 = '<div data-rte-full-caption="" data-img-src="' | append: img | append: '">' | append: caption | append: '</div>' %}
+  {% capture new_html %}
+    <div class="RteFullCaption">
+      <div class="RteFullCaption__container">
+      <div class="RteFullCaption__image-wrapper">
+        <img class="RteFullCaption__image" src="{{ img }}">
+      </div>
+        <div class="RteFullCaption__description">
+          {{ caption }}
+        </div>
+      </div>
+    </div>
+  {% endcapture %}
+  {% assign content = content | replace: old_html_1, new_html | replace: old_html_2, new_html %}
+{% endfor %}

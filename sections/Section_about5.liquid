@@ -1,0 +1,121 @@
+<style>
+@media only screen and (min-width: 640px){
+.img_box{
+  
+}
+
+.heading_box{
+/*     width: 555px !important; */
+}
+  
+}
+@media only screen and (max-width: 640px){
+.heading_box{
+     width: 100%;
+  }
+
+  
+}
+  .main_box{
+  background-color: #dddddd;
+   border-width: 5px;
+/*       width: 100%; */
+  display: flex;
+}
+  
+  .img_box{
+/*      width: 100%; */
+  }
+.center_box{
+     
+      margin: auto;}
+</style>
+
+<div class="main_box">
+  <div class="center_box">
+<div class="heading_box">
+   <{{ section.settings.heading_size1H1D77}} style="
+     color: {{ section.settings.heading_color546}} ;
+     font-size: {{ section.settings.font_size436}}px ;
+    text-align: center;
+">{{ section.settings.section_title | escape }}</{{ section.settings.heading_size1H1D77}}>
+</div>
+  <div class="img_box">
+  <img loading="lazy"  src="{{ section.settings.second_image | img_url: '1200x'  |  format: 'pjpg'  }}" class="img_div" />
+
+</div>
+  
+</div>  
+     
+</div>
+
+{% schema %}
+  {
+    "name": "NewSection_6",
+    "settings": [
+      {
+        "type": "text",
+        "id": "section_title",
+        "label": "Heading",
+        "default": "Subscribe to our newsletter"
+      },  {
+        
+      "type": "select",
+      "id": "heading_size1H1D77",
+      "options": [
+        {
+          "value": "h2",
+          "label": "h1"
+        },
+        {
+          "value": "h1",
+          "label": "h2"
+        },
+        {
+          "value": "h4",
+          "label": "h3"
+        },
+        {
+          "value": "h3",
+          "label": "h4"
+        },
+        {
+          "value": "h5",
+          "label": "h5"
+        }
+      ],
+      "default": "h1",
+      "label": "Heading Tag "
+    },
+      {
+        "type": "range",
+        "id": "font_size436",
+        "min": 12,
+        "max": 40,
+        "step": 2,
+        "unit": "px",
+        "label": "Heading font size",
+        "default": 14
+      },
+      {
+        "type": "color",
+        "id": "heading_color546",
+        "label": "Heading Color",
+        "default": "#fff"
+      },
+     
+      {
+        "type": "image_picker",
+        "label": "Second Image Desktop",
+        "id": "second_image"
+      }
+      
+    ],
+    "presets": [
+      {
+        "name": "NewSection_6",
+        "category": "Promotional"
+      }
+    ]
+  }
+{% endschema %}

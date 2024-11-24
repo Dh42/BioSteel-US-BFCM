@@ -1,0 +1,41 @@
+{%- include 'ArticleTile-thumb-logic', columns: 2, aspect_ratio: 1.33 -%}
+<div class="TeamBiosteel__post Animate Animate--slide-up" data-article-tile>
+  {%- if external_link -%}
+    <a href="{{ external_link }}" class="ExternalLink"></a>
+  {%- endif -%}
+
+  <div data-article-tile-image>
+    {% comment %} <a href="{{ article.url }}"> {% endcomment %}
+      <img 
+        src="{{ article.image | img_url: img_size, crop: 'center' }}" 
+        alt="{{ article.title }}" 
+        class="AnimateOnHover--{{ animation_hover }}"
+        width="{{ img_width }}"
+        height="{{ img_height }}"
+        onload="elementLoaded(this);"
+      >
+    {% comment %} </a> {% endcomment %}
+
+    <div class="content">      
+      <h3 data-article-tile-title>
+        {% comment %} <a href="{{ article.url }}"> {% endcomment %}
+          {{ article.title }}
+        {% comment %} </a> {% endcomment %}
+      </h3>
+
+      <div class="SocialIcons" data-article-tile-excerpt>
+        {%- if twitter_link -%}
+          <a href="{{ twitter_link }}" target="_blank"><i class="fab fa-twitter"></i></a>
+        {%- endif -%}
+
+        {%- if instagram_link -%}
+          <a href="{{ instagram_link }}" target="_blank"><i class="fab fa-instagram"></i></a>
+        {%- endif -%}
+
+        {%- if facebook_link -%}
+          <a href="{{ facebook_link }}" target="_blank"><i class="fab fa-facebook"></i></a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>

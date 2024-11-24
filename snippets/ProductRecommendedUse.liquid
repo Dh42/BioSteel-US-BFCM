@@ -1,0 +1,14 @@
+ {%- assign recommended_use = product.metafields.c_f['[p][_t] 2c. Recommended Use'] -%}
+ <div id="recommended_use" class="Modal" data-modal>
+  <div class="Modal__close Modal__close--outside" data-close-modal>
+    {% include 'INF-CloseIcon' %}
+  </div>
+  <div class="Modal__overlay" data-modal-overlay data-close-modal></div>
+  <div class="Modal__content" data-modal-content>
+    <div class="Modal__close Modal__close--inside" data-close-modal>
+      {% include 'INF-CloseIcon' %}
+    </div>
+      <h3 class="Modal__heading">Recommended Use</h3>
+      <p> {{ recommended_use }}  </p>
+  </div>
+</div>

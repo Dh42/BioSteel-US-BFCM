@@ -1,0 +1,56 @@
+{% unless product.has_only_default_variant %}
+  <div class="ProductInfo__options">
+    {% for option in product.options_with_values %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: option %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+      <div 
+        class="ProductOption ProductOption--{{ section.settings.option_type }}" 
+        data-custom-option-selector="option{{ forloop.index }}" 
+        data-shopify-option-selector="#SingleOptionSelector-{{ forloop.index0 }}"
+      >
+        <div class="ProductOption__name">
+          {{ option.name }}
+        </div>
+
+        {%- if section.settings.option_type == 'list' -%}
+          <ul class="ProductOption__variants ProductOption__variants--list">
+            {% for value in option.values %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: value %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+              <li
+                class="ProductOption__variant {% if option.selected_value == value %}ProductOption__variant--selected{% endif %}"
+                data-value="{{ value }}"
+                data-custom-variant-selector
+              >
+                {{ value }}
+              </li>
+            {% endfor %}
+          </ul>
+        {%- else -%}
+          <select class="ProductOption__variants" data-custom-variant-selector>
+            {% for value in option.values %}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: value %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+              <option value="{{ value }}" {% if option.selected_value == value %}selected{% endif %}>{{ value }}</option>
+            {% endfor %}
+          </select>
+        {%- endif -%}
+      </div>      
+    {% endfor %}
+  </div>
+{% endunless %}

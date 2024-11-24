@@ -1,0 +1,44 @@
+{%- unless button_text -%}
+  {%- assign button_text = 'blogs.article.read_more' | t -%}
+{%- endunless -%}
+
+{%- include 'ArticleTile-thumb-logic' -%}
+
+<div class="ArticleTile AnimateOnHover {% if animation and animation != 'none' %}Animate Animate--{{ animation }}{% endif %}" data-article-tile>
+  <div class="ArticleTile__image" data-article-tile-image>
+    <a href="{{ article.url }}">
+      <img 
+        src="{{ article.image | img_url: img_size, crop: 'center' }}" 
+        alt="{{ article.title }}" 
+        class="AnimateOnHover--{{ animation_hover }}"
+        width="{{ img_width }}"
+        height="{{ img_height }}"
+        onload="elementLoaded(this); triggerResize();"
+      >
+    </a>
+      <div class="ArticleTile__content">
+          <h3 class="h4 ArticleTile__title" data-article-tile-title><a href="{{ article.url }}">{{ article.title }}</a></h3>
+
+          {%- if show_dates -%}
+            <div class="h5 ArticleTile__date">{{ article.published_at | date: "%B %d, %Y" }}</div>
+          {%- endif -%}
+
+          <div class="ArticleTile__excerpt rte" data-article-tile-excerpt>
+            {% if article.excerpt.size > 0 %}
+              {{ article.excerpt }}
+            {% else %}
+              <p>{{ article.content | strip_html | truncatewords: max_words }}</p>
+            {% endif %}
+          </div>
+
+          {%- if button_enabled -%}
+          <a href="{{ article.url }}" class="Button Button--primary ArticleTile__button">
+            {% if button_icon != '' %}<i class="{{ settings.fa }} {{ button_icon }}"></i>{% endif %}
+            {{ button_text }}
+          </a>
+          {%- endif -%} 
+      </div>
+      <div class="ArticleTile__overlay"></div>
+  </div>
+
+</div>

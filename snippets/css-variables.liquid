@@ -1,0 +1,206 @@
+{%- include 'css-variables-complex' -%}
+
+<style>
+  {{ settings.h1_font | font_face }}
+  {{ settings.h2_font | font_face }}
+  {{ settings.h3_font | font_face }}
+  {{ settings.h4_font | font_face }}
+  {{ settings.h5_font | font_face }}
+  {{ settings.h6_font | font_face }}
+  {{ settings.h7_font | font_face }}
+  {{ settings.h8_font | font_face }}
+  {{ settings.p_font | font_face }}
+  {{ p_font_bold | font_face }}
+  {{ p_font_bold_italic | font_face }}
+  {{ settings.buttons_font | font_face }}
+  {{ settings.label_font | font_face }}
+  {{ settings.input_font | font_face }}
+
+  :root {
+    --body-background: {{ settings.site_bg }};
+    --body-color: {{ settings.p_color }};
+    --border-color: {{ settings.border_color }};
+
+    --h1-color: {{ settings.h1_color }};
+    --h2-color: {{ settings.h2_color }};
+    --h3-color: {{ settings.h3_color }};
+    --h4-color: {{ settings.h4_color }};
+    --h5-color: {{ settings.h5_color }};
+    --h5-color: {{ settings.h6_color }};
+    --h5-color: {{ settings.h7_color }};
+    --h5-color: {{ settings.h8_color }};
+    --p-color: {{ settings.p_color }};
+    --accent-color: {{ settings.accent_color }};
+    --link-color: {{ settings.link_color }};
+    --link-color-hover: {{ settings.link_color_hover }};
+
+    --h1-font-family: {{ settings.h1_font.family }}, {{ settings.h1_font.fallback_families }};
+    --h1-font-size: {{ settings.h1_font_size }}px;
+    --h1-font-size--tablet: {{ settings.h1_font_size--tablet }}px;
+    --h1-font-size--mobile: {{ settings.h1_font_size--mobile }}px;
+    --h1-font-weight: {{ settings.h1_font.weight }};
+    --h1-font-style: {{ settings.h1_font.style }};
+    --h1-text-transform: {{ settings.h1_text_transform }};
+
+    --h2-font-family: {{ settings.h2_font.family }}, {{ settings.h2_font.fallback_families }};
+    --h2-font-size: {{ settings.h2_font_size }}px;
+    --h2-font-size--tablet: {{ settings.h2_font_size--tablet }}px;
+    --h2-font-size--mobile: {{ settings.h2_font_size--mobile }}px;
+    --h2-font-weight: {{ settings.h2_font.weight }};
+    --h2-font-style: {{ settings.h2_font.style }};
+    --h2-text-transform: {{ settings.h2_text_transform }};
+
+    --h3-font-family: {{ settings.h3_font.family }}, {{ settings.h3_font.fallback_families }};
+    --h3-font-size: {{ settings.h3_font_size }}px;
+    --h3-font-size--tablet: {{ settings.h3_font_size--tablet }}px;
+    --h3-font-size--mobile: {{ settings.h3_font_size--mobile }}px;
+    --h3-font-weight: {{ settings.h3_font.weight }};
+    --h3-font-style: {{ settings.h3_font.style }};
+    --h3-text-transform: {{ settings.h3_text_transform }};
+
+    --h4-font-family: {{ settings.h4_font.family }}, {{ settings.h4_font.fallback_families }};
+    --h4-font-size: {{ settings.h4_font_size }}px;
+    --h4-font-size--tablet: {{ settings.h4_font_size--tablet }}px;
+    --h4-font-size--mobile: {{ settings.h4_font_size--mobile }}px;
+    --h4-font-weight: {{ settings.h4_font.weight }};
+    --h4-font-style: {{ settings.h4_font.style }};
+    --h4-text-transform: {{ settings.h4_text_transform }};
+
+    --h5-font-family: {{ settings.h5_font.family }}, {{ settings.h5_font.fallback_families }};
+    --h5-font-size: {{ settings.h5_font_size }}px;
+    --h5-font-size--tablet: {{ settings.h5_font_size--tablet }}px;
+    --h5-font-size--mobile: {{ settings.h5_font_size--mobile }}px;
+    --h5-font-weight: {{ settings.h5_font.weight }};
+    --h5-font-style: {{ settings.h5_font.style }};
+    --h5-text-transform: {{ settings.h5_text_transform }};
+
+    --h6-font-family: {{ settings.h6_font.family }}, {{ settings.h6_font.fallback_families }};
+    --h6-font-size: {{ settings.h6_font_size }}px;
+    --h6-font-size--tablet: {{ settings.h6_font_size--tablet }}px;
+    --h6-font-size--mobile: {{ settings.h6_font_size--mobile }}px;
+    --h6-font-weight: {{ settings.h6_font.weight }};
+    --h6-font-style: {{ settings.h6_font.style }};
+    --h6-text-transform: {{ settings.h6_text_transform }};
+
+    --h7-font-family: {{ settings.h7_font.family }}, {{ settings.h7_font.fallback_families }};
+    --h7-font-size: {{ settings.h7_font_size }}px;
+    --h7-font-size--tablet: {{ settings.h7_font_size--tablet }}px;
+    --h7-font-size--mobile: {{ settings.h7_font_size--mobile }}px;
+    --h7-font-weight: {{ settings.h7_font.weight }};
+    --h7-font-style: {{ settings.h7_font.style }};
+    --h7-text-transform: {{ settings.h7_text_transform }};
+
+    --h8-font-family: {{ settings.h8_font.family }}, {{ settings.h8_font.fallback_families }};
+    --h8-font-size: {{ settings.h8_font_size }}px;
+    --h8-font-size--tablet: {{ settings.h8_font_size--tablet }}px;
+    --h8-font-size--mobile: {{ settings.h8_font_size--mobile }}px;
+    --h8-font-weight: {{ settings.h8_font.weight }};
+    --h8-font-style: {{ settings.h8_font.style }};
+    --h8-text-transform: {{ settings.h8_text_transform }};
+
+    --buttons-font-family: {{ settings.buttons_font.family }}, {{ settings.buttons_font.fallback_families }};
+    --buttons-font-size: {{ settings.buttons_font_size }}px;
+    --buttons-font-size--tablet: {{ settings.buttons_font_size--tablet }}px;
+    --buttons-font-size--mobile: {{ settings.buttons_font_size--mobile }}px;
+    --buttons-font-weight: {{ settings.buttons_font.weight }};
+    --buttons-font-style: {{ settings.buttons_font.style }};
+    --buttons-text-transform: {{ settings.buttons_text_transform }};
+
+    --p-font-family: {{ settings.p_font.family }}, {{ settings.p_font.fallback_families }};
+    --p-font-size: {{ settings.p_font_size }}px;
+    --p-font-size--tablet: {{ settings.p_font_size--tablet }}px;
+    --p-font-size--mobile: {{ settings.p_font_size--mobile }}px;
+    --p-font-weight: {{ settings.p_font.weight }};
+    --p-font-bold-weight: {{ p_font_bold.weight }};
+    --p-font-style: {{ settings.p_font.style }};
+    
+    --button-border-radius: {{ settings.button_border_radius }}px;
+    --button-height: {{ settings.button_height }}px;
+    --button-height--tablet: {{ settings.button_height--tablet }}px;
+    --button-height--mobile: {{ settings.button_height--mobile }}px;
+    --button-horizontal-padding: {{ settings.button_horizontal_padding }}px;
+    --button-horizontal-padding--tablet: {{ settings.button_horizontal_padding--tablet }}px;
+    --button-horizontal-padding--mobile: {{ settings.button_horizontal_padding--mobile }}px;
+
+    --primary-button-background: {{ primary_button_background }};
+    --primary-button-border-color: {{ settings.primary_button_border_color }};
+    --primary-button-background-hover: {{ primary_button_background_hover }};
+    --primary-button-border-color-hover: {{ settings.primary_button_border_color_hover }};
+    --primary-button-border-width: {{ settings.primary_button_border_width }}px;
+    --primary-button-color: {{ settings.primary_button_color }};
+    --primary-button-color-hover: {{ settings.primary_button_color_hover }};
+
+    --secondary-button-background: {{ secondary_button_background }};
+    --secondary-button-border-color: {{ settings.secondary_button_border_color }};
+    --secondary-button-background-hover: {{ secondary_button_background_hover }};
+    --secondary-button-border-color-hover: {{ settings.secondary_button_border_color_hover }};
+    --secondary-button-border-width: {{ settings.secondary_button_border_width }}px;
+    --secondary-button-color: {{ settings.secondary_button_color }};
+    --secondary-button-color-hover: {{ settings.secondary_button_color_hover }};
+
+    --image-button-background: {{ image_button_background }};
+    --image-button-border-color: {{ settings.image_button_border_color }};
+    --image-button-background-hover: {{ image_button_background_hover }};
+    --image-button-border-color-hover: {{ settings.image_button_border_color_hover }};
+    --image-button-border-width: {{ settings.image_button_border_width }}px;
+    --image-button-color: {{ settings.image_button_color }};
+    --image-button-color-hover: {{ settings.image_button_color_hover }};
+
+    --label-font-family: {{ settings.label_font.family }}, {{ settings.label_font.fallback_families }};
+    --label-font-size: {{ settings.label_font_size }}px;
+    --label-font-size--tablet: {{ settings.label_font_size--tablet }}px;
+    --label-font-size--mobile: {{ settings.label_font_size--mobile }}px;
+    --label-font-weight: {{ settings.label_font.weight }};
+    --label-font-bold-weight: {{ settings.label_font_bold.weight }};
+    --label-font-style: {{ settings.label_font.style }};
+    --label-text-transform: {{ settings.label_text_transform }};
+
+    --input-font-family: {{ settings.input_font.family }}, {{ settings.input_font.fallback_families }};
+    --input-font-size: {{ settings.input_font_size }}px;
+    --input-font-size--tablet: {{ settings.input_font_size--tablet }}px;
+    --input-font-size--mobile: {{ settings.input_font_size--mobile }}px;
+    --input-font-weight: {{ settings.input_font.weight }};
+    --input-font-bold-weight: {{ settings.input_font_bold.weight }};
+    --input-font-style: {{ settings.input_font.style }};
+    --input-text-transform: {{ settings.input_text_transform }};
+
+    --input-border-width: {{ settings.input_border_width }}px;
+    --input-border-radius: {{ settings.input_border_radius }}px;
+    --input-height: {{ settings.input_height }}px;
+    --input-height--tablet: {{ settings.input_height--tablet }}px;
+    --input-height--mobile: {{ settings.input_height--mobile }}px;
+    --input-horizontal-padding: {{ settings.input_horizontal_padding }}px;
+    --input-horizontal-padding--tablet: {{ settings.input_horizontal_padding--tablet }}px;
+    --input-horizontal-padding--mobile: {{ settings.input_horizontal_padding--mobile }}px;
+
+    --label-color: {{ settings.label_color }};
+    --input-color: {{ settings.input_color }};
+    --input-background: {{ settings.input_bg }};
+    --input-color-disabled: {{ settings.input_color--disabled }};
+    --input-background-disabled: {{ settings.input_bg--disabled }};
+    --error-color: {{ settings.error_color }};
+    --error-background: {{ settings.error_bg }};
+    --success-color: {{ settings.success_color }};
+    --success-background: {{ settings.success_bg }};
+
+    --color-overlay-bg: {{ settings.color_overlay_bg }};
+    --color-overlay-text: {{ settings.color_overlay_text }};
+
+    --dark-overlay-solid: {{ dark_overlay_solid }};
+    --light-overlay-solid: {{ light_overlay_solid }};
+    --branded-overlay-solid: {{ branded_overlay_solid }};
+
+    --dark-overlay-top: {{ dark_overlay_top }};
+    --dark-overlay-bottom: {{ dark_overlay_bottom }};
+    --light-overlay-top: {{ light_overlay_top }};
+    --light-overlay-bottom: {{ light_overlay_bottom }};
+    --branded-overlay-top: {{ branded_overlay_top }};
+    --branded-overlay-bottom: {{ branded_overlay_bottom }};
+    --site-overlay-background: {{ site_overlay_background }};
+
+    --modal-close-background: {{ modal_close_background }};    
+    --modal-close-color: {{ settings.modal_close_color }};    
+    --modal-close-background-hover: {{ modal_close_background--hover }};    
+    --modal-close-color-hover: {{ settings.modal_close_color--hover }};    
+  }
+</style>

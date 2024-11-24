@@ -1,0 +1,20 @@
+<section 
+  id="section{{ block.id }}" 
+  data-section-id="{{ block.id }}" 
+  data-section-type="INF-FeaturedColumns" 
+  class="Section Section--fixed Section--fixed" 
+  style=""
+>
+  <div class="Section__container FeaturedColumns-inner">
+    {% if block.settings.title != blank %}
+      <div class="section-header text-center">
+        <h2 class="Section__heading heading-FeaturedColumns">{{ block.settings.title | escape }}</h2>        
+      </div>
+    {% endif %}
+    {% if block.settings.content != blank %}
+    <div class="custom_html_data">
+      {{block.settings.content}}
+    </div>
+    {% endif %}    
+  </div>
+</section>

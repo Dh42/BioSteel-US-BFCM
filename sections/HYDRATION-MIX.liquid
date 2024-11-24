@@ -1,0 +1,536 @@
+<style type="text/css">
+    p{	margin-bottom: 19px !important;
+	margin-top: 0px !important;}
+ .rte12{margin-left: 25px;}
+   @media only screen and (min-width: 641px) {
+     
+         .ceebtn4{display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+     .crich1234{margin-left: 2% ;
+	margin-right: 2% ;
+      }
+        
+.cdss {        
+    display: flex!important;
+ text-align: center !important;
+ margin-top: 0% !important;
+  	justify-content: center;
+            }
+ .cli{ width:140px}
+              .oval4 {
+              margin-left: 4% !important;
+        
+                background: #EC5858;
+                border-radius: 29px !important;
+                padding: 2px 40px !important;
+	              margin-top: 30px !important ;
+            }
+     .crich{padding:0% !important}
+     
+     .crich1234{ line-height: 1.5 !important;}
+   }
+  @media only screen and (max-width: 640px) {
+    .ceebtn4{display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    .crich1234{padding:0px 10px 20px !important}
+  .cdss {        
+    display: flex!important;
+ text-align: center !important;
+  	justify-content: center;
+            }
+    
+     .cli{ width:110px !important}
+    .oval4 {border-radius: 19px !important;margin-bottom:20px !important;padding:8px 25px;}
+   
+    .left_section{order:2}
+    
+    .crich1234{ line-height: 1.6 !important;}
+  }
+  
+  .cdfr { overflow-wrap: anywhere; }
+
+  
+ 
+  
+
+     @media only screen and (min-width: 1300px) {
+ 
+      
+      .crich1234{margin-left: 10% ;
+	margin-right: 10% ;
+      }
+      
+    } 
+  
+  @media only screen and (min-width: 1700px) {
+ 
+      .crich1234{margin-left: 10% ;
+	margin-right: 10% ;
+      }
+       
+    } 
+  
+    @media only screen and (min-width: 2050px) {
+  
+      
+      .crich1234{margin-left: 10% ;
+	margin-right: 10% ;
+      }
+       
+    }
+        </style>
+
+
+
+<section 
+  id="section{{ section.id }}" 
+  data-section-id="{{ section.id }}" 
+  data-section-type="image" 
+  class="Section Section--{{ section.settings.width }} Section--{{ section.settings.width--mobile }}" style="background-color:{{section.settings.background_sty2}}">
+
+  <div class="Section__container12 {% if section.settings.animation != 'none' %}Animate Animate--{{ section.settings.animation }}{% endif %}">
+    <div class="Section__container12 Content__section Section__container__hoome_section4 "  style="">
+      <div style="display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));" >
+              
+    
+      
+       <div class="cbdesktop  left_image_section left_image_section_desktop" style="line-height: 0 !important;padding-top: 0px;width:100% !important;padding:0px !important;">
+       <div >
+        {% if section.settings.image_left %}
+        <div class="image_container ">
+          <img style="width:100% !important;"  class="{{ section.settings.height}}" src="{{ section.settings.image_left | img_url:'master' }}" loading="lazy">
+        </div>
+        {% endif %}
+        
+      
+    
+      </div>
+         </div>
+      
+          <div class="111111111111111111 cbmobile  left_image_section left_image_section_desktop" style="line-height: 0 !important;width:100% !important;padding:0px !important;">
+       <div style="display: grid;">
+        {% if section.settings.image_left %}
+        <div class="image_container ">
+          <img class="{{ section.settings.height}}" src="{{ section.settings.image_left1 | img_url:'master' }}" loading="lazy">
+        </div>
+        {% endif %}
+        
+      
+        
+      </div>
+      
+      
+      </div>
+      <div class="cdfr left_section" style="display: grid;line-height: 0 !important; ">
+       <div  style="background:{{section.settings.background_sty2}};padding-top:13%">
+        
+                 <div class="title-wrapper-with-link title-wrapper--self-padded-mobile title-wrapper--no-top-margin">
+                      <h1 class="{{ section.settings.heading_size }}" style="text-align: center !important; font-size:{{ section.settings.font_size_subheading123}}px; color:{{ section.settings.colors_solid_button_labels }}"> {{ section.settings.custom_text_title }} </h1>
+                
+                <div class="crich crich1234"style="text-align: center !important; font-size:{{ section.settings.font_size_subheading99}}px;  color:{{ section.settings.colors1 }}">{{ section.settings.custom_text_body }}</div>
+           
+                   
+                  </div>
+        
+ 
+             <slider-component class="slider-mobile-gutter">
+            
+      <ul  style=""  class="cdss  contains-content-container grid grid--{{ section.settings.columns_mobile }}-col-tablet-down{% if section.settings.columns_desktop == 1 %} grid--full-width{% else %} grid--{{ section.settings.columns_desktop }}-col-desktop{% endif %}{% if show_mobile_slider %} slider slider--mobile grid--peek{% endif %}"
+        id="Slider-{{ section.id }}"
+        role="list"
+      >
+        {%- liquid
+          assign highest_ratio = 0
+          for block in section.blocks
+            if block.settings.image.aspect_ratio > highest_ratio
+              assign highest_ratio = block.settings.image.aspect_ratio
+            endif
+          endfor
+        -%}
+        {%- for block in section.blocks -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: block %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+          <li   id="Slide-{{ section.id }}-{{ forloop.index }}" class="cli multicolumn-list__item grid__item{% if section.settings.swipe_on_mobile %} slider__slide{% endif %}{% if section.settings.column_alignment == 'center' %} center{% endif %}" {{ block.shopify_attributes }}>
+            <div class="cdesk1234 multicolumn-card content-container">
+              {%- if block.settings.image != blank -%}
+                {% if section.settings.image_ratio == 'adapt' or section.settings.image_ratio == 'circle' %}
+                  {% assign spaced_image = true %}
+                {% endif %}
+                <div class=" multicolumn-card__image-wrapper multicolumn-card__image-wrapper--{{ section.settings.image_width }}-width{% if section.settings.image_width != 'full' or spaced_image %} multicolumn-card-spacing{% endif %}" style="padding-top: 0px;">
+                  <div style="padding-bottom: 10px!important;" class="cds media media--transparent media--{{ section.settings.image_ratio }}"
+                    {% if section.settings.image_ratio == 'adapt' %}
+                      style="padding-bottom: {{ 1 | divided_by: highest_ratio | times: 100 }}%;"
+                    {% endif %}>
+                    <img
+                      class="multicolumn-card__image"
+                      srcset="{%- if block.settings.image.width >= 275 -%}{{ block.settings.image | image_url: width: 275 }} 275w,{%- endif -%}
+                        {%- if block.settings.image.width >= 550 -%}{{ block.settings.image | image_url: width: 550 }} 550w,{%- endif -%}
+                        {%- if block.settings.image.width >= 710 -%}{{ block.settings.image | image_url: width: 710 }} 710w,{%- endif -%}
+                        {%- if block.settings.image.width >= 1420 -%}{{ block.settings.image | image_url: width: 1420 }} 1420w,{%- endif -%}
+                        {{ block.settings.image | image_url }} {{ block.settings.image.width }}w"
+                      src="{{ block.settings.image | image_url: width: 550 }}"
+                      sizes="(min-width: 990px) {% if section.blocks.size <= 2 %}710px{% else %}550px{% endif %},
+                        (min-width: 750px) {% if section.blocks.size == 1 %}710px{% else %}550px{% endif %},
+                        calc(100vw - 30px)"
+                      alt="{{ block.settings.image.alt }}"
+                      height="{{ block.settings.image.height }}"
+                      width="{{ block.settings.image.width }}"
+                      loading="lazy"
+                         style="max-width:unset !important;"
+                    >
+                  </div>
+                </div>
+              {%- endif -%}
+              <div class="multicolumn-card__info" style="padding:0px !important
+                                                         ">
+                {%- if block.settings.title != blank -%}
+                  <h3>{{ block.settings.title | escape }}</h3>
+                {%- endif -%}
+                {%- if block.settings.text != blank -%}
+                  <div style="margin-top:10px" class="">{{ block.settings.text }}</div>
+                {%- endif -%}
+                {%- if block.settings.link_label != blank -%}
+                  <a class="link animate-arrow" {% if block.settings.link == blank %}role="link" aria-disabled="true"{% else %}href="{{ block.settings.link }}"{% endif %}>{{ block.settings.link_label | escape }}<span class="icon-wrap">&nbsp;{% render 'icon-arrow' %}</span></a>
+                {%- endif -%}
+              </div>
+            </div>
+          </li>
+        {%- endfor -%}
+      </ul>
+
+      {% if section.settings.right_button_text and section.settings.right_button_url %}
+               <div class="ceebtn4">
+        <a class=" oval4 HeroSlide__button Button Button--primary" href="{{section.settings.right_button_url}}">
+          {{section.settings.right_button_text}}
+        </a>
+               </div>
+        {% endif %}  
+     
+    </slider-component>
+        </div>
+              
+      </div>
+       
+      </div>
+
+    
+     </div>
+      <div class="clearfix"></div>
+   
+  </div>
+
+</section>
+<style type="text/css">
+  .Section__container__hoome_section1{
+    
+    margin-top:10px !important;
+    margin-bottom:10px !important;
+    padding-left:0px !important;
+    padding-right:0px !important;
+  }
+  .Section__container__hoome_section1 .left_image_section{
+    width:65%;
+    float:left;
+    padding:10px;
+    text-align:center;
+  }
+  .Section__container__hoome_section1 .right_image_section{
+    width:35%;
+    float:left;
+    padding:10px;
+    text-align:center;
+    position:relative;
+  }
+  
+  .Section__container__hoome_section1 .right_image_section .HeroSlide__button{
+    position: absolute;
+    bottom: 10%;
+    left: 33%;
+  }
+  
+  /*
+  .Section__container__hoome_section1{
+    border-bottom:1px solid #000;
+  }
+  
+  
+  .Section__container__hoome_section2 .left_image_section{
+    position:relative;
+  }
+  .Section__container__hoome_section2 .left_image_section .HeroSlide__button{
+    position: absolute;
+    top: 39%;
+    left: 33%;
+  }
+  */
+  
+  .Section__container__hoome_section1 .image_container img{
+    max-width:100%;
+    width:100%;
+  }
+  .Section__container__hoome_section1 .clearfix{
+    clear:both;
+    width:100%;
+    height:1px;
+  }
+  @media only screen and (max-width: 768px) {
+    .left_image_section,.right_image_section{
+      width:100% !important;
+    }
+  }
+</style>
+
+
+
+{% schema %}
+  {
+    "name": "HYDRATION-MIX",
+    "settings": [
+
+ 
+    {
+   "type": "color",
+   "id": "background_styl",
+   "label": "Background color  1st",
+   "default": "#ffffff"
+},
+{
+   "type": "color",
+   "id": "background_sty2",
+   "label": "Background color 2nd ",
+   "default": "#ffffff"
+},
+     {
+        "id": "custom_text_title",
+        "type": "text",
+        "label": "Heading",
+        "default": "Text with icon section"
+      } 
+
+
+,
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "h1"
+        },       
+
+       {
+          "value": "h1",
+          "label": "h2"
+        }
+        ,
+        {
+          "value": "h4",
+          "label": "h3"
+        },
+        {
+          "value": "h3",
+          "label": "h4"
+        },
+        {
+          "value": "h5",
+          "label": "h5"
+        }
+      ],
+      "default": "h1",
+      "label": "heading size"
+    },
+
+   {
+    "type": "range",
+    "id": "font_size_subheading123",
+    "min":  15,
+    "max":  100,
+    
+    "unit": "px" ,
+    "label": "Font size for  heading",
+    "default":  15
+    },
+
+     {
+        "type": "color",
+        "id": "colors_solid_button_labels",
+        "default": "#000000",
+        "label": "heading color"
+      },
+      {
+        "id": "custom_text_body",
+        "type": "richtext",
+        "label": "Sub heading",
+        "default": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>"
+      }, 
+
+   {
+    "type": "range",
+    "id": "font_size_subheading99",
+    "min":  15,
+    "max":  100,
+    
+    "unit": "px" ,
+    "label": "Font size for  Subheading",
+    "default":  19
+    },
+
+
+       {
+        "type": "color",
+        "id": "colors1",
+        "default": "#000000",
+        "label": "sub heading color"
+      },
+ 
+    
+      {
+        "label": "Right Button Link",
+        "id": "right_button_url",
+        "type": "url"
+      },
+      {
+        "label": "Right Button Text",
+        "id": "right_button_text",
+        "type": "text"
+      }
+
+
+
+
+,
+      {
+        "label": "Desktop Image",
+        "id": "image_left",
+        "type": "image_picker"
+      },
+      
+      {
+        "label": "Mobile Image ",
+        "id": "image_left1",
+        "type": "image_picker"
+      },
+      {
+        "type": "select",
+        "id": "width",
+        "label": "Width Desktop",
+        "default": "fixed",
+        "options": [
+          {
+            "label": "Full (Edge-to-Edge)",
+            "value": "full"
+          },
+          {
+            "label": "Fixed",
+            "value": "fixed"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "width--mobile",
+        "label": "Width Mobile",
+        "default": "mobile-full",
+        "options": [
+          {
+            "label": "Full (Edge-to-Edge)",
+            "value": "mobile-full"
+          },
+          {
+            "label": "Fixed",
+            "value": "mobile-fixed"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "animation",
+        "label": "Animation",
+        "default": "slide-up",
+        "options": [
+          {
+            "value": "fade-in",
+            "label": "Fade in"
+          },
+          {
+            "value": "slide-up",
+            "label": "Fade in & slide up"
+          },
+          {
+            "value": "slide-down",
+            "label": "Fade in & slide down"
+          },          
+          {
+            "value": "slide-left",
+            "label": "Fade in & slide left"
+          },
+          {
+            "value": "slide-right",
+            "label": "Fade in & slide right"
+          },
+          {
+            "value": "zoom-fade-in",
+            "label": "Fade in & zoom out"
+          },
+                    {
+            "value": "none",
+            "label": "None"
+          }
+        ]
+      }
+    ],
+   "blocks": [
+          
+    {
+      "type": "column",
+      "name": "column",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Icon image"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "default": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+          "label": "Icon Text"
+        }
+      ]
+    }
+  ],
+    "presets": [
+      {
+        "name": "HYDRATION-MIX",
+        "category": "Image",
+         "blocks": [
+      
+       
+        {
+          "type": "column"
+        },
+        {
+          "type": "column"
+        },
+        {
+          "type": "column"
+        }
+      ]
+      },
+   {
+"name": "custom-text",
+"category": "Custom"
+}
+    ]
+  }
+{% endschema %}

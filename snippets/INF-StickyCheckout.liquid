@@ -1,0 +1,23 @@
+{%- capture item_count_og -%}
+   item{% if cart.item_count != 1 %}s{% endif %}
+{%- endcapture -%}
+{%- capture item_count -%}
+  <span data-cart-count>{{ cart.item_count }}</span> {% include 'INF-translation', translate: 'cart.general.item_count_html', count: cart.item_count, default: item_count_og %}
+{%- endcapture -%}
+
+<div class="StickyCheckout__subtotal">
+  <div class="StickyCheckout__label">
+    <p class="StickyCheckout__items StickyCheckout__items--desktop">{{ item_count }}</p>
+    {% comment %} {{ 'cart.general.subtotal' | t }} {% endcomment %}
+    <small class="StickyCheckout__taxes StickyCheckout__taxes--has-items">{{ 'cart.general.shipping_at_checkout' | t }}</small>
+    <small class="StickyCheckout__taxes StickyCheckout__taxes--empty">{{ 'cart.general.empty' | t }}</small>
+  </div>
+  <div class="StickyCheckout__value">
+    <p class="StickyCheckout__items StickyCheckout__items--mobile">{{ item_count }}</p>
+    <span data-cart-total>{{ cart.total_price | money }}</span>{% if settings.show_currency %} <span class="StickyCheckout__currency">{{ shop.currency }}</span>{% endif %}
+  </div>
+  <input type="submit" name="checkout" class="StickyCheckout__button StickyCheckout__button--mobile StickyCheckout__button--has-items Button" value="{% include 'INF-translation', translate: 'cart.general.checkout_mobile', default: 'Checkout' %}">
+  <div class="StickyCheckout__button StickyCheckout__button--mobile StickyCheckout__button--empty Button Button--secondary" data-cart-toggle>{% include 'INF-translation', translate: 'cart.general.continue', default: 'Continue Shopping' %}</div>
+</div>
+<input type="submit" name="checkout" class="StickyCheckout__button StickyCheckout__button--desktop StickyCheckout__button--has-items Button" value="{% include 'INF-translation', translate: 'cart.general.checkout_desktop', default: 'Proceed to Checkout' %}">
+<div class="StickyCheckout__button StickyCheckout__button--desktop StickyCheckout__button--empty Button Button--secondary" data-cart-toggle>{% include 'INF-translation', translate: 'cart.general.continue', default: 'Continue Shopping' %}</div>

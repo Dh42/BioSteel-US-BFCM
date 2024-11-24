@@ -1,0 +1,80 @@
+<section 
+  id="section{{ section_id }}" 
+  data-section-id="{{ section_id }}" 
+  data-section-type="INF-Blog" 
+  class="Section Section--fixed Section--mobile-fixed Animate Animate--slide-up"
+  style="background-image: url('{{ 'black-scratches-bg.jpg' | asset_img_url: '2048x' }}');"
+  > 
+  <div class="Section__container">
+  {% if module_content %}
+    <div data-featured-articles-content>{{ module_content }}</div>
+  {% else %}
+    <div class="Section__preheading angled-eyebrow"></div>
+    <h3 class="Section__heading"></h3>
+  {% endif  %}
+
+      <div class="ArticleGrid ArticleGrid--columns-4">
+      {%- for article_handle_unchangeable in article_handles -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop Start {%- endcomment -%}
+{%- capture hide_resource -%}{% render "wc_product_visibility", resource: article_handle_unchangeable %}{%- endcapture -%}
+{%- if hide_resource == "true" -%}
+  {% continue %}
+{%- endif -%}
+{%- comment -%} Wholesale_Club_Product_Visibility_For_Loop End {%- endcomment -%}
+
+        {%- assign article_handle = article_handle_unchangeable -%}
+        {%- unless article_handle contains '/' -%}
+          {% if blog %}
+            {% assign blog_handle = blog.handle %}
+          {% else %}
+            {% assign blog_handle = 'truetothis' %}
+          {% endif %}
+          {% assign article_handle = blog_handle | append: '/' | append: article_handle %}
+        {%- endunless -%}
+        {% assign featured_article = articles[article_handle] %}
+        {%- include 'ArticleTile', 
+          article: featured_article,
+          columns: 4,
+          aspect_ratio: '1.33',
+          show_dates: false, 
+          max_words: 0,
+          button_enabled: false,
+          button_text: '',
+          button_icon: false,
+          animation: 'slide-up',
+          animation_hover: 'none',
+          show_tag: true
+        -%}
+      {%- endfor -%}
+    </div>
+    {% if module_content %}
+      <div data-button-destination></div>
+    {% else %}
+      <div class="Section__button-container Animate Animate--slide-up"><a href="#" class="Button Button--primary"></a></div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  #section{{ section_id }} .Section__container {
+    padding-top: 100px;
+    padding-bottom: 100px;
+    margin: 50px auto;
+  }
+  @media only screen and (max-width: {{ settings.grid_mobile_max }}) {
+    #section{{ section_id }} .Section__container {
+      padding-top: 30px;
+      padding-bottom: 40px;
+    }      
+  }
+  #section{{ section_id }} .ArticleGrid {
+    text-align: left;
+  }
+
+  #section{{ section_id }} .Section__container,
+  #section{{ section_id }} .Section__container a {
+    color: #fff;
+    text-decoration: none;
+  }
+  
+</style>
