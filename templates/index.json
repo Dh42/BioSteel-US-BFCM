@@ -476,8 +476,8 @@
             "enable_image": false,
             "title": "",
             "text": "",
-            "button_label": "CLEARANCE",
-            "button_link": "shopify://collections/clearance"
+            "button_label": "Black Friday Sale",
+            "button_link": "shopify://pages/blackfriday"
           }
         }
       },
