@@ -67,6 +67,22 @@
 {% comment %} Wholesale_Club_Product_Prices End {% endcomment %}
 <div class="ProductHeading ProductHeading--{{ breakpoint }}">
   <h1 class="ProductHeading__title">{{ product.title }}</h1>
+
+    {% if product.tags contains "bfcm24" %}
+        <div class="bfdiscount">
+            {% if product.tags contains "bogo-protein" %}
+
+
+
+                Buy One, Get One Free - Mix & Match
+
+            {%  else %}
+                <i style="color:white;background:#E4002B;font-style:normal;padding-left:10px;padding-right:10px;">{{ WCProduct_VariantPrice|times: 0.6 | money }}</i> with code "BFS"
+            {% endif %}
+        </div>
+
+    {% endif %}
+
   {% if product.tags contains "bfcm24" %}
     <div class="bfdiscount">{{ WCProduct_VariantPrice|times: 0.6 | money }} with code BLACKFRIDAY</div>
     {% endif %}

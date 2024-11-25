@@ -81,7 +81,18 @@
     {%- assign price = WCProduct_Price | money -%}
     {{ 'products.product.from_text_html' | t: price: price }}{% if settings.show_currency %} <span class="Price__currency">{{ shop.currency }}</span>{% endif %}
   {%- else -%}
-    {{ WCProduct_Price | money }}{% if settings.show_currency %}  <span class="Price__currency">{{ shop.currency }}</span>{% endif %}
+    {% if product.tags contains "bfcm24" %}
+      {% if product.tags contains "bogo-protein" %}
+        <i style="font-style:normal;color:#e4002b;font-weight:bold">Buy One, Get One Free</i>
+      {% else %}
+        <i style="display:block;margin-top:10px;"></i>
+        <i style="background:#e4002b;color:white;font-style:normal;padding-left:10px;padding-right:10px;font-weight:bold">{{ WCProduct_VariantPrice|times: 0.6 | money }}</i>
+        <i style="font-style: normal;padding-left:10px;text-decoration:line-through">{{ WCProduct_VariantPrice| money }}</i>
+        <br/>
+        <i style="font-style:normal;color:#e4002b;font-weight:bold">with code "BFS"</i>
+      {% endif %}
+    {%  else %}
+      {{ WCProduct_Price | money }}{% if settings.show_currency %}  <span class="Price__currency">{{ shop.currency }}</span>{% endif %} {% endif %}
   {%- endif -%}
   
 {%- endif -%}
