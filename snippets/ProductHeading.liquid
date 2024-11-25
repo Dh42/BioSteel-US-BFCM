@@ -68,7 +68,7 @@
 <div class="ProductHeading ProductHeading--{{ breakpoint }}">
   <h1 class="ProductHeading__title">{{ product.title }}</h1>
   {% if product.tags contains "bfcm24" %}
-    <div class="bfdiscount">{{ WCProduct_VariantPrice|times: 0.6 | money }} with code BLACKFRIDAY</div>
+      <div class="bfdiscount"><i style="color:white;background:#E4002B;font-style:normal;padding-left:10px;padding-right:10px;">{{ WCProduct_VariantPrice|times: 0.6 | money }}</i> with code "BFS"</div>
     {% endif %}
   <div class="ProductHeading__price" data-price-wrapper>
     <span data-product-price {% if WCProduct_VariantComparePrice > WCProduct_VariantPrice %}style="color:rgb(228, 0, 43)"{% endif %}>
