@@ -1,3 +1,8 @@
+{% if product.tags contains "bogo-protein" %}
+
+
+  <img src="https://cdn.shopify.com/s/files/1/0080/2547/3142/files/BOGO_FREE_-_Notification.png?v=1732550500" style="margin-top:10px;"/>
+{% endif %}
 {% if product.tags contains 'shortdated' and current_variant.available %}
   <span class="shortdated" style="margin-bottom:10px">
 <span class="trigger"><i class="far fa-warning"></i>Short dated product</span>
