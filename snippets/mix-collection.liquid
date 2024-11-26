@@ -87,7 +87,7 @@ style="display:block;">
    {% assign inv_qty = section.settings.inventoryquantity12  %}
 
       
-      {% if product.selected_or_first_available_variant.inventory_quantity <   settings.font_sizett  and product.type != "Merchandise" %}
+      {% if product.selected_or_first_available_variant.inventory_quantity <   settings.font_sizett and product.available == 'false' and product.type != "Merchandise" %}
 
           <button 
         type="submit" 
