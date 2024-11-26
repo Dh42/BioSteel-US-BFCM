@@ -227,15 +227,15 @@
 {% unless title_lower contains "sports drink" %}
   {% assign pack_12_product = null %}
   {% for product in collection.products %}
+    {{ product.title }}
     {% if product.title contains "12 Pack" %}
+      aaaaaa
       {% assign pack_12_product = product %}
       {% break %}
     {% endif %}
   {% endfor %}
 
   
-  {{ pack12_product }}
-  {{ tit12 }}
   {% if pack_12_product and tit12 %}
     <div style="display: inline-block;width: 100%;">
       <a class="btn_kk" style="
