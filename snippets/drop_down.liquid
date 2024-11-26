@@ -220,14 +220,14 @@
         </div>
       {% endif %}
     {% endfor %}
+    1111111
   </div>
 {% endif %}
-11111111111111
+
 {% assign title_lower = product.title | downcase %}
 {% unless title_lower contains "sports drink" %}
   {% assign pack_12_product = null %}
   {% for product in collection.products %}
-    {{ product.title }}
     {% if product.title contains "12 Pack" %}
       {% assign pack_12_product = product %}
       {% break %}
