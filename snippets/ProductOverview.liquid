@@ -64,7 +64,7 @@
                 {%- include 'ProductInfo__quantity' -%}
          {% if product.tags contains 'merchandise' or product.type contains 'merchandise' %}
                        {%- include 'ProductInfo__add-to-cart' -%}
-           {% elsif product.selected_or_first_available_variant.inventory_quantity  < settings.font_sizett %}   
+           {% elsif product.selected_or_first_available_variant.inventory_quantity  < settings.font_sizett and product.available == 'false' %}   
                       {%  include "ProductInfo__add-to-cart--lessthan-20" %}
             {% else  %}
      
