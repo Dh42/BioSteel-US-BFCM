@@ -186,6 +186,8 @@
         {% assign  main_secondr  = serever | split: " - " | last  %}
         {% assign  main_second  = serever  %}
         {% assign  tit12 = false %}
+        {{ ser }} <br/>
+        {{ main_secondr }}
         {% if  ser  ==  main_secondr %}
           {% assign  tit12 = true %} 
         {% endif %}
@@ -227,7 +229,6 @@
 {% unless title_lower contains "sports drink" %}
   {% assign pack_12_product = null %}
   {% for product in collection.products %}
-    {{ product.title }}
     {% if product.title contains "12 Pack" %}
       {% assign pack_12_product = product %}
       {% break %}
