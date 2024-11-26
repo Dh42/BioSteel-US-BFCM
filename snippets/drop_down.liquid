@@ -1,6 +1,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.1.slim.min.js" integrity="sha256-w8CvhFs7iHNVUtnSP0YKEg00p9Ih13rlL9zGqvLdePA=" crossorigin="anonymous"></script>
-aaaaaaaaaaaaaaa
+
 {% assign flavor_tag = product.tags | where: "filter-flavor-" | first %}
 {% if flavor_tag %}
   {% assign collection_handle = flavor_tag | remove: "filter-flavor-" %}
@@ -217,7 +217,6 @@ aaaaaaaaaaaaaaa
               {{ main_secondr | replace: "Servings", section.settings.title123456 | sort | join: "-" | append:"" }}
             {% endif %}
           </a>
-          aaaaaaa
         </div>
       {% endif %}
     {% endfor %}
