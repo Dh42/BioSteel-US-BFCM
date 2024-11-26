@@ -106,7 +106,7 @@
 {% endif %}
 {% comment %} Wholesale_Club_Product_Prices End {% endcomment %}
 
-            {% if product.tags contains "hide_from_website" %}
+            {% if product.tags contains "hide_from_website" or product.price == 0 %}
               {% continue %}
             {% endif %}
             {% include 'ProductTile' %}
