@@ -87,6 +87,46 @@
             "overlay--mobile": "same"
           }
         },
+        "image_w8RT6R": {
+          "type": "image",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/3000x1457_desktop_banner_-CYBERM.jpg",
+            "image_alignment": "center",
+            "heading": "",
+            "heading_class": "h2",
+            "subheading": "",
+            "subheading_class": "pbold",
+            "cta": "",
+            "url": "shopify://pages/blackfriday",
+            "cta_style": "on-image",
+            "cta_2": "",
+            "url_2": "",
+            "cta_style_2": "on-image",
+            "cta_3": "",
+            "url_3": "",
+            "cta_style_3": "on-image",
+            "alignment": "center",
+            "overlay": "dark-text",
+            "image--mobile": "shopify://shop_images/750x1100_mobile_banner_-CYBERM.jpg",
+            "image_alignment--mobile": "center",
+            "heading--mobile": "",
+            "heading_class--mobile": "same",
+            "subheading--mobile": "",
+            "subheading_class--mobile": "same",
+            "cta--mobile": "",
+            "url--mobile": "shopify://pages/blackfriday",
+            "cta_style--mobile": "same",
+            "cta_2--mobile": "",
+            "url_2--mobile": "",
+            "cta_style_2--mobile": "same",
+            "cta_3--mobile": "",
+            "url_3--mobile": "",
+            "cta_style_3--mobile": "same",
+            "alignment--mobile": "same",
+            "overlay--mobile": "same"
+          }
+        },
         "image_e3jAXG": {
           "type": "image",
           "disabled": true,
@@ -169,6 +209,7 @@
       },
       "block_order": [
         "image_QrRL7P",
+        "image_w8RT6R",
         "image_e3jAXG",
         "template--14858074062966__9257ae2e-270e-461e-818d-1ce49983fed5-image-1"
       ],
